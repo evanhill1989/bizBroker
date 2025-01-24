@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "../utils/requireUser";
 import { EmptyState } from "@/components/dashboard/EmptyState";
