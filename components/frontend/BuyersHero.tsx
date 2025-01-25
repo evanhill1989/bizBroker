@@ -8,21 +8,21 @@ import {
 } from "@kinde-oss/kinde-auth-nextjs/components";
 import { Button } from "../ui/button";
 import HeroImage from "@/public/hero.png";
+import { NavigationMenuComponent } from "./NavMenu";
 
-export function Hero() {
+export function BuyersHero() {
   return (
     <>
       <div className="relative flex flex-col w-full py-5 mx-auto md:flex-row md:items-center md:justify-between">
-        <div className="flex flex-row items-center text-sm justify-between lg:justify-start">
+        <div className="flex flex-row items-center text-sm justify-between lg:justify-start gap-12">
           <Link href={"/"} className="flex items-center gap-2">
             <Image src={Logo} alt="logo" width={40} height={40} />
             <h4 className="text-3xl">
               My<span className="text-primary font-bold">Business</span>
             </h4>
           </Link>
-          <div className="md:hidden">
-            <ModeToggle />
-          </div>
+          <NavigationMenuComponent />
+          <div className="md:hidden"></div>
         </div>
         <nav className="hidden md:flex md:justify-end md:space-x-4">
           <ModeToggle />
@@ -41,7 +41,7 @@ export function Hero() {
               Premier Business Selling Platform
             </span>
             <h1 className="mt-8 text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-medium leading-none">
-              Setup your listing{" "}
+              Setup your listing
               <span className="block py-2 w-fit m-auto rounded-sm px-3 mt-2 underline underline-offset-8">
                 in minutes
               </span>

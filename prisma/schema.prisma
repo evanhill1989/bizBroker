@@ -16,15 +16,60 @@ datasource db {
 
 model User {
   id           String @id @unique
-  email        String
+  email        String @unique
   firstName    String
   lastName     String
   profileImage String
 
   createdAt DateTime @default(now())
 
-  Listing Listing[]
-  posts   Post[]
+  // Relationships
+  buyerProfile  Buyer?    @relation("BuyerProfile")
+  sellerProfile Seller?   @relation("SellerProfile")
+  Listing       Listing[]
+  Post          Post[]
+}
+
+model Buyer {
+  id          String    @id @unique @default(uuid())
+  preferences Json? // Example: Search filters or saved searches
+  inquiries   Inquiry[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Back-reference to User
+  user   User   @relation("BuyerProfile", fields: [userId], references: [id])
+  userId String @unique
+}
+
+model Seller {
+  id          String    @id @unique @default(uuid())
+  companyName String
+  phoneNumber String
+  website     String?
+  listings    Listing[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Back-reference to User
+  user    User      @relation("SellerProfile", fields: [userId], references: [id])
+  userId  String    @unique
+  Inquiry Inquiry[]
+}
+
+model Inquiry {
+  id        String   @id @unique @default(uuid())
+  message   String // Message from the buyer to the seller
+  status    String   @default("pending") // e.g., "pending", "accepted", "declined"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relationships
+  buyerId String
+  buyer   Buyer  @relation(fields: [buyerId], references: [id])
+
+  sellerId String
+  seller   Seller @relation(fields: [sellerId], references: [id])
 }
 
 model Listing {
@@ -39,6 +84,8 @@ model Listing {
   User     User?   @relation(fields: [userId], references: [id])
   userId   String?
   posts    Post[]
+  Seller   Seller? @relation(fields: [sellerId], references: [id])
+  sellerId String?
 }
 
 model Post {

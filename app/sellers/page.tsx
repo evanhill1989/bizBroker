@@ -1,5 +1,5 @@
 import { Features } from "@/components/frontend/Features";
-import { BuyersHero } from "@/components/frontend/BuyersHero";
+import { Hero } from "@/components/frontend/SellersHero";
 import { Logos } from "@/components/frontend/Logos";
 
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
@@ -15,7 +15,7 @@ export default async function Home() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
-      <BuyersHero />
+      <Hero />
       <Logos />
       <Features />
     </div>
