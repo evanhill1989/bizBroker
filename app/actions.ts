@@ -139,3 +139,36 @@ export async function DeleteListing(formData: FormData) {
 
   return redirect(`/dashboard/sites`);
 }
+
+export async function CompleteOnboardingAction(formData: FormData) {
+  const user = await requireUser();
+
+  const preferences = formData.get("preferences") as string;
+
+  // Update the user in the database
+  await prisma.user.update({
+    where: { id: user.id },
+    data: {
+      onboardingCompleted: true,
+      buyerProfile:
+        preferences === "buying" || preferences === "both"
+          ? {
+              create: { preferences: { preferences: preferences } },
+            }
+          : undefined,
+      sellerProfile:
+        preferences === "selling" || preferences === "both"
+          ? { create: {} }
+          : undefined,
+    },
+  });
+
+  // Redirect to the appropriate dashboard
+  if (preferences === "buying") {
+    return redirect("/buyer/dashboard");
+  } else if (preferences === "selling") {
+    return redirect("/seller/dashboard");
+  } else {
+    return redirect("/dashboard"); // Handle 'both' or a fallback route
+  }
+}

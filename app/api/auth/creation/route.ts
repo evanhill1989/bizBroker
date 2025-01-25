@@ -9,9 +9,25 @@ export async function GET() {
     throw new Error("User not found");
   }
 
-  let dbUser = await prisma.user.findUnique({
+  // Define the union type for dbUser
+  type DbUser =
+    | (Awaited<ReturnType<typeof prisma.user.findUnique>> & {
+        buyerProfile?: Awaited<
+          ReturnType<typeof prisma.buyer.findUnique>
+        > | null;
+        sellerProfile?: Awaited<
+          ReturnType<typeof prisma.seller.findUnique>
+        > | null;
+      })
+    | null;
+
+  let dbUser: DbUser = await prisma.user.findUnique({
     where: {
       id: user.id,
+    },
+    include: {
+      sellerProfile: true,
+      buyerProfile: true,
     },
   });
 
@@ -24,13 +40,24 @@ export async function GET() {
         email: user.email ?? "",
         profileImage:
           user.picture ?? `https://avatar.vercel.sh/${user.given_name}`,
+        onboardingCompleted: false,
       },
     });
+
+    return NextResponse.redirect("http://localhost:3000/onboarding"); // Redirect to onboarding
   }
 
-  return NextResponse.redirect(
-    process.env.NODE_ENV === "production"
-      ? "https://bizlists.vercel.app/dashboard"
-      : "http://localhost:3000/dashboard"
-  );
+  if (!dbUser.onboardingCompleted) {
+    return NextResponse.redirect("/onboarding"); // Redirect to onboarding if incomplete
+  }
+
+  // Redirect to the correct dashboard
+  if (dbUser.buyerProfile) {
+    return NextResponse.redirect("/buyer/dashboard");
+  } else if (dbUser.sellerProfile) {
+    return NextResponse.redirect("/seller/dashboard");
+  }
+
+  // Fallback to onboarding if no profiles exist
+  return NextResponse.redirect("/onboarding");
 }

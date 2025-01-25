@@ -21,7 +21,8 @@ model User {
   lastName     String
   profileImage String
 
-  createdAt DateTime @default(now())
+  createdAt           DateTime @default(now())
+  onboardingCompleted Boolean
 
   // Relationships
   buyerProfile  Buyer?    @relation("BuyerProfile")
