@@ -140,35 +140,33 @@ export async function DeleteListing(formData: FormData) {
   return redirect(`/dashboard/sites`);
 }
 
-export async function CompleteOnboardingAction(formData: FormData) {
+export async function CreateBuyerAction(formData: FormData) {
   const user = await requireUser();
 
   const preferences = formData.get("preferences") as string;
 
+  //Will add validation later
+  // const submission = parseWithZod(formData, {
+  //   schema: PostSchema,
+  // });
+
   // Update the user in the database
+
+  const data = await prisma.buyer.create({
+    data: {
+      preferences: preferences,
+      userId: user.id,
+    },
+  });
+
   await prisma.user.update({
     where: { id: user.id },
     data: {
       onboardingCompleted: true,
-      buyerProfile:
-        preferences === "buying" || preferences === "both"
-          ? {
-              create: { preferences: { preferences: preferences } },
-            }
-          : undefined,
-      sellerProfile:
-        preferences === "selling" || preferences === "both"
-          ? { create: {} }
-          : undefined,
     },
   });
 
   // Redirect to the appropriate dashboard
-  if (preferences === "buying") {
-    return redirect("/buyer/dashboard");
-  } else if (preferences === "selling") {
-    return redirect("/seller/dashboard");
-  } else {
-    return redirect("/dashboard"); // Handle 'both' or a fallback route
-  }
+  void data; // Prevents TS unused variable error
+  return redirect("/buyer/dashboard");
 }

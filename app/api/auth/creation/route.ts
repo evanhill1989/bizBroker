@@ -5,34 +5,28 @@ import { NextResponse } from "next/server";
 export async function GET() {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
-  if (!user || user === null || !user.id) {
-    throw new Error("User not found");
-  }
+  console.log(user, "user in GET");
 
-  // Define the union type for dbUser
-  type DbUser =
-    | (Awaited<ReturnType<typeof prisma.user.findUnique>> & {
-        buyerProfile?: Awaited<
-          ReturnType<typeof prisma.buyer.findUnique>
-        > | null;
-        sellerProfile?: Awaited<
-          ReturnType<typeof prisma.seller.findUnique>
-        > | null;
-      })
-    | null;
-
-  let dbUser: DbUser = await prisma.user.findUnique({
+  const dbUser = await prisma.user.findUnique({
     where: {
       id: user.id,
     },
-    include: {
-      sellerProfile: true,
-      buyerProfile: true,
+  });
+
+  const onboardedUser = await prisma.user.findUnique({
+    where: {
+      id: user.id,
+      onboardingCompleted: true,
     },
   });
 
   if (!dbUser) {
-    dbUser = await prisma.user.create({
+    console.log(
+      "User not found in database, creating new user if(!dbUser) block"
+    );
+    // Only create a new user if the user truly doesn't exist
+
+    const newUser = await prisma.user.create({
       data: {
         id: user.id,
         firstName: user.given_name ?? "",
@@ -44,20 +38,11 @@ export async function GET() {
       },
     });
 
-    return NextResponse.redirect("http://localhost:3000/onboarding"); // Redirect to onboarding
+    console.log("New user created:", newUser);
+    return NextResponse.redirect("http://localhost:3000/onboarding");
+  } else if (onboardedUser) {
+    return NextResponse.redirect("http://localhost:3000/dashboard"); // Redirect to onboarding if incomplete
+  } else {
+    return NextResponse.redirect("http://localhost:3000/onboarding");
   }
-
-  if (!dbUser.onboardingCompleted) {
-    return NextResponse.redirect("/onboarding"); // Redirect to onboarding if incomplete
-  }
-
-  // Redirect to the correct dashboard
-  if (dbUser.buyerProfile) {
-    return NextResponse.redirect("/buyer/dashboard");
-  } else if (dbUser.sellerProfile) {
-    return NextResponse.redirect("/seller/dashboard");
-  }
-
-  // Fallback to onboarding if no profiles exist
-  return NextResponse.redirect("/onboarding");
 }

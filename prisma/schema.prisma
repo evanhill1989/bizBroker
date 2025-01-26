@@ -15,14 +15,14 @@ datasource db {
 }
 
 model User {
-  id           String @id @unique
-  email        String @unique
-  firstName    String
-  lastName     String
-  profileImage String
+  id           String  @id @unique
+  email        String  @unique
+  firstName    String?
+  lastName     String?
+  profileImage String?
 
   createdAt           DateTime @default(now())
-  onboardingCompleted Boolean
+  onboardingCompleted Boolean  @default(false)
 
   // Relationships
   buyerProfile  Buyer?    @relation("BuyerProfile")
