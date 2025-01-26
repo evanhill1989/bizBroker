@@ -34,13 +34,14 @@ export async function GET() {
         email: user.email ?? "",
         profileImage:
           user.picture ?? `https://avatar.vercel.sh/${user.given_name}`,
-        onboardingCompleted: false,
+        // onboardingCompleted: false,
       },
     });
 
     console.log("New user created:", newUser);
     return NextResponse.redirect("http://localhost:3000/onboarding");
   } else if (onboardedUser) {
+    console.log("User already onboarded, redirecting to dashboard");
     return NextResponse.redirect("http://localhost:3000/dashboard"); // Redirect to onboarding if incomplete
   } else {
     return NextResponse.redirect("http://localhost:3000/onboarding");

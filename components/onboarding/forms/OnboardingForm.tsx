@@ -5,18 +5,6 @@ import { CreateBuyerAction } from "@/app/actions";
 import { SubmitButton } from "@/components/dashboard/SubmitButtons";
 
 export function BuyerOnboardingForm() {
-  // const [isPending, startTransition] = useTransition();
-
-  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   const formData = new FormData(e.currentTarget);
-
-  //   // Call the server action
-  //   startTransition(() => {
-  //     void CompleteOnboardingAction(formData);
-  //   });
-  // };
-
   return (
     <form
       action={CreateBuyerAction}
