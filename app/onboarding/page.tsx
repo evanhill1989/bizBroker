@@ -1,4 +1,4 @@
-import { OnboardingForm } from "@/components/onboarding/forms/OnboardingForm";
+// import { OnboardingForm } from "@/components/onboarding/forms/BuyerOnboardingForm";
 
 export default function OnboardingPage() {
   return (
@@ -7,7 +7,7 @@ export default function OnboardingPage() {
       <p className="text-gray-600 mb-8">
         Complete the steps below to get started!
       </p>
-      <OnboardingForm />
+      {/* <OnboardingForm /> */}
     </main>
   );
 }

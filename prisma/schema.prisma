@@ -32,15 +32,23 @@ model User {
 }
 
 model Buyer {
-  id          String    @id @unique @default(uuid())
-  preferences Json? // Example: Search filters or saved searches
+  id          String       @id @unique @default(uuid())
+  preferences Preference[] // Array of embedded preference objects
   inquiries   Inquiry[]
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 
   // Back-reference to User
   user   User   @relation("BuyerProfile", fields: [userId], references: [id])
   userId String @unique
+}
+
+model Preference {
+  id      String @id @default(uuid())
+  type    String
+  value   String
+  buyer   Buyer  @relation(fields: [buyerId], references: [id])
+  buyerId String
 }
 
 model Seller {

@@ -170,3 +170,40 @@ export async function CreateBuyerAction(formData: FormData) {
   void data; // Prevents TS unused variable error
   return redirect("/buyer/dashboard");
 }
+
+export async function CreateBuyerScaleStepAction(formData: FormData) {
+  const user = await requireUser(); // Ensure the user is authenticated
+  console.log(user, "<<---------- USER in CreateBuyerScaleStepAction");
+  //Will add validation later
+  // const submission = parseWithZod(formData, {
+  //   schema: PostSchema,
+  // });
+
+  const newPreference = formData.get("preferences") as string;
+
+  const prevPreferences = await prisma.buyer.findUnique({
+    where: {
+      userId: user.id,
+    },
+    select: {
+      preferences: true,
+    },
+  });
+
+  console.log(prevPreferences, "<<-------- prevPrefernces from prisma call");
+
+  // Update the buyer's preferences in the database
+  const data = await prisma.preference.update({
+    where: {
+      userId: user.id,
+    },
+    data: {
+      preferences: {
+        scale: newPreference,
+      },
+    },
+  });
+
+  void data; // Prevents TS unused variable error
+  return redirect("/onboarding/buyers");
+}
