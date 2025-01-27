@@ -32,11 +32,12 @@ model User {
 }
 
 model Buyer {
-  id          String       @id @unique @default(uuid())
-  preferences Preference[] // Array of embedded preference objects
-  inquiries   Inquiry[]
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  id             String       @id @unique @default(uuid())
+  onboardingStep Int          @default(1) // Track current step
+  preferences    Preference[] // Array of embedded preference objects
+  inquiries      Inquiry[]
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
 
   // Back-reference to User
   user   User   @relation("BuyerProfile", fields: [userId], references: [id])

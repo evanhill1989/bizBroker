@@ -143,18 +143,13 @@ export async function DeleteListing(formData: FormData) {
 export async function CreateBuyerAction(formData: FormData) {
   const user = await requireUser();
 
-  const preferences = formData.get("preferences") as string;
-
   //Will add validation later
   // const submission = parseWithZod(formData, {
   //   schema: PostSchema,
   // });
 
-  // Update the user in the database
-
   const data = await prisma.buyer.create({
     data: {
-      preferences: preferences,
       userId: user.id,
     },
   });
@@ -166,44 +161,55 @@ export async function CreateBuyerAction(formData: FormData) {
     },
   });
 
-  // Redirect to the appropriate dashboard
-  void data; // Prevents TS unused variable error
+  void data;
   return redirect("/buyer/dashboard");
 }
 
-export async function CreateBuyerScaleStepAction(formData: FormData) {
-  const user = await requireUser(); // Ensure the user is authenticated
-  console.log(user, "<<---------- USER in CreateBuyerScaleStepAction");
-  //Will add validation later
-  // const submission = parseWithZod(formData, {
-  //   schema: PostSchema,
-  // });
+export async function CreateBuyerPreferenceAction(
+  formData: FormData,
+  preferenceType: string
+) {
+  const user = await requireUser();
+  const preferenceValue = formData.get("preferences") as string;
 
-  const newPreference = formData.get("preferences") as string;
+  if (!preferenceValue) {
+    throw new Error("Preference value is required.");
+  }
 
-  const prevPreferences = await prisma.buyer.findUnique({
+  const buyer = await prisma.buyer.findUnique({
     where: {
       userId: user.id,
-    },
-    select: {
-      preferences: true,
     },
   });
 
-  console.log(prevPreferences, "<<-------- prevPrefernces from prisma call");
+  if (!buyer) {
+    throw new Error("Buyer not found.");
+  }
 
-  // Update the buyer's preferences in the database
-  const data = await prisma.preference.update({
-    where: {
-      userId: user.id,
-    },
+  const newPreference = await prisma.preference.create({
     data: {
-      preferences: {
-        scale: newPreference,
+      type: preferenceType,
+      value: preferenceValue,
+      buyer: {
+        connect: { id: buyer.id },
       },
     },
   });
 
-  void data; // Prevents TS unused variable error
-  return redirect("/onboarding/buyers");
+  void newPreference;
+  const updatedBuyer = await prisma.buyer.update({
+    where: { id: buyer.id },
+    data: { onboardingStep: 2 }, // Example step (2 is for the Maturity form)
+  });
+
+  // Redirect to the next onboarding step dynamically
+  return redirect(`/onboarding/buyers/${updatedBuyer.onboardingStep}`);
+}
+
+export async function CreateBuyerScaleStepAction(formData: FormData) {
+  return CreateBuyerPreferenceAction(formData, "scale");
+}
+
+export async function CreateBuyerMaturityStepAction(formData: FormData) {
+  return CreateBuyerPreferenceAction(formData, "maturity");
 }
