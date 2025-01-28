@@ -177,16 +177,15 @@ export async function CreateBuyerPreferenceAction(
   }
 
   const buyer = await prisma.buyer.findUnique({
-    where: {
-      userId: user.id,
-    },
+    where: { userId: user.id },
   });
 
   if (!buyer) {
     throw new Error("Buyer not found.");
   }
 
-  const newPreference = await prisma.preference.create({
+  // Create preference
+  await prisma.preference.create({
     data: {
       type: preferenceType,
       value: preferenceValue,
@@ -196,20 +195,24 @@ export async function CreateBuyerPreferenceAction(
     },
   });
 
-  void newPreference;
+  // Increment onboarding step
   const updatedBuyer = await prisma.buyer.update({
     where: { id: buyer.id },
-    data: { onboardingStep: 2 }, // Example step (2 is for the Maturity form)
+    data: {
+      onboardingStep: { increment: 1 }, // Automatically increments step
+    },
   });
 
-  // Redirect to the next onboarding step dynamically
+  // Redirect to the next step
   return redirect(`/onboarding/buyers/${updatedBuyer.onboardingStep}`);
 }
 
+// Action for Scale Step
 export async function CreateBuyerScaleStepAction(formData: FormData) {
   return CreateBuyerPreferenceAction(formData, "scale");
 }
 
+// Action for Maturity Step
 export async function CreateBuyerMaturityStepAction(formData: FormData) {
   return CreateBuyerPreferenceAction(formData, "maturity");
 }
