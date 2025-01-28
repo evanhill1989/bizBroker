@@ -216,3 +216,33 @@ export async function CreateBuyerScaleStepAction(formData: FormData) {
 export async function CreateBuyerMaturityStepAction(formData: FormData) {
   return CreateBuyerPreferenceAction(formData, "maturity");
 }
+
+export async function CreateBuyerIndustryModelInfraStepAction(
+  formData: FormData
+) {
+  return CreateBuyerPreferenceAction(formData, "industryModelInfra");
+}
+
+export async function CreateBuyerLocationStepAction(formData: FormData) {
+  return CreateBuyerPreferenceAction(formData, "location");
+}
+
+export async function CreateBuyerPriceRangeStepAction(formData: FormData) {
+  return CreateBuyerPreferenceAction(formData, "priceRange");
+}
+
+export async function CreateBuyerRevenueMultipleStepAction(formData: FormData) {
+  return CreateBuyerPreferenceAction(formData, "revenueMultiple");
+}
+
+export async function CreateBuyerProfitMultipleStepAction(formData: FormData) {
+  return CreateBuyerPreferenceAction(formData, "profitMultiple");
+}
+
+export async function CreateBuyerTrailingProfitStepAction(formData: FormData) {
+  return CreateBuyerPreferenceAction(formData, "trailingProfit");
+}
+
+export async function CreateBuyerTrailingRevenueStepAction(formData: FormData) {
+  return CreateBuyerPreferenceAction(formData, "trailingRevenue");
+}
