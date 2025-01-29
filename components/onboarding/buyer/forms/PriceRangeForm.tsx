@@ -1,8 +1,28 @@
 import { PreferenceForm } from "./PreferenceForm";
 import { CreateBuyerPriceRangeStepAction } from "@/app/actions";
+import { prisma } from "@/lib/prisma";
 
-export function PriceRangeForm() {
+async function getListingPrices() {
+  const listings = await prisma.listing.findMany({
+    select: {
+      price: true,
+    },
+  });
+
+  const prices = listings.map(
+    (listing) => Number(listing.price.replace(/[^0-9.]/g, "")) // Remove non-numeric characters like "$"
+  );
+
+  console.log(prices); // Debugging
+  return prices;
+}
+
+export async function PriceRangeForm() {
   // charts
+  const pricesArr = await getListingPrices();
+
+  console.log(pricesArr);
+
   return (
     <PreferenceForm
       action={CreateBuyerPriceRangeStepAction}
