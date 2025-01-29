@@ -1,23 +1,24 @@
 "use client";
 
 import { SubmitButton } from "@/components/dashboard/SubmitButtons";
+import Chart from "./charts/Chart";
 
 interface PreferenceFormProps {
   action: (formData: FormData) => Promise<void>;
   label: string;
   options: { value: string; label: string }[];
+  chartData?: number[];
 }
 
 export function PreferenceForm({
   action,
   label,
   options,
+  chartData,
 }: PreferenceFormProps) {
   return (
-    <form
-      action={action}
-      className="flex flex-col gap-4 w-full max-w-md mx-auto"
-    >
+    <form action={action} className="flex flex-col gap-4 w-full mx-auto">
+      {chartData && <Chart />}
       <label htmlFor="preferences" className="font-medium">
         {label}
       </label>
