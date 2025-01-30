@@ -1,17 +1,4 @@
-export default function Chart() {
-  const chartData = [
-    { priceRange: "100K", price: 6 },
-    { priceRange: "200K", price: 6 },
-    { priceRange: "300K", price: 8 },
-    { priceRange: "400K", price: 3 },
-    { priceRange: "500K", price: 3 },
-    { priceRange: "600K", price: 2 },
-    { priceRange: "700K", price: 2 },
-    { priceRange: "800K", price: 5 },
-    { priceRange: "900K", price: 3 },
-    { priceRange: "1000K", price: 7 },
-  ];
-
+export default function Chart(chartData) {
   return (
     <div className="w-full flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full  p-6 bg-white shadow-md rounded-lg">

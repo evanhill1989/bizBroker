@@ -63,6 +63,19 @@ export async function PriceRangeForm() {
 
   const chartObject = createObjectThresholds(priceRangeCounts);
 
+  const chartData = [
+    { priceRange: "100K", price: 6 },
+    { priceRange: "200K", price: 6 },
+    { priceRange: "300K", price: 8 },
+    { priceRange: "400K", price: 3 },
+    { priceRange: "500K", price: 3 },
+    { priceRange: "600K", price: 2 },
+    { priceRange: "700K", price: 2 },
+    { priceRange: "800K", price: 5 },
+    { priceRange: "900K", price: 3 },
+    { priceRange: "1000K", price: 1 },
+  ];
+
   return (
     <PreferenceForm
       action={CreateBuyerPriceRangeStepAction}
@@ -72,7 +85,7 @@ export async function PriceRangeForm() {
         { value: "medium", label: "Medium - 10-100 employees" },
         { value: "large", label: "Large - More than 100 employees" },
       ]}
-      chartData={chartObject}
+      chartData={chartData}
     />
   );
 }

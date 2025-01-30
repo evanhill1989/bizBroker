@@ -18,7 +18,7 @@ export function PreferenceForm({
 }: PreferenceFormProps) {
   return (
     <form action={action} className="flex flex-col gap-4 w-full mx-auto">
-      {chartData && <Chart />}
+      {chartData && <Chart chartData={chartData} />}
       <label htmlFor="preferences" className="font-medium">
         {label}
       </label>
