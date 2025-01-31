@@ -1,19 +1,20 @@
+import { createChartData, getProfitMultiples } from "@/app/utils/chartUtils";
 import { PreferenceForm } from "./PreferenceForm";
 import { CreateBuyerProfitMultipleStepAction } from "@/app/actions";
 
-export function ProfitMultipleForm() {
+export async function ProfitMultipleForm() {
+  const profitMultipleArr = await getProfitMultiples();
+
+  const chartData = createChartData(profitMultipleArr, 1, 10);
+  const chartRanges = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+
   return (
     <PreferenceForm
       action={CreateBuyerProfitMultipleStepAction}
       label="What ProfitMultiple business are you interested in?"
-      options={[
-        {
-          value: "ProfitMultiple charts",
-          label: "Small - Less than 10 employees",
-        },
-        { value: "medium", label: "Medium - 10-100 employees" },
-        { value: "large", label: "Large - More than 100 employees" },
-      ]}
+      chartData={chartData}
+      chartName="Profit Multiples"
+      chartRanges={chartRanges}
     />
   );
 }

@@ -1,19 +1,25 @@
 import { PreferenceForm } from "./PreferenceForm";
 import { CreateBuyerRevenueMultipleStepAction } from "@/app/actions";
+import { createChartData, getRevenueMultiples } from "@/app/utils/chartUtils";
 
-export function RevenueMultipleForm() {
+export async function RevenueMultipleForm() {
+  const revMultiplesArr = await getRevenueMultiples();
+
+  const chartData = createChartData(revMultiplesArr, 1, 10);
+  const chartRanges = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+
+  console.log(
+    chartData,
+    "<!------------------chartObject in RevenueMultipleForm"
+  );
+
   return (
     <PreferenceForm
       action={CreateBuyerRevenueMultipleStepAction}
       label="What RevenueMultiple business are you interested in?"
-      options={[
-        {
-          value: "RevenueMultipleCharts",
-          label: "Small - Less than 10 employees",
-        },
-        { value: "medium", label: "Medium - 10-100 employees" },
-        { value: "large", label: "Large - More than 100 employees" },
-      ]}
+      chartData={chartData}
+      chartName="Revenue Multiple"
+      chartRanges={chartRanges}
     />
   );
 }
