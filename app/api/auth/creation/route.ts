@@ -20,6 +20,15 @@ export async function GET() {
     },
   });
 
+  const buyer = await prisma.buyer.findUnique({
+    where: {
+      userId: user.id,
+    },
+    select: {
+      onboardingStep: true,
+    },
+  });
+
   if (!dbUser) {
     console.log(
       "User not found in database, creating new user if(!dbUser) block"
@@ -40,6 +49,12 @@ export async function GET() {
 
     console.log("New user created:", newUser);
     return NextResponse.redirect("http://localhost:3000/onboarding");
+  } else if (!onboardedUser && buyer) {
+    // this conditional just very specifically tests/satisfies my current state.
+    console.log("User not onboarded, redirecting to onboarding");
+    return NextResponse.redirect(
+      `http://localhost:3000/onboarding/buyers/${buyer.onboardingStep}`
+    );
   } else if (onboardedUser) {
     console.log("User already onboarded, redirecting to dashboard");
     return NextResponse.redirect("http://localhost:3000/dashboard"); // Redirect to onboarding if incomplete
