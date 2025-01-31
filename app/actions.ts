@@ -184,7 +184,6 @@ export async function CreateBuyerPreferenceAction(
     throw new Error("Buyer not found.");
   }
 
-  // Create preference
   await prisma.preference.create({
     data: {
       type: preferenceType,
@@ -195,15 +194,51 @@ export async function CreateBuyerPreferenceAction(
     },
   });
 
-  // Increment onboarding step
   const updatedBuyer = await prisma.buyer.update({
     where: { id: buyer.id },
     data: {
-      onboardingStep: { increment: 1 }, // Automatically increments step
+      onboardingStep: { increment: 1 },
     },
   });
 
-  // Redirect to the next step
+  return redirect(`/onboarding/buyers/${updatedBuyer.onboardingStep}`);
+}
+
+export async function createBuyerMinMaxAction(
+  formData: FormData,
+  preferenceType: string
+) {
+  const user = await requireUser();
+  const min = formData.get("minValue") as string;
+  const max = formData.get("maxValue") as string;
+  console.log(min, max, "<--------!!!!  min and max");
+  const preferenceValue = `${min}-${max}`;
+
+  const buyer = await prisma.buyer.findUnique({
+    where: { userId: user.id },
+  });
+
+  if (!buyer) {
+    throw new Error("Buyer not found.");
+  }
+
+  await prisma.preference.create({
+    data: {
+      type: preferenceType,
+      value: preferenceValue,
+      buyer: {
+        connect: { id: buyer.id },
+      },
+    },
+  });
+
+  const updatedBuyer = await prisma.buyer.update({
+    where: { id: buyer.id },
+    data: {
+      onboardingStep: { increment: 1 },
+    },
+  });
+
   return redirect(`/onboarding/buyers/${updatedBuyer.onboardingStep}`);
 }
 
@@ -228,7 +263,7 @@ export async function CreateBuyerLocationStepAction(formData: FormData) {
 }
 
 export async function CreateBuyerPriceRangeStepAction(formData: FormData) {
-  return CreateBuyerPreferenceAction(formData, "priceRange");
+  return createBuyerMinMaxAction(formData, "priceRange");
 }
 
 export async function CreateBuyerRevenueMultipleStepAction(formData: FormData) {
