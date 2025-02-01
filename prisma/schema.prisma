@@ -23,14 +23,15 @@ model User {
 }
 
 model Buyer {
-  id             String       @id @unique @default(uuid())
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
-  userId         String       @unique
-  onboardingStep Int          @default(1)
-  user           User         @relation("BuyerProfile", fields: [userId], references: [id])
-  inquiries      Inquiry[]
-  preferences    Preference[]
+  id                String       @id @unique @default(uuid())
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+  userId            String       @unique
+  onboardingStep    Int          @default(1)
+  onboardingSkipped Boolean      @default(false)
+  user              User         @relation("BuyerProfile", fields: [userId], references: [id])
+  inquiries         Inquiry[]
+  preferences       Preference[]
 }
 
 model Inquiry {

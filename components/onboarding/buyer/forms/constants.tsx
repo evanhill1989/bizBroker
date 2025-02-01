@@ -42,16 +42,17 @@ export const onboardingSteps = [
   },
   {
     id: 4,
-    title: "Price Range",
-    description: "Choose a price range",
-    cardContent: <PriceRangeForm />,
-  },
-  {
-    id: 5,
     title: "Business Model",
     description: "Choose a business model",
     cardContent: <IndustryModelInfraForm />,
   },
+  {
+    id: 5,
+    title: "Price Range",
+    description: "Choose a price range",
+    cardContent: <PriceRangeForm />,
+  },
+
   {
     id: 6,
     title: "Revenue Multiple",

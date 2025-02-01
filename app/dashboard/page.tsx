@@ -48,8 +48,8 @@ async function getData(userId: string) {
   };
 }
 export default async function DashboardIndexPage({}) {
-  const user = await requireUser();
-  const { listings, articles } = await getData(user.id);
+  // const user = await requireUser() || null;
+  const { listings, articles } = { listings: [], articles: [] };
   return (
     <div>
       <h1 className="text-2xl font-semibold mb-5">Your Listings</h1>

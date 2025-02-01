@@ -204,7 +204,7 @@ export async function CreateBuyerPreferenceAction(
   return redirect(`/onboarding/buyers/${updatedBuyer.onboardingStep}`);
 }
 
-export async function createBuyerMinMaxAction(
+export async function CreateBuyerMinMaxAction(
   formData: FormData,
   preferenceType: string
 ) {
@@ -263,15 +263,15 @@ export async function CreateBuyerLocationStepAction(formData: FormData) {
 }
 
 export async function CreateBuyerPriceRangeStepAction(formData: FormData) {
-  return createBuyerMinMaxAction(formData, "priceRange");
+  return CreateBuyerMinMaxAction(formData, "priceRange");
 }
 
 export async function CreateBuyerRevenueMultipleStepAction(formData: FormData) {
-  return CreateBuyerPreferenceAction(formData, "revenueMultiple");
+  return CreateBuyerMinMaxAction(formData, "revenueMultiple");
 }
 
 export async function CreateBuyerProfitMultipleStepAction(formData: FormData) {
-  return CreateBuyerPreferenceAction(formData, "profitMultiple");
+  return CreateBuyerMinMaxAction(formData, "profitMultiple");
 }
 
 export async function CreateBuyerTrailingProfitStepAction(formData: FormData) {
