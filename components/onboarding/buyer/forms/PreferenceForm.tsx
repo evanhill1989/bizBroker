@@ -73,6 +73,12 @@ export function PreferenceForm({
               </option>
             ))}
           </select>
+          <div className="flex justify-between w-full">
+            <button className="border border-gray-300 rounded-md p-2">
+              Back
+            </button>
+            <SubmitButton text="Next" />
+          </div>
         </>
       )}
     </form>

@@ -239,7 +239,19 @@ export async function CreateBuyerMinMaxAction(
     },
   });
 
-  return redirect(`/onboarding/buyers/${updatedBuyer.onboardingStep}`);
+  if (updatedBuyer.onboardingStep === 11) {
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        onboardingCompleted: true,
+      },
+    });
+  }
+  if (updatedBuyer.onboardingStep < 11) {
+    return redirect(`/onboarding/buyers/${updatedBuyer.onboardingStep}`);
+  } else {
+    return redirect("/buyer/dashboard");
+  }
 }
 
 // Action for Scale Step
@@ -275,9 +287,9 @@ export async function CreateBuyerProfitMultipleStepAction(formData: FormData) {
 }
 
 export async function CreateBuyerTrailingProfitStepAction(formData: FormData) {
-  return CreateBuyerPreferenceAction(formData, "trailingProfit");
+  return CreateBuyerMinMaxAction(formData, "trailingProfit");
 }
 
 export async function CreateBuyerTrailingRevenueStepAction(formData: FormData) {
-  return CreateBuyerPreferenceAction(formData, "trailingRevenue");
+  return CreateBuyerMinMaxAction(formData, "trailingRevenue");
 }

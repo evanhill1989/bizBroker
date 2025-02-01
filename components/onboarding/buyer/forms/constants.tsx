@@ -85,4 +85,20 @@ export const onboardingSteps = [
     description: "Choose a location",
     cardContent: <LocationForm />,
   },
+  {
+    id: 11,
+    title: "Thanks",
+    description: "Working on your results...",
+    cardContent: (
+      <>
+        <div className="flex gap-4">
+          <Goal className="h-12 w-12" />
+          <div>
+            <h3 className="text-lg font-semibold">Thanks for your help</h3>
+            <p>Working on your results...</p>
+          </div>
+        </div>
+      </>
+    ),
+  },
 ];
