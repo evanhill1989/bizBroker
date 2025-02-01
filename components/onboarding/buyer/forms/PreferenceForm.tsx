@@ -2,6 +2,9 @@
 
 import { SubmitButton } from "@/components/dashboard/SubmitButtons";
 import Chart from "./charts/Chart";
+import { useForm } from "@conform-to/react";
+import { parseWithZod } from "@conform-to/zod";
+import { PostSchema, priceRangeFormSchema } from "@/app/utils/zodSchemas";
 
 interface PreferenceFormProps {
   action: (formData: FormData) => Promise<void>;
@@ -10,6 +13,7 @@ interface PreferenceFormProps {
   chartData?: { count: number }[];
   chartName?: string;
   chartMax?: string;
+  zodSchema?: any;
 }
 
 export function PreferenceForm({
@@ -20,6 +24,17 @@ export function PreferenceForm({
   chartName,
   chartMax,
 }: PreferenceFormProps) {
+  const [form, fields] = useForm({
+    lastResult,
+    onValidate({ formData }) {
+      return parseWithZod(formData, {
+        schema: priceRangeFormSchema,
+      });
+    },
+    shouldValidate: "onBlur",
+    shouldRevalidate: "onInput",
+  });
+
   return (
     <form action={action} className="flex flex-col gap-4 w-full mx-auto">
       {chartData && chartName && chartMax && (

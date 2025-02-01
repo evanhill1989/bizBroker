@@ -15,6 +15,11 @@ export const PostSchema = z.object({
   articleContent: z.string().min(1).max(5000),
 });
 
+export const priceRangeFormSchema = z.object({
+  minValue: z.string().min(0).max(1000000),
+  maxValue: z.string().min(0).max(1000000).optional(),
+});
+
 export function ListingCreationSchema(options?: {
   isSubdirectoryUnique: () => Promise<boolean>;
 }) {
