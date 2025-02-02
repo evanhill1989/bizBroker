@@ -48,7 +48,9 @@ export async function GET() {
     });
 
     console.log("New user created:", newUser);
-    return NextResponse.redirect("http://localhost:3000/onboarding");
+    return NextResponse.redirect(
+      `http://localhost:3000/onboarding/buyers/${buyer.onboardingStep}`
+    );
   } else if (!onboardedUser && buyer) {
     // this conditional just very specifically tests/satisfies my current state.
     console.log("User not onboarded, redirecting to onboarding");

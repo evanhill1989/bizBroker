@@ -15,10 +15,20 @@ export const PostSchema = z.object({
   articleContent: z.string().min(1).max(5000),
 });
 
-export const priceRangeFormSchema = z.object({
+export const BuyerSchema = z.object({});
+
+export const PriceRangeFormSchema = z.object({
   minValue: z.string().min(0).max(1000000),
   maxValue: z.string().min(0).max(1000000).optional(),
 });
+
+export const RevenueMultipleFormSchema = z.object({});
+
+export const ProfitMultipleFormSchema = z.object({});
+
+export const TrailingProfitFormSchema = z.object({});
+
+export const TrailingRevenueFormSchema = z.object({});
 
 export function ListingCreationSchema(options?: {
   isSubdirectoryUnique: () => Promise<boolean>;

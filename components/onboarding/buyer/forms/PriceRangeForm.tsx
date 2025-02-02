@@ -1,6 +1,7 @@
 import { PreferenceForm } from "./PreferenceForm";
 import { CreateBuyerPriceRangeStepAction } from "@/app/actions";
 import { getListingPrices, createChartData } from "@/app/utils/chartUtils";
+import { PriceRangeFormSchema } from "@/app/utils/zodSchemas";
 
 export async function PriceRangeForm() {
   const pricesArr = await getListingPrices();
@@ -16,6 +17,8 @@ export async function PriceRangeForm() {
       chartData={chartData}
       chartName="Price Range"
       chartMax="$500k"
+      formType="priceRange"
+      // zodSchema={PriceRangeFormSchema}
     />
   );
 }

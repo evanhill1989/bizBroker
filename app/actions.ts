@@ -3,9 +3,19 @@
 
 import { redirect } from "next/navigation";
 import { parseWithZod } from "@conform-to/zod";
-import { ListingCreationSchema, PostSchema } from "./utils/zodSchemas";
+import {
+  ListingCreationSchema,
+  PostSchema,
+  PriceRangeFormSchema,
+  priceRangeFormSchema,
+  ProfitMultipleFormSchema,
+  RevenueMultipleFormSchema,
+  TrailingProfitFormSchema,
+  TrailingRevenueFormSchema,
+} from "./utils/zodSchemas";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "./utils/requireUser";
+import { RevenueMultipleForm } from "@/components/onboarding/buyer/forms/RevenueMultipleForm";
 
 export async function CreateListingAction(prevState: any, formData: FormData) {
   const user = await requireUser();
@@ -143,10 +153,11 @@ export async function DeleteListing(formData: FormData) {
 export async function CreateBuyerAction(formData: FormData) {
   const user = await requireUser();
 
-  //Will add validation later
-  // const submission = parseWithZod(formData, {
-  //   schema: PostSchema,
-  // });
+  const submission = parseWithZod(formData, {
+    schema: BuyerSchema,
+  });
+
+  if (submission.status !== "success") return submission.reply();
 
   const data = await prisma.buyer.create({
     data: {
@@ -170,6 +181,13 @@ export async function CreateBuyerPreferenceAction(
   preferenceType: string
 ) {
   const user = await requireUser();
+
+  const submission = parseWithZod(formData, {
+    schema: BuyerPreferenceSchema,
+  });
+
+  if (submission.status !== "success") return submission.reply();
+
   const preferenceValue = formData.get("preferences") as string;
 
   if (!preferenceValue) {
@@ -206,9 +224,17 @@ export async function CreateBuyerPreferenceAction(
 
 export async function CreateBuyerMinMaxAction(
   formData: FormData,
-  preferenceType: string
+  preferenceType: string,
+  zodSchema: z.ZodSchema<any>
 ) {
   const user = await requireUser();
+
+  const submission = parseWithZod(formData, {
+    schema: zodSchema,
+  });
+
+  if (submission.status !== "success") return submission.reply();
+
   const min = formData.get("minValue") as string;
   const max = formData.get("maxValue") as string;
   console.log(min, max, "<--------!!!!  min and max");
@@ -275,21 +301,37 @@ export async function CreateBuyerLocationStepAction(formData: FormData) {
 }
 
 export async function CreateBuyerPriceRangeStepAction(formData: FormData) {
-  return CreateBuyerMinMaxAction(formData, "priceRange");
+  return CreateBuyerMinMaxAction(formData, "priceRange", PriceRangeFormSchema);
 }
 
 export async function CreateBuyerRevenueMultipleStepAction(formData: FormData) {
-  return CreateBuyerMinMaxAction(formData, "revenueMultiple");
+  return CreateBuyerMinMaxAction(
+    formData,
+    "revenueMultiple",
+    RevenueMultipleFormSchema
+  );
 }
 
 export async function CreateBuyerProfitMultipleStepAction(formData: FormData) {
-  return CreateBuyerMinMaxAction(formData, "profitMultiple");
+  return CreateBuyerMinMaxAction(
+    formData,
+    "profitMultiple",
+    ProfitMultipleFormSchema
+  );
 }
 
 export async function CreateBuyerTrailingProfitStepAction(formData: FormData) {
-  return CreateBuyerMinMaxAction(formData, "trailingProfit");
+  return CreateBuyerMinMaxAction(
+    formData,
+    "trailingProfit",
+    TrailingProfitFormSchema
+  );
 }
 
 export async function CreateBuyerTrailingRevenueStepAction(formData: FormData) {
-  return CreateBuyerMinMaxAction(formData, "trailingRevenue");
+  return CreateBuyerMinMaxAction(
+    formData,
+    "trailingRevenue",
+    TrailingRevenueFormSchema
+  );
 }

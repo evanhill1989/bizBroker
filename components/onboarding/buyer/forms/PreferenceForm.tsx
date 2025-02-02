@@ -4,7 +4,22 @@ import { SubmitButton } from "@/components/dashboard/SubmitButtons";
 import Chart from "./charts/Chart";
 import { useForm } from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod";
-import { PostSchema, priceRangeFormSchema } from "@/app/utils/zodSchemas";
+import {
+  PriceRangeFormSchema,
+  ProfitMultipleFormSchema,
+  RevenueMultipleFormSchema,
+  TrailingProfitFormSchema,
+  TrailingRevenueFormSchema,
+} from "@/app/utils/zodSchemas";
+import { useActionState } from "react";
+
+const schemaMap: Record<string, any> = {
+  priceRange: PriceRangeFormSchema,
+  trailingProfit: TrailingProfitFormSchema,
+  trailingRevenue: TrailingRevenueFormSchema,
+  revenueMultiple: RevenueMultipleFormSchema,
+  profitMultiple: ProfitMultipleFormSchema,
+};
 
 interface PreferenceFormProps {
   action: (formData: FormData) => Promise<void>;
@@ -13,7 +28,8 @@ interface PreferenceFormProps {
   chartData?: { count: number }[];
   chartName?: string;
   chartMax?: string;
-  zodSchema?: any;
+
+  formType?: string;
 }
 
 export function PreferenceForm({
@@ -23,13 +39,16 @@ export function PreferenceForm({
   chartData,
   chartName,
   chartMax,
+  formType,
 }: PreferenceFormProps) {
+  const [lastResult] = useActionState(action, null);
+
+  const selectedSchema = schemaMap[formType];
+
   const [form, fields] = useForm({
     lastResult,
     onValidate({ formData }) {
-      return parseWithZod(formData, {
-        schema: priceRangeFormSchema,
-      });
+      return parseWithZod(formData, { schema: selectedSchema });
     },
     shouldValidate: "onBlur",
     shouldRevalidate: "onInput",

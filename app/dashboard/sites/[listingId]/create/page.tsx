@@ -42,7 +42,7 @@ export default function ArticleCreationRoute({
   const [lastResult, action] = useActionState(CreatePostAction, undefined);
   const [form, fields] = useForm({
     lastResult,
-    onValidate({ formData }) {
+    onValidate({ formData }: { formData: FormData }) {
       return parseWithZod(formData, {
         schema: PostSchema,
       });
