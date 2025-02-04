@@ -1,6 +1,6 @@
 import { createChartData, getTrailingProfit } from "@/app/utils/chartUtils";
 import { PreferenceForm } from "./PreferenceForm";
-import { CreateBuyerTrailingProfitStepAction } from "@/app/actions";
+import { CreateBuyerTrailingProfitStepAction } from "@/app/utils/actions/actions";
 
 export async function TrailingProfitForm() {
   const trailingProfitArr = await getTrailingProfit();
@@ -14,6 +14,7 @@ export async function TrailingProfitForm() {
       chartData={chartData}
       chartName="12 Month Trailing Profit"
       chartMax="$200k"
+      formType="trailingProfit"
     />
   );
 }

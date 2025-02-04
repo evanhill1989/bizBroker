@@ -61,7 +61,7 @@ export const onboardingSteps = [
   },
   {
     id: 7,
-    title: "Profite Multiple",
+    title: "Profit Multiple",
     description: "Choose a profit multiple range",
     cardContent: <ProfitMultipleForm />,
   },

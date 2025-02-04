@@ -1,4 +1,4 @@
-import { DeleteListing } from "@/app/actions";
+import { DeleteListing } from "@/app/utils/actions/actions";
 import { UploadImageForm } from "@/components/dashboard/forms/UploadImageForm";
 import { SubmitButton } from "@/components/dashboard/SubmitButtons";
 import { Button } from "@/components/ui/button";

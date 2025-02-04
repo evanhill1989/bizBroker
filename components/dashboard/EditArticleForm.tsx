@@ -24,7 +24,7 @@ import { JSONContent } from "novel";
 import { useForm } from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod";
 import { PostSchema } from "@/app/utils/zodSchemas";
-import { EditPostActions } from "@/app/actions";
+import { EditPostActions } from "@/app/utils/actions/actions";
 import slugify from "react-slugify";
 
 interface iAppProps {

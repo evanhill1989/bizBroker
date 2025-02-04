@@ -1,5 +1,5 @@
 import { PreferenceForm } from "./PreferenceForm";
-import { CreateBuyerRevenueMultipleStepAction } from "@/app/actions";
+import { CreateBuyerRevenueMultipleStepAction } from "@/app/utils/actions/actions";
 import { createChartData, getRevenueMultiples } from "@/app/utils/chartUtils";
 
 export async function RevenueMultipleForm() {
@@ -14,11 +14,12 @@ export async function RevenueMultipleForm() {
 
   return (
     <PreferenceForm
-      action={CreateBuyerRevenueMultipleStepAction}
+      formAction={CreateBuyerRevenueMultipleStepAction}
       label="What RevenueMultiple business are you interested in?"
       chartData={chartData}
       chartName="Revenue Multiple"
       chartMax="10"
+      formType="revenueMultiple"
     />
   );
 }

@@ -1,5 +1,5 @@
 import { PreferenceForm } from "./PreferenceForm";
-import { CreateBuyerLocationStepAction } from "@/app/actions";
+import { CreateBuyerLocationStepAction } from "@/app/utils/actions/actions";
 
 export function LocationForm() {
   return (

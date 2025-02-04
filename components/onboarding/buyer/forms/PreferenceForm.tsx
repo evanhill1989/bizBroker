@@ -11,9 +11,20 @@ import {
   TrailingProfitFormSchema,
   TrailingRevenueFormSchema,
 } from "@/app/utils/zodSchemas";
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
+import { z } from "zod";
+import {
+  CreateBuyerRevenueMultipleStepAction,
+  CreatePostAction,
+} from "@/app/utils/actions/actions";
+import { Input } from "@/components/ui/input";
+import { JSONContent } from "novel";
 
-const schemaMap: Record<string, any> = {
+type SchemaType = z.ZodObject<{
+  [key: string]: z.ZodSchema;
+}>;
+
+const schemaMap: Record<string, SchemaType> = {
   priceRange: PriceRangeFormSchema,
   trailingProfit: TrailingProfitFormSchema,
   trailingRevenue: TrailingRevenueFormSchema,
@@ -22,18 +33,18 @@ const schemaMap: Record<string, any> = {
 };
 
 interface PreferenceFormProps {
-  action: (formData: FormData) => Promise<void>;
+  formAction: (formData: FormData) => Promise<void>;
   label: string;
   options?: { value: string; label: string }[];
   chartData?: { count: number }[];
   chartName?: string;
   chartMax?: string;
 
-  formType?: string;
+  formType: string;
 }
 
 export function PreferenceForm({
-  action,
+  formAction,
   label,
   options,
   chartData,
@@ -41,21 +52,34 @@ export function PreferenceForm({
   chartMax,
   formType,
 }: PreferenceFormProps) {
-  const [lastResult] = useActionState(action, null);
+  const [lastResult, action] = useActionState(
+    CreateBuyerRevenueMultipleStepAction,
+    undefined
+  );
+  console.log("formType", formType);
 
-  const selectedSchema = schemaMap[formType];
+  const [minValue, setMinValue] = useState<JSONContent | string>("");
+  const [maxValue, setMaxValue] = useState<JSONContent | string>("");
+
+  // const selectedSchema = schemaMap[formType];
 
   const [form, fields] = useForm({
     lastResult,
-    onValidate({ formData }) {
-      return parseWithZod(formData, { schema: selectedSchema });
+    onValidate({ formData }: { formData: FormData }) {
+      return parseWithZod(formData, { schema: RevenueMultipleFormSchema });
     },
     shouldValidate: "onBlur",
     shouldRevalidate: "onInput",
   });
 
+  // maybe the issue is confusing my action with my action?
   return (
-    <form action={action} className="flex flex-col gap-4 w-full mx-auto">
+    <form
+      action={action}
+      id={form.id}
+      onSubmit={form.onSubmit}
+      className="flex flex-col gap-4 w-full mx-auto"
+    >
       {chartData && chartName && chartMax && (
         <>
           <Chart
@@ -64,22 +88,25 @@ export function PreferenceForm({
             chartMax={chartMax}
           />
           <div className="flex justify-between align-middle ">
-            <input
-              type="text"
-              name="minValue"
-              defaultValue={0}
-              className="border-2 border-gray-300 rounded-lg p-2  "
+            <Input
+              // key={fields.title.key}
+              name="maxValue"
+              defaultValue="0"
+              onChange={(e) => setMaxValue(e.target.value)}
             />
             <div className="flex flex-col justify-between">
               <div></div>
               <div className="h-1 bg-gray-300 w-8 rounded-sm"></div>
               <div></div>
             </div>
-            <input
-              type="text"
+            <Input
+              // key={fields.title.key}
               name="maxValue"
               defaultValue={chartMax}
-              className=" border-2 border-slate-300 rounded-lg p-2 "
+              onChange={(e) => {
+                console.log(e.target.value);
+                setMaxValue(e.target.value);
+              }}
             />
           </div>
           <div className="flex justify-between w-full">

@@ -1,5 +1,5 @@
 import { PreferenceForm } from "./PreferenceForm";
-import { CreateBuyerPriceRangeStepAction } from "@/app/actions";
+import { CreateBuyerPriceRangeStepAction } from "@/app/utils/actions/actions";
 import { getListingPrices, createChartData } from "@/app/utils/chartUtils";
 import { PriceRangeFormSchema } from "@/app/utils/zodSchemas";
 
@@ -12,7 +12,7 @@ export async function PriceRangeForm() {
 
   return (
     <PreferenceForm
-      action={CreateBuyerPriceRangeStepAction}
+      formAction={CreateBuyerPriceRangeStepAction}
       label="What is your ideal price range?"
       chartData={chartData}
       chartName="Price Range"

@@ -1,5 +1,5 @@
 import { PreferenceForm } from "./PreferenceForm";
-import { CreateBuyerScaleStepAction } from "@/app/actions";
+import { CreateBuyerScaleStepAction } from "@/app/utils/actions/actions";
 
 export function ScaleForm() {
   return (

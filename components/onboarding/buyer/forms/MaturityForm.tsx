@@ -1,5 +1,5 @@
 import { PreferenceForm } from "./PreferenceForm";
-import { CreateBuyerMaturityStepAction } from "@/app/actions";
+import { CreateBuyerMaturityStepAction } from "@/app/utils/actions/actions";
 
 export function MaturityForm() {
   return (

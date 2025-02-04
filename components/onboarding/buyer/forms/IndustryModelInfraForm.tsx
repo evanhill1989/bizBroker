@@ -1,5 +1,5 @@
 import { PreferenceForm } from "./PreferenceForm";
-import { CreateBuyerIndustryModelInfraStepAction } from "@/app/actions";
+import { CreateBuyerIndustryModelInfraStepAction } from "@/app/utils/actions/actions";
 
 export function IndustryModelInfraForm() {
   return (

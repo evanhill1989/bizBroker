@@ -1,0 +1,6 @@
+02/04/25
+First major backtrack. I had been handling the different onboarding views by pushing my data 100%dynamically into my route. It felt like this was the way I was supposed to do things, and maybe on a much larger scale it would be worth the complexity, but there are just too many interfaces to seal up with my beginner understanding of TS .
+
+So I just need dedicated routes for the 9-10 steps instead of all of this machinery that makes it hard to figure out where the central logic of my component really is. Is it in the action, the form, the form wrapper? Other micropaths too...
+
+ALready realizing this will get me down to manage 2-3 straightforward forms that will have an obvious connection with the route.

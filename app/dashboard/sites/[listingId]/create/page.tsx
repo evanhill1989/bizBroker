@@ -21,7 +21,7 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import TailwindEditor from "@/components/dashboard/EditorWrapper";
 import { JSONContent } from "novel";
-import { CreatePostAction } from "@/app/actions";
+import { CreatePostAction } from "@/app/utils/actions/actions";
 import { parseWithZod } from "@conform-to/zod";
 import { PostSchema } from "@/app/utils/zodSchemas";
 import { useForm } from "@conform-to/react";

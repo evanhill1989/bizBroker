@@ -1,7 +1,7 @@
 "use client";
 
 // import { useTransition } from "react";
-import { CreateBuyerAction } from "@/app/actions";
+import { CreateBuyerAction } from "@/app/utils/actions/onboardingActions";
 import { SubmitButton } from "@/components/dashboard/SubmitButtons";
 
 export function BuyerOnboardingForm() {

@@ -13,7 +13,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { SubmitButton } from "../SubmitButtons";
 import { useToast } from "@/hooks/use-toast";
-import { UpdateImage } from "@/app/actions";
+import { UpdateImage } from "@/app/utils/actions/actions";
 
 interface iAppProps {
   listingId: string;

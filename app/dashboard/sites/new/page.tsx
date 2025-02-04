@@ -1,6 +1,6 @@
 "use client";
 
-import { CreateListingAction } from "@/app/actions";
+import { CreateListingAction } from "@/app/utils/actions/actions";
 import { siteSchema } from "@/app/utils/zodSchemas";
 import {
   Card,

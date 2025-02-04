@@ -22,13 +22,25 @@ export const PriceRangeFormSchema = z.object({
   maxValue: z.string().min(0).max(1000000).optional(),
 });
 
-export const RevenueMultipleFormSchema = z.object({});
+export const RevenueMultipleFormSchema = z.object({
+  minValue: z.string().min(0).max(1000000),
+  maxValue: z.string().min(0).max(1000000).optional(),
+});
 
-export const ProfitMultipleFormSchema = z.object({});
+export const ProfitMultipleFormSchema = z.object({
+  minValue: z.string().min(0).max(1000000),
+  maxValue: z.string().min(0).max(1000000).optional(),
+});
 
-export const TrailingProfitFormSchema = z.object({});
+export const TrailingProfitFormSchema = z.object({
+  minValue: z.string().min(0).max(1000000),
+  maxValue: z.string().min(0).max(1000000).optional(),
+});
 
-export const TrailingRevenueFormSchema = z.object({});
+export const TrailingRevenueFormSchema = z.object({
+  minValue: z.string().min(0).max(1000000),
+  maxValue: z.string().min(0).max(1000000).optional(),
+});
 
 export function ListingCreationSchema(options?: {
   isSubdirectoryUnique: () => Promise<boolean>;
