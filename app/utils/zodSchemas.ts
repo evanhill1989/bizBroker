@@ -18,28 +18,28 @@ export const PostSchema = z.object({
 export const BuyerSchema = z.object({});
 
 export const PriceRangeFormSchema = z.object({
-  minValue: z.string().min(0).max(1000000),
-  maxValue: z.string().min(0).max(1000000).optional(),
+  minValue: z.number().min(0).max(1000000).optional(),
+  maxValue: z.number().min(0).max(1000000).optional(),
 });
 
 export const RevenueMultipleFormSchema = z.object({
-  minValue: z.string().min(0).max(1000000),
-  maxValue: z.string().min(0).max(1000000).optional(),
+  minValue: z.number().min(0).max(1000000).optional(),
+  maxValue: z.number().min(0).max(1000000).optional(),
 });
 
 export const ProfitMultipleFormSchema = z.object({
-  minValue: z.string().min(0).max(1000000),
-  maxValue: z.string().min(0).max(1000000).optional(),
+  minValue: z.number().min(0).max(1000000).optional(),
+  maxValue: z.number().min(0).max(1000000).optional(),
 });
 
 export const TrailingProfitFormSchema = z.object({
-  minValue: z.string().min(0).max(1000000),
-  maxValue: z.string().min(0).max(1000000).optional(),
+  minValue: z.number().min(0).max(1000000).optional(),
+  maxValue: z.number().min(0).max(1000000).optional(),
 });
 
 export const TrailingRevenueFormSchema = z.object({
-  minValue: z.string().min(0).max(1000000),
-  maxValue: z.string().min(0).max(1000000).optional(),
+  minValue: z.number().min(0).max(1000000).optional(),
+  maxValue: z.number().min(0).max(1000000).optional(),
 });
 
 export function ListingCreationSchema(options?: {

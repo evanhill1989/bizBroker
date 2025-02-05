@@ -167,7 +167,10 @@ export async function UpdateBuyerPriceRangeStepAction(
   return redirect(`/onboarding/buyers/revenuemultiple`);
 }
 
-export async function UpdateBuyerRevenueMultipleStepAction(formData: FormData) {
+export async function UpdateBuyerRevenueMultipleStepAction(
+  prevState: any,
+  formData: FormData
+) {
   const user = await requireUser();
 
   const submission = parseWithZod(formData, {
@@ -195,7 +198,10 @@ export async function UpdateBuyerRevenueMultipleStepAction(formData: FormData) {
   return redirect(`/onboarding/buyers/profitmultiple`);
 }
 
-export async function UpdateBuyerProfitMultipleStepAction(formData: FormData) {
+export async function UpdateBuyerProfitMultipleStepAction(
+  prevState: any,
+  formData: FormData
+) {
   const user = await requireUser();
 
   const submission = parseWithZod(formData, {
@@ -221,7 +227,10 @@ export async function UpdateBuyerProfitMultipleStepAction(formData: FormData) {
   return redirect(`/onboarding/buyers/trailingprofit`);
 }
 
-export async function UpdateBuyerTrailingProfitStepAction(formData: FormData) {
+export async function UpdateBuyerTrailingProfitStepAction(
+  prevState: any,
+  formData: FormData
+) {
   const user = await requireUser();
 
   const submission = parseWithZod(formData, {
@@ -247,7 +256,10 @@ export async function UpdateBuyerTrailingProfitStepAction(formData: FormData) {
 
   return redirect(`/onboarding/buyers/trailingrevenue`);
 }
-export async function UpdateBuyerTrailingRevenueStepAction(formData: FormData) {
+export async function UpdateBuyerTrailingRevenueStepAction(
+  prevState: any,
+  formData: FormData
+) {
   const user = await requireUser();
 
   const submission = parseWithZod(formData, {
@@ -274,7 +286,10 @@ export async function UpdateBuyerTrailingRevenueStepAction(formData: FormData) {
   return redirect(`/onboarding/buyers/location`);
 }
 
-export async function UpdateBuyerLocationStepAction(formData: FormData) {
+export async function UpdateBuyerLocationStepAction(
+  prevState: any,
+  formData: FormData
+) {
   const user = await requireUser();
 
   const submission = parseWithZod(formData, {

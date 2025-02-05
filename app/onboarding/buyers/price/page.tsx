@@ -3,7 +3,6 @@ import { SubmitButton } from "@/components/dashboard/SubmitButtons";
 
 import { getListingPrices, createChartData } from "@/app/utils/chartUtils";
 
-import { PriceRangeFormSchema } from "@/app/utils/zodSchemas";
 import { PriceRangeForm } from "@/components/onboarding/buyer/forms/PriceRangeForm";
 
 import {
