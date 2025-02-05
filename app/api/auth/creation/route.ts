@@ -49,7 +49,7 @@ export async function GET() {
 
     console.log("New user created:", newUser);
     return NextResponse.redirect(
-      `http://localhost:3000/onboarding/buyers/${buyer.onboardingStep}`
+      `http://localhost:3000/onboarding/buyers/intro`
     );
   } else if (!onboardedUser && buyer) {
     // this conditional just very specifically tests/satisfies my current state.

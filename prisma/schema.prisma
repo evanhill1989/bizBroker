@@ -23,15 +23,35 @@ model User {
 }
 
 model Buyer {
-  id                String       @id @unique @default(uuid())
-  createdAt         DateTime     @default(now())
-  updatedAt         DateTime     @updatedAt
-  userId            String       @unique
-  onboardingStep    Int          @default(1)
-  onboardingSkipped Boolean      @default(false)
-  user              User         @relation("BuyerProfile", fields: [userId], references: [id])
+  id                String    @id @unique @default(uuid())
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  userId            String    @unique
+  onboardingStep    String    @default("intro")
+  onboardingSkipped Boolean   @default(false)
+  user              User      @relation("BuyerProfile", fields: [userId], references: [id])
   inquiries         Inquiry[]
-  preferences       Preference[]
+
+  scale         String?
+  maturity      String?
+  businessModel String?
+  location      String?
+
+  minPriceRange Float?
+  maxPriceRange Float?
+
+  minProfitMultiple Float?
+  maxProfitMultiple Float?
+
+  minRevenueMultiple Float?
+  maxRevenueMultiple Float?
+
+  minTrailing12MonthProfit Float?
+  maxTrailing12MonthProfit Float?
+
+  minTrailing12MonthRevenue Float?
+  maxTrailing12MonthRevenue Float?
+  Preference                Preference[]
 }
 
 model Inquiry {

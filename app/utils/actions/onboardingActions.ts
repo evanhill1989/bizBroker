@@ -14,13 +14,13 @@ import {
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "../requireUser";
 
-export async function CreateBuyerAction(formData: FormData) {
+export async function UpdateBuyerAction(formData: FormData) {
   const user = await requireUser();
   const submission = parseWithZod(formData, {
     schema: BuyerSchema,
   });
   if (submission.status !== "success") return submission.reply();
-  const data = await prisma.buyer.create({
+  const data = await prisma.buyer.Update({
     data: {
       userId: user.id,
     },
@@ -39,9 +39,9 @@ export async function StartOnboarding() {
   const user = await requireUser();
 
   await prisma.buyer.update({
-    where: { id: user.id },
+    where: { userId: user.id },
     data: {
-      onboardingStep: 2,
+      onboardingStep: "scale",
     },
   });
 
@@ -61,22 +61,13 @@ export async function OnboardingSkipped() {
   return redirect("/buyer/dashboard");
 }
 
-export async function CreateBuyerPreferenceAction(
-  formData: FormData,
-  preferenceType: string
-) {
+export async function UpdateBuyerScaleStepAction(formData: FormData) {
   const user = await requireUser();
 
-  const submission = parseWithZod(formData, {
-    schema: BuyerPreferenceSchema,
-  });
+  const scaleValue = formData.get("scale") as string;
 
-  if (submission.status !== "success") return submission.reply();
-
-  const preferenceValue = formData.get("preferences") as string;
-
-  if (!preferenceValue) {
-    throw new Error("Preference value is required.");
+  if (!scaleValue) {
+    throw new Error("Scale value is required.");
   }
 
   const buyer = await prisma.buyer.findUnique({
@@ -87,163 +78,329 @@ export async function CreateBuyerPreferenceAction(
     throw new Error("Buyer not found.");
   }
 
-  await prisma.preference.create({
+  await prisma.buyer.update({
+    where: { userId: user.id },
     data: {
-      type: preferenceType,
-      value: preferenceValue,
-      buyer: {
-        connect: { id: buyer.id },
-      },
+      scale: scaleValue,
+      onboardingStep: "maturity",
     },
   });
 
-  const updatedBuyer = await prisma.buyer.update({
-    where: { id: buyer.id },
-    data: {
-      onboardingStep: { increment: 1 },
-    },
-  });
-
-  return redirect(`/onboarding/buyers/${updatedBuyer.onboardingStep}`);
+  return redirect(`/onboarding/buyers/maturity`);
 }
 
-export async function CreateBuyerMinMaxAction(
-  formData: FormData,
-  preferenceType: string,
-  zodSchema: z.ZodSchema<any>
+export async function UpdateBuyerMaturityStepAction(formData: FormData) {
+  const user = await requireUser();
+
+  const maturityValue = formData.get("maturity") as string;
+
+  if (!maturityValue) {
+    throw new Error("maturity value is required.");
+  }
+
+  const buyer = await prisma.buyer.findUnique({
+    where: { userId: user.id },
+  });
+
+  if (!buyer) {
+    throw new Error("Buyer not found.");
+  }
+
+  await prisma.buyer.update({
+    where: { userId: user.id },
+    data: {
+      maturity: maturityValue,
+      onboardingStep: "businessModel",
+    },
+  });
+
+  return redirect(`/onboarding/buyers/businessmodel`);
+}
+
+export async function UpdateBuyerBusinessModelStepAction(formData: FormData) {
+  const user = await requireUser();
+
+  const businessModelValue = formData.get("business") as string;
+
+  if (!businessModelValue) {
+    throw new Error("business model value is required.");
+  }
+
+  await prisma.buyer.update({
+    where: { userId: user.id },
+    data: {
+      businessModel: businessModelValue,
+      onboardingStep: "price",
+    },
+  });
+
+  return redirect(`/onboarding/buyers/price`);
+}
+
+export async function UpdateBuyerPriceRangeStepAction(
+  prevState: any,
+  formData: FormData
 ) {
   const user = await requireUser();
 
   const submission = parseWithZod(formData, {
-    schema: zodSchema,
+    schema: PriceRangeFormSchema,
   });
 
   if (submission.status !== "success") return submission.reply();
 
   const min = formData.get("minValue") as string;
   const max = formData.get("maxValue") as string;
-  console.log(min, max, "<--------!!!!  min and max");
-  const preferenceValue = `${min}-${max}`;
 
-  const buyer = await prisma.buyer.findUnique({
+  const parsedMin = parseFloat(min);
+  const parsedMax = parseFloat(max);
+
+  await prisma.buyer.update({
     where: { userId: user.id },
-  });
-
-  if (!buyer) {
-    throw new Error("Buyer not found.");
-  }
-
-  await prisma.preference.create({
     data: {
-      type: preferenceType,
-      value: preferenceValue,
-      buyer: {
-        connect: { id: buyer.id },
-      },
+      minPriceRange: parsedMin,
+      maxPriceRange: parsedMax,
+      onboardingStep: "revenuemultiple",
     },
   });
 
-  const updatedBuyer = await prisma.buyer.update({
-    where: { id: buyer.id },
+  return redirect(`/onboarding/buyers/revenuemultiple`);
+}
+
+export async function UpdateBuyerRevenueMultipleStepAction(formData: FormData) {
+  const user = await requireUser();
+
+  const submission = parseWithZod(formData, {
+    schema: RevenueMultipleFormSchema,
+  });
+
+  if (submission.status !== "success") return submission.reply();
+
+  const min = formData.get("minValue") as string;
+  const max = formData.get("maxValue") as string;
+
+  const parsedMin = parseFloat(min);
+  const parsedMax = parseFloat(max);
+  // make min and max a number
+
+  await prisma.buyer.update({
+    where: { userId: user.id },
     data: {
-      onboardingStep: { increment: 1 },
+      minRevenueMultiple: parsedMin,
+      maxRevenueMultiple: parsedMax,
+      onboardingStep: "profitmultiple",
     },
   });
 
-  if (updatedBuyer.onboardingStep === 11) {
-    await prisma.user.update({
-      where: { id: user.id },
-      data: {
-        onboardingCompleted: true,
-      },
-    });
-  }
-  if (updatedBuyer.onboardingStep < 11) {
-    return redirect(`/onboarding/buyers/${updatedBuyer.onboardingStep}`);
-  } else {
-    return redirect("/buyer/dashboard");
-  }
+  return redirect(`/onboarding/buyers/profitmultiple`);
 }
 
-// Action for Scale Step
-// do these need prev states for TS?
-export async function CreateBuyerScaleStepAction(
-  prevState: any,
-  formData: FormData
-) {
-  return CreateBuyerPreferenceAction(formData, "scale");
+export async function UpdateBuyerProfitMultipleStepAction(formData: FormData) {
+  const user = await requireUser();
+
+  const submission = parseWithZod(formData, {
+    schema: TrailingProfitFormSchema,
+  });
+
+  if (submission.status !== "success") return submission.reply();
+
+  const min = formData.get("minValue") as string;
+  const max = formData.get("maxValue") as string;
+
+  const parsedMin = parseFloat(min);
+  const parsedMax = parseFloat(max);
+
+  await prisma.buyer.update({
+    where: { userId: user.id },
+    data: {
+      minProfitMultiple: parsedMin,
+      maxProfitMultiple: parsedMax,
+      onboardingStep: "trailingprofit",
+    },
+  });
+  return redirect(`/onboarding/buyers/trailingprofit`);
 }
 
-// Action for Maturity Step
-export async function CreateBuyerMaturityStepAction(
-  prevState: any,
-  formData: FormData
-) {
-  return CreateBuyerPreferenceAction(formData, "maturity");
+export async function UpdateBuyerTrailingProfitStepAction(formData: FormData) {
+  const user = await requireUser();
+
+  const submission = parseWithZod(formData, {
+    schema: TrailingProfitFormSchema,
+  });
+
+  if (submission.status !== "success") return submission.reply();
+
+  const min = formData.get("minValue") as string;
+  const max = formData.get("maxValue") as string;
+
+  const parsedMin = parseFloat(min);
+  const parsedMax = parseFloat(max);
+
+  await prisma.buyer.update({
+    where: { userId: user.id },
+    data: {
+      minTrailing12MonthProfit: parsedMin,
+      maxTrailing12MonthProfit: parsedMax,
+      onboardingStep: "trailingrevenue",
+    },
+  });
+
+  return redirect(`/onboarding/buyers/trailingrevenue`);
+}
+export async function UpdateBuyerTrailingRevenueStepAction(formData: FormData) {
+  const user = await requireUser();
+
+  const submission = parseWithZod(formData, {
+    schema: TrailingRevenueFormSchema,
+  });
+
+  if (submission.status !== "success") return submission.reply();
+
+  const min = formData.get("minValue") as string;
+  const max = formData.get("maxValue") as string;
+
+  const parsedMin = parseFloat(min);
+  const parsedMax = parseFloat(max);
+
+  await prisma.buyer.update({
+    where: { userId: user.id },
+    data: {
+      minTrailing12MonthRevenue: parsedMin,
+      maxTrailing12MonthRevenue: parsedMax,
+      onboardingStep: "location",
+    },
+  });
+
+  return redirect(`/onboarding/buyers/location`);
 }
 
-export async function CreateBuyerIndustryModelInfraStepAction(
-  prevState: any,
-  formData: FormData
-) {
-  return CreateBuyerPreferenceAction(formData, "industryModelInfra");
+export async function UpdateBuyerLocationStepAction(formData: FormData) {
+  const user = await requireUser();
+
+  const submission = parseWithZod(formData, {
+    schema: PriceRangeFormSchema,
+  });
+
+  if (submission.status !== "success") return submission.reply();
+
+  const min = formData.get("minValue") as string;
+  const max = formData.get("maxValue") as string;
+
+  const parsedMin = parseFloat(min);
+  const parsedMax = parseFloat(max);
+
+  await prisma.buyer.update({
+    where: { userId: user.id },
+    data: {
+      minPriceRange: parsedMin,
+      maxPriceRange: parsedMax,
+      onboardingStep: "revenuemultiple",
+    },
+  });
+
+  return redirect(`/dashboard/buyers`);
 }
 
-export async function CreateBuyerLocationStepAction(
-  prevState: any,
-  formData: FormData
-) {
-  return CreateBuyerPreferenceAction(formData, "location");
-}
+// export async function UpdateBuyerPreferenceAction(
+//   formData: FormData,
+//   preferenceType: string
+// ) {
+//   const user = await requireUser();
 
-export async function CreateBuyerPriceRangeStepAction(
-  prevState: any,
-  formData: FormData
-): Promise<void> {
-  return CreateBuyerMinMaxAction(formData, "priceRange", PriceRangeFormSchema);
-}
+//   const submission = parseWithZod(formData, {
+//     schema: BuyerPreferenceSchema,
+//   });
 
-export async function CreateBuyerRevenueMultipleStepAction(
-  prevState: any,
-  formData: FormData
-) {
-  console.log(formData, "Trying to get formData in rev multiple action");
-  return CreateBuyerMinMaxAction(
-    formData,
-    "revenueMultiple",
-    RevenueMultipleFormSchema
-  );
-}
+//   if (submission.status !== "success") return submission.reply();
 
-export async function CreateBuyerProfitMultipleStepAction(
-  prevState: any,
-  formData: FormData
-) {
-  return CreateBuyerMinMaxAction(
-    formData,
-    "profitMultiple",
-    ProfitMultipleFormSchema
-  );
-}
+//   const preferenceValue = formData.get("preferences") as string;
 
-export async function CreateBuyerTrailingProfitStepAction(
-  prevState: any,
-  formData: FormData
-) {
-  return CreateBuyerMinMaxAction(
-    formData,
-    "trailingProfit",
-    TrailingProfitFormSchema
-  );
-}
+//   if (!preferenceValue) {
+//     throw new Error("Preference value is required.");
+//   }
 
-export async function CreateBuyerTrailingRevenueStepAction(
-  prevState: any,
-  formData: FormData
-) {
-  return CreateBuyerMinMaxAction(
-    formData,
-    "trailingRevenue",
-    TrailingRevenueFormSchema
-  );
-}
+//   const buyer = await prisma.buyer.findUnique({
+//     where: { userId: user.id },
+//   });
+
+//   if (!buyer) {
+//     throw new Error("Buyer not found.");
+//   }
+
+//   await prisma.preference.Update({
+//     data: {
+//       type: preferenceType,
+//       value: preferenceValue,
+//       buyer: {
+//         connect: { id: buyer.id },
+//       },
+//     },
+//   });
+
+//   const updatedBuyer = await prisma.buyer.update({
+//     where: { id: buyer.id },
+//     data: {
+//       onboardingStep: { increment: 1 },
+//     },
+//   });
+
+//   return redirect(`/onboarding/buyers/${updatedBuyer.onboardingStep}`);
+// }
+
+// export async function UpdateBuyerMinMaxAction(
+//   formData: FormData,
+//   preferenceType: string,
+//   zodSchema: z.ZodSchema<any>
+// ) {
+//   const user = await requireUser();
+
+//   const submission = parseWithZod(formData, {
+//     schema: zodSchema,
+//   });
+
+//   if (submission.status !== "success") return submission.reply();
+
+//   const min = formData.get("minValue") as string;
+//   const max = formData.get("maxValue") as string;
+//   console.log(min, max, "<--------!!!!  min and max");
+//   const preferenceValue = `${min}-${max}`;
+
+//   const buyer = await prisma.buyer.findUnique({
+//     where: { userId: user.id },
+//   });
+
+//   if (!buyer) {
+//     throw new Error("Buyer not found.");
+//   }
+
+//   await prisma.preference.Update({
+//     data: {
+//       type: preferenceType,
+//       value: preferenceValue,
+//       buyer: {
+//         connect: { id: buyer.id },
+//       },
+//     },
+//   });
+
+//   const updatedBuyer = await prisma.buyer.update({
+//     where: { id: buyer.id },
+//     data: {
+//       onboardingStep: { increment: 1 },
+//     },
+//   });
+
+//   if (updatedBuyer.onboardingStep === 11) {
+//     await prisma.user.update({
+//       where: { id: user.id },
+//       data: {
+//         onboardingCompleted: true,
+//       },
+//     });
+//   }
+//   if (updatedBuyer.onboardingStep < 11) {
+//     return redirect(`/onboarding/buyers/${updatedBuyer.onboardingStep}`);
+//   } else {
+//     return redirect("/buyer/dashboard");
+//   }
+// }
