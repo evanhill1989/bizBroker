@@ -1,33 +1,36 @@
 "use client";
 
-import { UpdateBuyerScaleStepAction } from "@/app/utils/actions/onboardingActions";
+import { UpdateBuyerBusinessModelStepAction } from "@/app/utils/actions/onboardingActions";
 
 import { CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { SubmitButton } from "@/components/dashboard/SubmitButtons";
+
 import { Button } from "@/components/ui/button";
 
-export function ScaleForm() {
+export function BusinessModelForm() {
   return (
     <>
-      <form action={UpdateBuyerScaleStepAction}>
+      <form action={UpdateBuyerBusinessModelStepAction}>
         <CardContent>
           <fieldset className="flex flex-col space-y-2">
-            <legend className="text-lg font-medium">Select your scale:</legend>
+            <legend className="text-lg font-medium">
+              Select your preferred business model:
+            </legend>
 
             <label className="flex items-center space-x-2">
-              <Input type="radio" name="scale" value="small" />
-              <span>Small</span>
+              <Input type="radio" name="businessmodel" value="retail" />
+              <span>Retail</span>
             </label>
 
             <label className="flex items-center space-x-2">
-              <Input type="radio" name="scale" value="medium" />
-              <span>Medium</span>
+              <Input type="radio" name="businessmodel" value="online" />
+              <span>Online</span>
             </label>
 
             <label className="flex items-center space-x-2">
-              <Input type="radio" name="scale" value="large" />
-              <span>Large</span>
+              <Input type="radio" name="businessmodel" value="b2b" />
+              <span>Business to Business</span>
             </label>
           </fieldset>
         </CardContent>

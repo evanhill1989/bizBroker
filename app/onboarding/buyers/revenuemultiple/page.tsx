@@ -16,16 +16,16 @@ import {
 export default async function RevenueMultiplePage() {
   const revMultipleArr = await getRevenueMultiples();
 
-  const chartData = createChartData(revMultipleArr, 50000, 10);
+  console.log(revMultipleArr, "revMultipleArr in chart page");
+  const chartData = createChartData(revMultipleArr, 1, 10);
 
   return (
     <>
-      <Card className="w-1/2 m-auto">
+      <Card className=" m-auto border-none shadow-none  lg:px-12 lg:w-2/3">
         <CardHeader>
-          <CardTitle>What business model are you looking for?</CardTitle>
+          <CardTitle>What is your revenue multiple target range?</CardTitle>
           <CardDescription>
-            Choose the the type that most accurately represents the majority of
-            your revenue streams
+            Choose the range of revenue multiples you are looking for
           </CardDescription>
         </CardHeader>
         <RevenueMultipleForm chartData={chartData} />

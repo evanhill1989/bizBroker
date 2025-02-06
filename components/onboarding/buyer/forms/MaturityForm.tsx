@@ -1,16 +1,47 @@
-// import { PreferenceForm } from "./PreferenceForm";
-// import { CreateBuyerMaturityStepAction } from "@/app/utils/actions/actions";
+"use client";
 
-// export function MaturityForm() {
-//   return (
-//     <PreferenceForm
-//       action={CreateBuyerMaturityStepAction}
-//       label="What current maturity trajectory are you interested in?"
-//       options={[
-//         { value: "startup", label: "Startup" },
-//         { value: "growing", label: "Growing" },
-//         { value: "established", label: "Established" },
-//       ]}
-//     />
-//   );
-// }
+import { UpdateBuyerMaturityStepAction } from "@/app/utils/actions/onboardingActions";
+
+import { CardContent, CardFooter } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { SubmitButton } from "@/components/dashboard/SubmitButtons";
+
+import { Button } from "@/components/ui/button";
+
+export function MaturityForm() {
+  return (
+    <>
+      <form action={UpdateBuyerMaturityStepAction}>
+        <CardContent>
+          <fieldset className="flex flex-col space-y-2">
+            <legend className="text-lg font-medium">
+              Select your maturity:
+            </legend>
+
+            <label className="flex items-center space-x-2">
+              <Input type="radio" name="maturity" value="startup" />
+              <span>Startup</span>
+            </label>
+
+            <label className="flex items-center space-x-2">
+              <Input type="radio" name="maturity" value="growing" />
+              <span>Growing</span>
+            </label>
+
+            <label className="flex items-center space-x-2">
+              <Input type="radio" name="maturity" value="established" />
+              <span>Established</span>
+            </label>
+          </fieldset>
+        </CardContent>
+
+        <CardFooter className="w-full flex justify-between">
+          <Button type="button" variant="ghost">
+            Back
+          </Button>
+          <SubmitButton text="Next" />
+        </CardFooter>
+      </form>
+    </>
+  );
+}

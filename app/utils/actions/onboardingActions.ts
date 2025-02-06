@@ -120,7 +120,7 @@ export async function UpdateBuyerMaturityStepAction(formData: FormData) {
 export async function UpdateBuyerBusinessModelStepAction(formData: FormData) {
   const user = await requireUser();
 
-  const businessModelValue = formData.get("business") as string;
+  const businessModelValue = formData.get("businessmodel") as string;
 
   if (!businessModelValue) {
     throw new Error("business model value is required.");
@@ -286,30 +286,14 @@ export async function UpdateBuyerTrailingRevenueStepAction(
   return redirect(`/onboarding/buyers/location`);
 }
 
-export async function UpdateBuyerLocationStepAction(
-  prevState: any,
-  formData: FormData
-) {
+export async function UpdateBuyerLocationStepAction(formData: FormData) {
   const user = await requireUser();
-
-  const submission = parseWithZod(formData, {
-    schema: PriceRangeFormSchema,
-  });
-
-  if (submission.status !== "success") return submission.reply();
-
-  const min = formData.get("minValue") as string;
-  const max = formData.get("maxValue") as string;
-
-  const parsedMin = parseFloat(min);
-  const parsedMax = parseFloat(max);
 
   await prisma.buyer.update({
     where: { userId: user.id },
     data: {
-      minPriceRange: parsedMin,
-      maxPriceRange: parsedMax,
-      onboardingStep: "revenuemultiple",
+      location: formData.get("location") as string,
+      onboardingStep: "complete",
     },
   });
 

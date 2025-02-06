@@ -23,13 +23,13 @@ export const PriceRangeFormSchema = z.object({
 });
 
 export const RevenueMultipleFormSchema = z.object({
-  minValue: z.number().min(0).max(1000000).optional(),
-  maxValue: z.number().min(0).max(1000000).optional(),
+  minValue: z.number().min(0).max(10).optional(),
+  maxValue: z.number().min(0).max(10).optional(),
 });
 
 export const ProfitMultipleFormSchema = z.object({
-  minValue: z.number().min(0).max(1000000).optional(),
-  maxValue: z.number().min(0).max(1000000).optional(),
+  minValue: z.number().min(0).max(10).optional(),
+  maxValue: z.number().min(0).max(10).optional(),
 });
 
 export const TrailingProfitFormSchema = z.object({

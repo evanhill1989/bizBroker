@@ -15,6 +15,7 @@ import { useActionState, useState } from "react";
 
 import { JSONContent } from "novel";
 import { Label } from "@radix-ui/react-dropdown-menu";
+import { Button } from "@/components/ui/button";
 
 interface RevenueMultipleFormProps {
   chartData?: any;
@@ -25,9 +26,6 @@ export function RevenueMultipleForm({ chartData }: RevenueMultipleFormProps) {
     UpdateBuyerRevenueMultipleStepAction,
     undefined
   );
-
-  // const [minValue, setMinValue] = useState<JSONContent | string>("");
-  // const [maxValue, setMaxValue] = useState<JSONContent | string>("");
 
   const [form, fields] = useForm({
     lastResult,
@@ -44,35 +42,32 @@ export function RevenueMultipleForm({ chartData }: RevenueMultipleFormProps) {
         <CardContent>
           <Chart
             chartData={chartData}
-            chartName="Price Range"
-            chartMax="1,000,000"
+            chartName="Revenue Multiple"
+            chartMax="10"
+            chartMin="0"
           />
-          <div className="flex justify-around gap-10">
-            <div className="flex flex-col justify-between align-middle ">
-              <Label>Minimum</Label>
-              <Input
-                name={fields.minValue.name}
-                key={fields.minValue.key}
-                // defaultValue={minValue}
-                // onChange={(e) => setMinValue(e.target.value)}
-                // value={fields.minValue.value}
-              />
-              <p className="text-xs text-red-500">{fields.minValue.errors}</p>
+          <div className="flex w-full gap-10 justify-between">
+            <div className="flex flex-col justify-between align-middle">
+              <Label>Min</Label>
+              <Input name={fields.minValue.name} key={fields.minValue.key} />
+              <p className="text-xs text-red-500 mt-2">
+                {fields.minValue.errors}
+              </p>
             </div>
             <div className="flex flex-col justify-between">
-              <Label>Maximum</Label>
-              <Input
-                key={fields.maxValue.key}
-                name={fields.maxValue.name}
-                //  defaultValue={fields.maxValue.value}
-              />
-              <p className="text-xs text-red-500">{fields.maxValue.errors}</p>
+              <Label>Max</Label>
+              <Input key={fields.maxValue.key} name={fields.maxValue.name} />
+              <p className="text-xs text-red-500 mt-2">
+                {fields.maxValue.errors}
+              </p>
             </div>
           </div>
         </CardContent>
 
-        <CardFooter className="w-full">
-          {/* <BackButton>Back </BackButton> */}
+        <CardFooter className="w-full flex justify-between">
+          <Button type="button" variant="ghost">
+            Back
+          </Button>
           <SubmitButton text="Next" />
         </CardFooter>
       </form>
