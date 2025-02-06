@@ -1,6 +1,6 @@
 "use client";
 
-import { UpdateBuyerBusinessModelStepAction } from "@/app/utils/actions/onboardingActions";
+import { handleBackNavigation, UpdateBuyerBusinessModelStepAction } from "@/app/utils/actions/onboardingActions";
 
 import { CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -36,7 +36,7 @@ export function BusinessModelForm() {
         </CardContent>
 
         <CardFooter className="w-full flex justify-between">
-          <Button type="button" variant="ghost">
+          <Button type="submit" variant="ghost" onClick={() => handleBackNavigation("businessmodel")}>
             Back
           </Button>
           <SubmitButton text="Next" />

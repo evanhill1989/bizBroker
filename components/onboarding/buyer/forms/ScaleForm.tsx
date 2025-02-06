@@ -1,6 +1,6 @@
 "use client";
 
-import { UpdateBuyerScaleStepAction } from "@/app/utils/actions/onboardingActions";
+import { handleBackNavigation, UpdateBuyerScaleStepAction } from "@/app/utils/actions/onboardingActions";
 
 import { CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -33,7 +33,7 @@ export function ScaleForm() {
         </CardContent>
 
         <CardFooter className="w-full flex justify-between">
-          <Button type="button" variant="ghost">
+          <Button type="submit" variant="ghost" onClick={() => handleBackNavigation("scale")}>
             Back
           </Button>
           <SubmitButton text="Next" />

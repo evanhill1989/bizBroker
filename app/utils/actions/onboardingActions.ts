@@ -61,6 +61,34 @@ export async function OnboardingSkipped() {
   return redirect("/buyer/dashboard");
 }
 
+export async function handleBackNavigation(currentStep: string) {
+  const stepMapping: { [key: string]: string } = {
+    'location': 'trailingrevenue',
+    'trailingrevenue': 'trailingprofit',
+    'trailingprofit': 'revenuemultiple',
+    'revenuemultiple': 'profitmultiple',
+    'profitmultiple': 'revenuemargin',
+    'revenuemargin': 'profitmargin',
+    'profitmargin': 'price',
+    'price': 'businessmodel',
+    'businessmodel': 'maturity',
+
+  };
+
+  const previousStep = stepMapping[currentStep];
+
+  const user = await requireUser();
+  
+  await prisma.buyer.update({
+    where: { userId: user.id },
+    data: {
+      onboardingStep: previousStep
+    }
+  });
+
+  redirect(`/onboarding/buyers/${previousStep}`);
+}
+
 export async function UpdateBuyerScaleStepAction(formData: FormData) {
   const user = await requireUser();
 
@@ -205,7 +233,7 @@ export async function UpdateBuyerProfitMultipleStepAction(
   const user = await requireUser();
 
   const submission = parseWithZod(formData, {
-    schema: TrailingProfitFormSchema,
+    schema: ProfitMultipleFormSchema,
   });
 
   if (submission.status !== "success") return submission.reply();

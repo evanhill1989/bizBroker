@@ -1,6 +1,6 @@
 "use client";
 
-import { UpdateBuyerMaturityStepAction } from "@/app/utils/actions/onboardingActions";
+import { handleBackNavigation, UpdateBuyerMaturityStepAction } from "@/app/utils/actions/onboardingActions";
 
 import { CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -36,7 +36,7 @@ export function MaturityForm() {
         </CardContent>
 
         <CardFooter className="w-full flex justify-between">
-          <Button type="button" variant="ghost">
+          <Button type="submit" variant="ghost" onClick={() => handleBackNavigation("maturity")}>
             Back
           </Button>
           <SubmitButton text="Next" />

@@ -1,6 +1,6 @@
 "use client";
 
-import { UpdateBuyerPriceRangeStepAction } from "@/app/utils/actions/onboardingActions";
+import { handleBackNavigation, UpdateBuyerPriceRangeStepAction } from "@/app/utils/actions/onboardingActions";
 
 import { PriceRangeFormSchema } from "@/app/utils/zodSchemas";
 import Chart from "./charts/Chart";
@@ -63,7 +63,7 @@ export function PriceRangeForm({ chartData }: PriceRangeFormProps) {
         </CardContent>
 
         <CardFooter className="w-full flex justify-between">
-          <Button type="button" variant="ghost">
+          <Button type="submit" variant="ghost" onClick={() => handleBackNavigation("price")}>
             Back
           </Button>
           <SubmitButton text="Next" />

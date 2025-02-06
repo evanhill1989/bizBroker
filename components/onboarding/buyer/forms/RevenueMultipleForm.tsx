@@ -1,19 +1,17 @@
 "use client";
 
-import { UpdateBuyerRevenueMultipleStepAction } from "@/app/utils/actions/onboardingActions";
+import { handleBackNavigation, UpdateBuyerRevenueMultipleStepAction } from "@/app/utils/actions/onboardingActions";
 
 import { RevenueMultipleFormSchema } from "@/app/utils/zodSchemas";
 import Chart from "./charts/Chart";
 import { CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { SubmitButton } from "@/components/dashboard/SubmitButtons";
-import { BackButton } from "@/components/dashboard/BackButton";
 
 import { useForm } from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod";
-import { useActionState, useState } from "react";
+import { useActionState } from "react";
 
-import { JSONContent } from "novel";
 import { Label } from "@radix-ui/react-dropdown-menu";
 import { Button } from "@/components/ui/button";
 
@@ -65,7 +63,7 @@ export function RevenueMultipleForm({ chartData }: RevenueMultipleFormProps) {
         </CardContent>
 
         <CardFooter className="w-full flex justify-between">
-          <Button type="button" variant="ghost">
+          <Button type="submit" variant="ghost" onClick={() => handleBackNavigation("revenuemultiple")}>
             Back
           </Button>
           <SubmitButton text="Next" />

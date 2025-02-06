@@ -1,6 +1,6 @@
 "use client";
 
-import { UpdateBuyerLocationStepAction } from "@/app/utils/actions/onboardingActions";
+import { handleBackNavigation, UpdateBuyerLocationStepAction } from "@/app/utils/actions/onboardingActions";
 
 import { CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -30,7 +30,7 @@ export function LocationForm() {
         </CardContent>
 
         <CardFooter className="w-full flex justify-between">
-          <Button type="button" variant="ghost">
+          <Button type="submit" variant="ghost" onClick={() => handleBackNavigation("location")}>
             Back
           </Button>
           <SubmitButton text="Next" />

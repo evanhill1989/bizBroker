@@ -1,6 +1,6 @@
 "use client";
 
-import { UpdateBuyerProfitMultipleStepAction } from "@/app/utils/actions/onboardingActions";
+import { handleBackNavigation, UpdateBuyerProfitMultipleStepAction } from "@/app/utils/actions/onboardingActions";
 
 import { ProfitMultipleFormSchema } from "@/app/utils/zodSchemas";
 import Chart from "./charts/Chart";
@@ -64,7 +64,9 @@ export function ProfitMultipleForm({ chartData }: ProfitMultipleFormProps) {
         </CardContent>
 
         <CardFooter className="w-full flex justify-between">
-          <Button className="">Back</Button>
+          <Button type="submit" variant="ghost" onClick={() => handleBackNavigation("profitmultiple")}>
+            Back
+          </Button>
           <SubmitButton text="Next" />
         </CardFooter>
       </form>

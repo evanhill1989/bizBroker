@@ -1,6 +1,6 @@
 "use client";
 
-import { UpdateBuyerTrailingProfitStepAction } from "@/app/utils/actions/onboardingActions";
+import { handleBackNavigation, UpdateBuyerTrailingProfitStepAction } from "@/app/utils/actions/onboardingActions";
 
 import { TrailingProfitFormSchema } from "@/app/utils/zodSchemas";
 import Chart from "./charts/Chart";
@@ -64,7 +64,7 @@ export function TrailingProfitForm({ chartData }: TrailingProfitFormProps) {
         </CardContent>
 
         <CardFooter className="w-full flex justify-between">
-          <Button type="button" variant="ghost">
+          <Button type="submit" variant="ghost" onClick={() => handleBackNavigation("trailingprofit")}>
             Back
           </Button>
           <SubmitButton text="Next" />
