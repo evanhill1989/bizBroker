@@ -1,4 +1,4 @@
-import { getExactMatchListings } from "@/utils/actions/actions";
+import { getExactMatchListings } from "@/app/utils/actions/actions";
 import { requireUser } from "@/app/utils/requireUser";
 import { prisma } from "@/lib/prisma";
 

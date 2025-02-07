@@ -327,7 +327,7 @@ export async function UpdateBuyerLocationStepAction(formData: FormData) {
     },
   });
 
-  return redirect(`/dashboard/buyers`);
+  return redirect(`/dashboard/buyer`);
 }
 
 // export async function UpdateBuyerPreferenceAction(

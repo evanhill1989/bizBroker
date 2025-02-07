@@ -149,32 +149,32 @@ export async function getExactMatchListings(criteria: Buyer) {
     ...(criteria.location && { location: criteria.location }),
     ...(criteria.minPriceRange !== null && criteria.maxPriceRange !== null && {
       price: {
-        gte: criteria.minPriceRange,
-        lte: criteria.maxPriceRange,
+        gte: parseFloat(criteria.minPriceRange.toString()), // Ensure it's a Float
+        lte: parseFloat(criteria.maxPriceRange.toString()), // Ensure it's a Float
       },
     }),
     ...(criteria.minProfitMultiple !== null && criteria.maxProfitMultiple !== null && {
       profitMultiple: {
-        gte: criteria.minProfitMultiple,
-        lte: criteria.maxProfitMultiple,
+        gte: parseFloat(criteria.minProfitMultiple.toString()), // Ensure it's a Float
+        lte: parseFloat(criteria.maxProfitMultiple.toString()), // Ensure it's a Float
       },
     }),
     ...(criteria.minRevenueMultiple !== null && criteria.maxRevenueMultiple !== null && {
       revenueMultiple: {
-        gte: criteria.minRevenueMultiple,
-        lte: criteria.maxRevenueMultiple,
+        gte: parseFloat(criteria.minRevenueMultiple.toString()), // Ensure it's a Float
+        lte: parseFloat(criteria.maxRevenueMultiple.toString()), // Ensure it's a Float
       },
     }),
     ...(criteria.minTrailing12MonthRevenue !== null && criteria.maxTrailing12MonthRevenue !== null && {
       trailing12MonthRevenue: {
-        gte: criteria.minTrailing12MonthRevenue,
-        lte: criteria.maxTrailing12MonthRevenue,
+        gte: parseFloat(criteria.minTrailing12MonthRevenue.toString()), // Ensure it's a Float
+        lte: parseFloat(criteria.maxTrailing12MonthRevenue.toString()), // Ensure it's a Float
       },
     }),
     ...(criteria.minTrailing12MonthProfit !== null && criteria.maxTrailing12MonthProfit !== null && {
       trailing12MonthProfit: {
-        gte: criteria.minTrailing12MonthProfit,
-        lte: criteria.maxTrailing12MonthProfit,
+        gte: parseFloat(criteria.minTrailing12MonthProfit.toString()), // Ensure it's a Float
+        lte: parseFloat(criteria.maxTrailing12MonthProfit.toString()), // Ensure it's a Float
       },
     }),
   };
