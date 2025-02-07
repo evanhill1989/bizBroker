@@ -51,7 +51,7 @@ model Buyer {
 
   minTrailing12MonthRevenue Float?
   maxTrailing12MonthRevenue Float?
-  Preference                Preference[]
+ 
 }
 
 model Inquiry {
@@ -66,13 +66,6 @@ model Inquiry {
   seller    Seller   @relation(fields: [sellerId], references: [id])
 }
 
-model Preference {
-  id      String @id @default(uuid())
-  type    String
-  value   String
-  buyerId String
-  buyer   Buyer  @relation(fields: [buyerId], references: [id])
-}
 
 model Seller {
   id          String    @id @unique @default(uuid())

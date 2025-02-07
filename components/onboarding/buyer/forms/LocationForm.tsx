@@ -33,7 +33,7 @@ export function LocationForm() {
           <Button type="submit" variant="ghost" onClick={() => handleBackNavigation("location")}>
             Back
           </Button>
-          <SubmitButton text="Next" />
+          <SubmitButton text="Get results" />
         </CardFooter>
       </form>
     </>

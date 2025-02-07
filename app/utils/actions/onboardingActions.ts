@@ -77,6 +77,8 @@ export async function handleBackNavigation(currentStep: string) {
 
   const previousStep = stepMapping[currentStep];
 
+  redirect(`/onboarding/buyers/${previousStep}`);
+
   const user = await requireUser();
   
   await prisma.buyer.update({
@@ -86,7 +88,7 @@ export async function handleBackNavigation(currentStep: string) {
     }
   });
 
-  redirect(`/onboarding/buyers/${previousStep}`);
+  
 }
 
 export async function UpdateBuyerScaleStepAction(formData: FormData) {
