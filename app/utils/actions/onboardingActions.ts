@@ -327,109 +327,15 @@ export async function UpdateBuyerLocationStepAction(formData: FormData) {
     },
   });
 
+ 
+  await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        onboardingCompleted: true,
+      },
+    })
+  
+
   return redirect(`/dashboard/buyer`);
 }
 
-// export async function UpdateBuyerPreferenceAction(
-//   formData: FormData,
-//   preferenceType: string
-// ) {
-//   const user = await requireUser();
-
-//   const submission = parseWithZod(formData, {
-//     schema: BuyerPreferenceSchema,
-//   });
-
-//   if (submission.status !== "success") return submission.reply();
-
-//   const preferenceValue = formData.get("preferences") as string;
-
-//   if (!preferenceValue) {
-//     throw new Error("Preference value is required.");
-//   }
-
-//   const buyer = await prisma.buyer.findUnique({
-//     where: { userId: user.id },
-//   });
-
-//   if (!buyer) {
-//     throw new Error("Buyer not found.");
-//   }
-
-//   await prisma.preference.Update({
-//     data: {
-//       type: preferenceType,
-//       value: preferenceValue,
-//       buyer: {
-//         connect: { id: buyer.id },
-//       },
-//     },
-//   });
-
-//   const updatedBuyer = await prisma.buyer.update({
-//     where: { id: buyer.id },
-//     data: {
-//       onboardingStep: { increment: 1 },
-//     },
-//   });
-
-//   return redirect(`/onboarding/buyers/${updatedBuyer.onboardingStep}`);
-// }
-
-// export async function UpdateBuyerMinMaxAction(
-//   formData: FormData,
-//   preferenceType: string,
-//   zodSchema: z.ZodSchema<any>
-// ) {
-//   const user = await requireUser();
-
-//   const submission = parseWithZod(formData, {
-//     schema: zodSchema,
-//   });
-
-//   if (submission.status !== "success") return submission.reply();
-
-//   const min = formData.get("minValue") as string;
-//   const max = formData.get("maxValue") as string;
-//   console.log(min, max, "<--------!!!!  min and max");
-//   const preferenceValue = `${min}-${max}`;
-
-//   const buyer = await prisma.buyer.findUnique({
-//     where: { userId: user.id },
-//   });
-
-//   if (!buyer) {
-//     throw new Error("Buyer not found.");
-//   }
-
-//   await prisma.preference.Update({
-//     data: {
-//       type: preferenceType,
-//       value: preferenceValue,
-//       buyer: {
-//         connect: { id: buyer.id },
-//       },
-//     },
-//   });
-
-//   const updatedBuyer = await prisma.buyer.update({
-//     where: { id: buyer.id },
-//     data: {
-//       onboardingStep: { increment: 1 },
-//     },
-//   });
-
-//   if (updatedBuyer.onboardingStep === 11) {
-//     await prisma.user.update({
-//       where: { id: user.id },
-//       data: {
-//         onboardingCompleted: true,
-//       },
-//     });
-//   }
-//   if (updatedBuyer.onboardingStep < 11) {
-//     return redirect(`/onboarding/buyers/${updatedBuyer.onboardingStep}`);
-//   } else {
-//     return redirect("/buyer/dashboard");
-//   }
-// }

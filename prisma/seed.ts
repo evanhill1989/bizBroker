@@ -23,15 +23,9 @@ const sellers = [
 
 // List of business models for variation
 const businessModels = [
-  "E-Commerce",
-  "Subscription Service",
-  "SaaS",
-  "Brick & Mortar",
-  "Dropshipping",
-  "Consulting",
-  "Marketplace",
-  "Agency",
-  "Freemium",
+  "retail",
+  "online",
+  "b2b",
 ];
 
 // Function to generate random listings
@@ -51,27 +45,26 @@ function generateListings(sellerId: string, userId: string) {
     sellerId,
     businessModel: faker.helpers.arrayElement(businessModels),
     location: faker.location.city() + ", " + faker.location.country(),
-    maturity: faker.helpers.arrayElement(["Startup", "Growing", "Established"]),
-    price: faker.commerce.price({
+    maturity: faker.helpers.arrayElement(["startup", "growing", "established"]),
+    price: faker.number.float({
       min: 10000,
-      max: 500000,
-      dec: 0,
-      symbol: "$",
+      max: 500000
+     
+     
+      
     }),
-    profitMultiple: faker.number.float({ min: 1.5, max: 6 }).toString(),
-    revenueMultiple: faker.number.float({ min: 2, max: 8 }).toString(),
-    scale: faker.helpers.arrayElement(["Local", "National", "Global"]),
-    trailing12MonthProfit: faker.commerce.price({
+    profitMultiple: faker.number.float({ min: 1.5, max: 6 }),
+    revenueMultiple: faker.number.float({ min: 2, max: 8 }),
+    scale: faker.helpers.arrayElement(["local", "national", "global"]),
+    trailing12MonthProfit: faker.number.float({
       min: 20000,
-      max: 200000,
-      dec: 0,
-      symbol: "$",
+      max: 200000
+     
     }),
-    trailing12MonthRevenue: faker.commerce.price({
+    trailing12MonthRevenue: faker.number.float({
       min: 50000,
-      max: 500000,
-      dec: 0,
-      symbol: "$",
+      max: 500000
+     
     }),
   }));
 }

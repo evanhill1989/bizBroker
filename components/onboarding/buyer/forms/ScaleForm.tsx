@@ -16,18 +16,18 @@ export function ScaleForm() {
             <legend className="text-lg font-medium">Select your scale:</legend>
 
             <label className="flex items-center space-x-2">
-              <Input type="radio" name="scale" value="small" />
-              <span>Small</span>
+              <Input type="radio" name="scale" value="local" />
+              <span>Local</span>
             </label>
 
             <label className="flex items-center space-x-2">
-              <Input type="radio" name="scale" value="medium" />
-              <span>Medium</span>
+              <Input type="radio" name="scale" value="national" />
+              <span>National</span>
             </label>
 
             <label className="flex items-center space-x-2">
-              <Input type="radio" name="scale" value="large" />
-              <span>Large</span>
+              <Input type="radio" name="scale" value="global" />
+              <span>Global</span>
             </label>
           </fieldset>
         </CardContent>

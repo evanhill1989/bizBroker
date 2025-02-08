@@ -59,7 +59,7 @@ export async function GET() {
     );
   } else if (onboardedUser) {
     console.log("User already onboarded, redirecting to dashboard");
-    return NextResponse.redirect("http://localhost:3000/dashboard"); // Redirect to onboarding if incomplete
+    return NextResponse.redirect("http://localhost:3000/dashboard/buyer"); // Redirect to onboarding if incomplete
   } else {
     return NextResponse.redirect("http://localhost:3000/onboarding");
   }

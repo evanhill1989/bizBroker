@@ -7,7 +7,7 @@ export async function getListingPrices(): Promise<number[]> {
   });
 
   return listings.map((listing) =>
-    Number(listing.price.replace(/[^0-9.]/g, ""))
+    listing.price
   );
 }
 
@@ -17,7 +17,7 @@ export async function getRevenueMultiples(): Promise<number[]> {
   });
 
   return revMultiples.map((listing) =>
-    Number(listing.revenueMultiple.replace(/[^0-9.]/g, ""))
+    listing.revenueMultiple
   );
 }
 
@@ -27,7 +27,7 @@ export async function getProfitMultiples(): Promise<number[]> {
   });
 
   return profitMultiples.map((listing) =>
-    Number(listing.profitMultiple.replace(/[^0-9.]/g, ""))
+    listing.profitMultiple
   );
 }
 
@@ -37,7 +37,7 @@ export async function getTrailingRevenue(): Promise<number[]> {
   });
 
   return revMultiples.map((listing) =>
-    Number(listing.trailing12MonthRevenue.replace(/[^0-9.]/g, ""))
+    listing.trailing12MonthRevenue
   );
 }
 
@@ -47,7 +47,7 @@ export async function getTrailingProfit(): Promise<number[]> {
   });
 
   return profitMultiples.map((listing) =>
-    Number(listing.trailing12MonthProfit.replace(/[^0-9.]/g, ""))
+    listing.trailing12MonthProfit
   );
 }
 
