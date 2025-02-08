@@ -146,50 +146,53 @@ export async function getExactMatchListings(criteria: Buyer) {
   console.log(criteria, "criteria in getExactMatchListings");
   const queryCriteria = {
     ...(criteria.scale && { scale: criteria.scale }),
-    // ...(criteria.maturity && { maturity: criteria.maturity }),
+    ...(criteria.maturity && { maturity: criteria.maturity }),
     ...(criteria.businessModel && { businessModel: criteria.businessModel }),
     // ...(criteria.location && { location: criteria.location }),
     ...(criteria.minPriceRange !== null && criteria.maxPriceRange !== null && {
       price: {
-        gte: criteria.minPriceRange, // Ensure it's a Float
-        lte: criteria.maxPriceRange, // Ensure it's a Float
+        gte: criteria.minPriceRange, 
+        lte: criteria.maxPriceRange, 
       },
     }),
     ...(criteria.minProfitMultiple !== null && criteria.maxProfitMultiple !== null && {
       profitMultiple: {
-        gte: criteria.minProfitMultiple, // Ensure it's a Float
-        lte: criteria.maxProfitMultiple, // Ensure it's a Float
+        gte: criteria.minProfitMultiple, 
+        lte: criteria.maxProfitMultiple, 
       },
     }),
     ...(criteria.minRevenueMultiple !== null && criteria.maxRevenueMultiple !== null && {
       revenueMultiple: {
-        gte: criteria.minRevenueMultiple, // Ensure it's a Float
-        lte: criteria.maxRevenueMultiple, // Ensure it's a Float
+        gte: criteria.minRevenueMultiple, 
+        lte: criteria.maxRevenueMultiple, 
       },
     }),
     ...(criteria.minTrailing12MonthRevenue !== null && criteria.maxTrailing12MonthRevenue !== null && {
       trailing12MonthRevenue: {
-        gte: criteria.minTrailing12MonthRevenue, // Ensure it's a Float
-        lte: criteria.maxTrailing12MonthRevenue, // Ensure it's a Float
+        gte: criteria.minTrailing12MonthRevenue, 
+        lte: criteria.maxTrailing12MonthRevenue, 
       },
     }),
     ...(criteria.minTrailing12MonthProfit !== null && criteria.maxTrailing12MonthProfit !== null && {
       trailing12MonthProfit: {
-        gte: criteria.minTrailing12MonthProfit, // Ensure it's a Float
-        lte: criteria.maxTrailing12MonthProfit, // Ensure it's a Float
+        gte: criteria.minTrailing12MonthProfit, 
+        lte: criteria.maxTrailing12MonthProfit, 
       },
     }),
   };
 
-
+  console.log(
+    typeof criteria.minPriceRange,
+    typeof criteria.maxPriceRange,
+    criteria.minPriceRange,
+    criteria.maxPriceRange
+  );
+  
 
   const listings = await prisma.listing.findMany({
     where: {
-      ...queryCriteria,
-      // price: {
-      //   gte: queryCriteria.minPriceRange,
-      //   lte: queryCriteria.maxPriceRange,
-      // },
+      scale: queryCriteria.scale,
+   
     },
   });
 

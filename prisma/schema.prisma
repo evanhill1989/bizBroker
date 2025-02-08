@@ -54,18 +54,6 @@ model Buyer {
  
 }
 
-model Inquiry {
-  id        String   @id @unique @default(uuid())
-  message   String
-  status    String   @default("pending")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  buyerId   String
-  sellerId  String
-  buyer     Buyer    @relation(fields: [buyerId], references: [id])
-  seller    Seller   @relation(fields: [sellerId], references: [id])
-}
-
 
 model Seller {
   id          String    @id @unique @default(uuid())
@@ -118,3 +106,16 @@ model Post {
   Listing          Listing? @relation(fields: [listingId], references: [id], onDelete: Cascade)
   User             User?    @relation(fields: [userId], references: [id])
 }
+
+model Inquiry {
+  id        String   @id @unique @default(uuid())
+  message   String
+  status    String   @default("pending")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  buyerId   String
+  sellerId  String
+  buyer     Buyer    @relation(fields: [buyerId], references: [id])
+  seller    Seller   @relation(fields: [sellerId], references: [id])
+}
+
