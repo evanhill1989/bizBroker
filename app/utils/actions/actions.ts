@@ -145,6 +145,9 @@ export async function getExactMatchListings(criteria: Buyer) {
 
   console.log(criteria, "criteria in getExactMatchListings");
   const queryCriteria = {
+    ...(criteria.name && { name: criteria.name }),
+    ...(criteria.subdirectory && { subdirectory: criteria.subdirectory }),
+    ...(criteria.description && { scale: criteria.description }),
     ...(criteria.scale && { scale: criteria.scale }),
     ...(criteria.maturity && { maturity: criteria.maturity }),
     ...(criteria.businessModel && { businessModel: criteria.businessModel }),
