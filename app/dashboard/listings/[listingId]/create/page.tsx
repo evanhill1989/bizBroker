@@ -72,7 +72,7 @@ export default function ArticleCreationRoute({
     <>
       <div className="flex items-center">
         <Button size="icon" variant="outline" className="mr-3" asChild>
-          <Link href={`/dashboard/sites/${params.listingId}`}>
+          <Link href={`/dashboard/listings/${params.listingId}`}>
             <ArrowLeft className="size-4" />
           </Link>
         </Button>

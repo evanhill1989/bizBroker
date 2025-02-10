@@ -88,20 +88,20 @@ export default async function ListingIdRoute(props: {
               View Blog
             </Link>
           ) : (
-            <Link href={`/dashboard/sites/${params.listingId}/create`}>
+            <Link href={`/dashboard/listings/${params.listingId}/create`}>
               <Book className="mr-2 size-4" />
               Create Article
             </Link>
           )}
         </Button>
         <Button asChild variant={"secondary"}>
-          <Link href={`/dashboard/sites/${params.listingId}/settings`}>
+          <Link href={`/dashboard/listings/${params.listingId}/settings`}>
             <Settings className="mr-2 size-4" />
             Settings
           </Link>
         </Button>
         <Button asChild>
-          <Link href={`/dashboard/sites/${params.listingId}/create`}>
+          <Link href={`/dashboard/listings/${params.listingId}/create`}>
             <PlusCircle className="mr-2 size-4" />
             Create Article
           </Link>
@@ -111,7 +111,7 @@ export default async function ListingIdRoute(props: {
       {data === undefined || data.length === 0 ? (
         <EmptyState
           title="No article created"
-          href={`/dashboard/sites/${params.listingId}/create`}
+          href={`/dashboard/listings/${params.listingId}/create`}
           description="You currently dont have any articles. Please create one when you are ready."
           buttonText="Create Article"
         />
@@ -175,14 +175,14 @@ export default async function ListingIdRoute(props: {
                             <DropdownMenuSeparator />
                             <DropdownMenuItem asChild>
                               <Link
-                                href={`/dashboard/sites/${params.listingId}/${item.id}`}
+                                href={`/dashboard/listings/${params.listingId}/${item.id}`}
                               >
                                 Edit
                               </Link>
                             </DropdownMenuItem>
                             <DropdownMenuItem asChild>
                               <Link
-                                href={`/dashboard/sites/${params.listingId}/${item.id}/delete`}
+                                href={`/dashboard/listings/${params.listingId}/${item.id}/delete`}
                               >
                                 Delete
                               </Link>

@@ -38,7 +38,7 @@ export async function CreateListingAction(prevState: any, formData: FormData) {
   });
 
   void response; // Prevents TS unused variable error
-  return redirect(`/dashboard/sites`);
+  return redirect(`/dashboard/listings`);
 }
 
 export async function CreatePostAction(prevState: any, formData: FormData) {
@@ -63,7 +63,7 @@ export async function CreatePostAction(prevState: any, formData: FormData) {
   });
 
   void data; // Prevents TS unused variable error
-  return redirect(`/dashboard/sites/${formData.get("listingId")}`);
+  return redirect(`/dashboard/listings/${formData.get("listingId")}`);
 }
 
 export async function EditPostActions(prevState: any, formData: FormData) {
@@ -90,7 +90,7 @@ export async function EditPostActions(prevState: any, formData: FormData) {
   });
 
   void data; // Prevents TS unused variable error
-  return redirect(`/dashboard/sites/${formData.get("listingId")}`);
+  return redirect(`/dashboard/listings/${formData.get("listingId")}`);
 }
 
 export async function DeletePost(formData: FormData) {
@@ -105,7 +105,7 @@ export async function DeletePost(formData: FormData) {
   });
 
   void data; // Prevents TS unused variable error
-  return redirect(`/dashboard/sites/${formData.get("listingId")}`);
+  return redirect(`/dashboard/listings/${formData.get("listingId")}`);
 }
 
 export async function UpdateImage(formData: FormData) {
@@ -123,7 +123,7 @@ export async function UpdateImage(formData: FormData) {
 
   void data; // Prevents TS unused variable error
 
-  return redirect(`/dashboard/sites/${formData.get("listingId")}`);
+  return redirect(`/dashboard/listings/${formData.get("listingId")}`);
 }
 
 export async function DeleteListing(formData: FormData) {
@@ -138,19 +138,19 @@ export async function DeleteListing(formData: FormData) {
 
   void data; // Prevents TS unused variable error
 
-  return redirect(`/dashboard/sites`);
+  return redirect(`/dashboard/listings`);
 }
 
-export async function getExactMatchListings(criteria: Buyer) {
+export async function getExactMatchListings(criteria: Buyer ) {
 
   console.log(criteria, "criteria in getExactMatchListings");
   const queryCriteria = {
-    ...(criteria.name && { name: criteria.name }),
-    ...(criteria.subdirectory && { subdirectory: criteria.subdirectory }),
-    ...(criteria.description && { scale: criteria.description }),
+    // ...(criteria.name && { name: criteria.name }),
+    // ...(criteria.subdirectory && { subdirectory: criteria.subdirectory }),
+    // ...(criteria.description && { scale: criteria.description }),
     ...(criteria.scale && { scale: criteria.scale }),
-    ...(criteria.maturity && { maturity: criteria.maturity }),
-    ...(criteria.businessModel && { businessModel: criteria.businessModel }),
+    // ...(criteria.maturity && { maturity: criteria.maturity }),
+    // ...(criteria.businessModel && { businessModel: criteria.businessModel }),
     // ...(criteria.location && { location: criteria.location }),
     ...(criteria.minPriceRange !== null && criteria.maxPriceRange !== null && {
       price: {
@@ -158,30 +158,30 @@ export async function getExactMatchListings(criteria: Buyer) {
         lte: criteria.maxPriceRange, 
       },
     }),
-    ...(criteria.minProfitMultiple !== null && criteria.maxProfitMultiple !== null && {
-      profitMultiple: {
-        gte: criteria.minProfitMultiple, 
-        lte: criteria.maxProfitMultiple, 
-      },
-    }),
-    ...(criteria.minRevenueMultiple !== null && criteria.maxRevenueMultiple !== null && {
-      revenueMultiple: {
-        gte: criteria.minRevenueMultiple, 
-        lte: criteria.maxRevenueMultiple, 
-      },
-    }),
-    ...(criteria.minTrailing12MonthRevenue !== null && criteria.maxTrailing12MonthRevenue !== null && {
-      trailing12MonthRevenue: {
-        gte: criteria.minTrailing12MonthRevenue, 
-        lte: criteria.maxTrailing12MonthRevenue, 
-      },
-    }),
-    ...(criteria.minTrailing12MonthProfit !== null && criteria.maxTrailing12MonthProfit !== null && {
-      trailing12MonthProfit: {
-        gte: criteria.minTrailing12MonthProfit, 
-        lte: criteria.maxTrailing12MonthProfit, 
-      },
-    }),
+    // ...(criteria.minProfitMultiple !== null && criteria.maxProfitMultiple !== null && {
+    //   profitMultiple: {
+    //     gte: criteria.minProfitMultiple, 
+    //     lte: criteria.maxProfitMultiple, 
+    //   },
+    // }),
+    // ...(criteria.minRevenueMultiple !== null && criteria.maxRevenueMultiple !== null && {
+    //   revenueMultiple: {
+    //     gte: criteria.minRevenueMultiple, 
+    //     lte: criteria.maxRevenueMultiple, 
+    //   },
+    // }),
+    // ...(criteria.minTrailing12MonthRevenue !== null && criteria.maxTrailing12MonthRevenue !== null && {
+    //   trailing12MonthRevenue: {
+    //     gte: criteria.minTrailing12MonthRevenue, 
+    //     lte: criteria.maxTrailing12MonthRevenue, 
+    //   },
+    // }),
+    // ...(criteria.minTrailing12MonthProfit !== null && criteria.maxTrailing12MonthProfit !== null && {
+    //   trailing12MonthProfit: {
+    //     gte: criteria.minTrailing12MonthProfit, 
+    //     lte: criteria.maxTrailing12MonthProfit, 
+    //   },
+    // }),
   };
 
   console.log(
@@ -193,10 +193,7 @@ export async function getExactMatchListings(criteria: Buyer) {
   
 
   const listings = await prisma.listing.findMany({
-    where: {
-      scale: queryCriteria.scale,
-   
-    },
+    where: queryCriteria,
   });
 
   

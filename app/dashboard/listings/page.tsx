@@ -29,7 +29,7 @@ async function getData(userId: string) {
   return data;
 }
 
-export default async function SitesRoute() {
+export default async function ListingsRoute() {
   const { getUser } = getKindeServerSession();
 
   const user = await getUser();
@@ -44,7 +44,7 @@ export default async function SitesRoute() {
     <>
       <div className="flex w-full justify-end ">
         <Button asChild>
-          <Link href="/dashboard/sites/new">
+          <Link href="/dashboard/listings/new">
             <PlusCircle className="m-2 size-4" /> Create Listing
           </Link>
         </Button>
@@ -52,7 +52,7 @@ export default async function SitesRoute() {
       {data === undefined || data.length === 0 ? (
         <EmptyState
           title="No listing created"
-          href="/dashboard/sites/new"
+          href="/dashboard/listings/new"
           description="You currently dont have any listings. Please create one when you are ready."
           buttonText="Create Listing"
         />
@@ -75,7 +75,7 @@ export default async function SitesRoute() {
               </CardHeader>
               <CardFooter>
                 <Button asChild className="w-full">
-                  <Link href={`/dashboard/sites/${listing.id}`}>
+                  <Link href={`/dashboard/listings/${listing.id}`}>
                     View Articles
                   </Link>
                 </Button>

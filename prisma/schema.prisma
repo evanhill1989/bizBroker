@@ -32,6 +32,8 @@ model Buyer {
   user              User      @relation("BuyerProfile", fields: [userId], references: [id])
   inquiries         Inquiry[]
 
+  listingPreferences BuyerListingPreference[]
+
   scale         String?
   maturity      String?
   businessModel String?
@@ -51,9 +53,24 @@ model Buyer {
 
   minTrailing12MonthRevenue Float?
   maxTrailing12MonthRevenue Float?
- 
 }
 
+model BuyerListingPreference {
+  id        String           @id @default(uuid())
+  buyerId   String
+  listingId String
+  status    PreferenceStatus
+
+  buyer   Buyer   @relation(fields: [buyerId], references: [id], onDelete: Cascade)
+  listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@unique([buyerId, listingId]) // Ensures a buyer can only have one preference per listing
+}
+
+enum PreferenceStatus {
+  LIKED
+  HIDDEN
+}
 
 model Seller {
   id          String    @id @unique @default(uuid())
@@ -89,7 +106,9 @@ model Listing {
   trailing12MonthRevenue Float
   Seller                 Seller?  @relation(fields: [sellerId], references: [id])
   User                   User?    @relation(fields: [userId], references: [id])
+
   posts                  Post[]
+  BuyerListingPreference BuyerListingPreference[]
 }
 
 model Post {
@@ -118,4 +137,3 @@ model Inquiry {
   buyer     Buyer    @relation(fields: [buyerId], references: [id])
   seller    Seller   @relation(fields: [sellerId], references: [id])
 }
-

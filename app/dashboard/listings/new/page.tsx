@@ -1,7 +1,7 @@
 "use client";
 
 import { CreateListingAction } from "@/app/utils/actions/actions";
-import { siteSchema } from "@/app/utils/zodSchemas";
+import { listingSchema } from "@/app/utils/zodSchemas";
 import {
   Card,
   CardDescription,
@@ -26,7 +26,7 @@ export default function NewSiteRoute() {
 
     onValidate({ formData }) {
       return parseWithZod(formData, {
-        schema: siteSchema,
+        schema: listingSchema,
       });
     },
 
