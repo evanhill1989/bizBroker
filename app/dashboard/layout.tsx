@@ -14,6 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 
+
 export const navLinks = [
   {
     name: "Dashboard",
