@@ -28,7 +28,7 @@ export default async function DeleteForm(props: {
         </CardHeader>
         <CardFooter className="w-full flex justify-between">
           <Button variant="secondary" asChild>
-            <Link href={`/dashboard/sites/${params.listingId}`}>Cancel</Link>
+            <Link href={`/dashboard/listings/${params.listingId}`}>Cancel</Link>
           </Button>
           <form action={DeletePost}>
             <input type="hidden" name="articleId" value={params.articleId} />

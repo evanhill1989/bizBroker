@@ -1,65 +1,190 @@
 import { getExactMatchListings } from "@/app/utils/actions/actions";
 import { requireUser } from "@/app/utils/requireUser";
-import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 import { prisma } from "@/lib/prisma";
-
+import {
+  BadgeDollarSign,
+  CalendarPlus,
+  ChartNoAxesCombined,
+  EyeOff,
+  Heart,
+  MapPinHouse,
+  Sunrise,
+} from "lucide-react";
 
 export default async function BuyerDashboardPage() {
-
   const user = await requireUser();
 
   const buyer = await prisma.buyer.findUnique({
     where: { userId: user.id },
   });
 
-
   const matchingListings = await getExactMatchListings(buyer);
+
+  // should i just get this with getExactMatchListings? const buyerListingPreferences = await getBuyerListingPreferences(buyer)
 
   const tempMatchingListings = matchingListings.map((listing) => ({
     id: listing.id,
     name: listing.name,
-    price: Math.floor(listing.price / 100) * 100,
+    description: listing.description,
+    subdirectory: listing.subdirectory,
+    price: Math.floor(listing.price / 1000),
     businessModel: listing.businessModel,
     scale: listing.scale,
     maturity: listing.maturity,
-    trailing12MonthRevenue: Math.floor(listing.trailing12MonthRevenue),
-    trailing12MonthProfit: Math.floor(listing.trailing12MonthProfit),
+    trailing12MonthRevenue: Math.floor(listing.trailing12MonthRevenue / 1000),
+    trailing12MonthProfit: Math.floor(listing.trailing12MonthProfit / 1000),
     profitMultiple: Math.floor(listing.profitMultiple),
     revenueMultiple: Math.floor(listing.revenueMultiple),
   }));
 
-
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen p-4 max-w-full">
-      <h1 className="text-3xl font-bold mb-4">Hello Buyer!!!</h1>
-      <p className="text-gray-600 mb-8">
-        Complete the steps below to get started!
-      </p>
-      <div className="sm:w-[400px] md:w-[600px] lg:w-[1200px]">
-        <div className="listings grid grid-flow-col auto-cols-max  overflow-x-auto whitespace-nowrap border p-2">
-        {tempMatchingListings.map((listing, index) => (
-          <Card key={listing.id} className="mr-4">
-               <div>
+    <div className="grid grid-rows-3 gap-12">
+      <div className="grid grid-cols-5 gap-4 w-full items-start row-span-1">
+        <button className="flex text-start flex-col gap-6 hover:bg-primary/20 align-start border px-6 py-8 rounded-lg">
+          <ChartNoAxesCombined size={40} />
+          <h3 className="text-lg font-semibold text-nowrap">
+            Popular Listings
+          </h3>
+        </button>
+        <button className="flex text-start flex-col gap-6 hover:bg-primary/20 align-start border px-6 py-8 rounded-lg">
+          <BadgeDollarSign size={40} />
+          <h3 className="text-lg font-semibold text-nowrap">Price Drops</h3>
+        </button>
+        <button className="flex text-start flex-col gap-6 hover:bg-primary/20 align-start border px-6 py-8 rounded-lg">
+          <MapPinHouse size={40} />
+          <h3 className="text-lg font-semibold text-nowrap">Nearby Retail</h3>
+        </button>
+        <button className="flex text-start flex-col gap-6 hover:bg-primary/20 align-start border px-6 py-8 rounded-lg">
+          <Sunrise size={40} />
+          <h3 className="text-lg font-semibold text-nowrap">
+            Growing Startups
+          </h3>
+        </button>
+        <button className="flex text-start flex-col gap-6 hover:bg-primary/20 align-start border px-6 py-8 rounded-lg">
+          <CalendarPlus size={40} />
+          <h3 className="text-lg font-semibold text-nowrap">New Listings</h3>
+        </button>
+      </div>
+
+      <div className="max-w-[1200px] mx-auto listings flex flex-col gap-3 row-span-2  ">
+        <h4>Listings based on your criteria:</h4>
+        <Carousel>
+          <CarouselContent>
+            {tempMatchingListings.map((listing) => (
+              <CarouselItem
+                key={listing.id}
+                className="md:basis-1/2 lg:basis-1/3 p-4"
+              >
+                <Card className="flex flex-col justify-between border gap-8 rounded-lg p-8 hover:border-slate-400 hover:shadow-lg  cursor-pointer">
+                  <CardHeader className="flex flex-row p-0 justify-between">
+                    <div className="flex gap-2">
+                      <Sunrise />
+                      <h2 className="text-lg font-semibold">
+                        {listing.businessModel}
+                      </h2>
+                    </div>
+                    <div className="like-toggles flex gap-4">
+                      <Heart />
+                      <EyeOff />
+                    </div>
+                  </CardHeader>
+                  <CardDescription className="description text-base text-primary max-w-[40ch] line-clamp-3">
+                    <p className="text-pretty">{listing.description}</p>
+                  </CardDescription>
+                  <CardFooter className="flex justify-between p-0">
+                    <div>
+                      <p className="text-slate-400 font-semibold text-xs uppercase tracking-wide">
+                        TTM Revenue
+                      </p>
+                      <p className="text-xl font-semibold">
+                        ${listing.trailing12MonthRevenue}K
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-slate-400 font-semibold text-xs uppercase tracking-wide">
+                        TTM profit
+                      </p>
+                      <p className="text-xl font-semibold">
+                        ${listing.trailing12MonthProfit}K
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-slate-400 font-semibold text-xs uppercase tracking-wide">
+                        Asking Price
+                      </p>
+                      <p className="text-xl font-semibold">${listing.price}K</p>
+                    </div>
+                  </CardFooter>
+                </Card>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
+        {/* <div className="listings grid grid-flow-col gap-4 my-3 auto-cols-max overflow-x-auto whitespace-nowrap">
+          {tempMatchingListings.map((listing) => (
+            <Card
+              key={listing.id}
+              className="flex flex-col justify-between border gap-8 rounded-lg p-8 hover:border-black cursor-pointer"
+            >
+              <CardHeader className="flex flex-row p-0 justify-between">
+                <div className="flex gap-2">
+                  <Sunrise />
+                  <h2 className="text-lg font-semibold">
+                    {listing.businessModel}
+                  </h2>
+                </div>
+                <div className="like-toggles flex gap-4">
+                  <Heart />
+                  <EyeOff />
+                </div>
+              </CardHeader>
+              <CardDescription className="description text-base text-primary max-w-[40ch] line-clamp-3">
+                <p className="text-pretty">{listing.description}</p>
+              </CardDescription>
+              <CardFooter className="flex justify-between p-0">
                 <div>
-                  <p>icon</p>
-                  <h3>{listing.businessModel}</h3>
+                  <p className="text-slate-400 font-semibold text-xs uppercase tracking-wide">
+                    TTM Revenue
+                  </p>
+                  <p className="text-xl font-semibold">
+                    ${listing.trailing12MonthRevenue}K
+                  </p>
                 </div>
-                <div className="like">hu7  
-                  <p>eyeball</p>
-                  <p>heart</p>
+                <div>
+                  <p className="text-slate-400 font-semibold text-xs uppercase tracking-wide">
+                    TTM profit
+                  </p>
+                  <p className="text-xl font-semibold">
+                    ${listing.trailing12MonthProfit}K
+                  </p>
                 </div>
-               </div>
-            <div className="flex">
-              <h2 className="text-lg font-semibold">{index + 1}.{listing.name}</h2>
-            </div>
-            <p>${listing.price}</p>
-          </Card>
-    
-          
-        ))}
+                <div>
+                  <p className="text-slate-400 font-semibold text-xs uppercase tracking-wide">
+                    Asking Price
+                  </p>
+                  <p className="text-xl font-semibold">${listing.price}K</p>
+                </div>
+              </CardFooter>
+            </Card>
+          ))}
+        </div> */}
       </div>
-      </div>
-     
-    </main>
+    </div>
   );
 }

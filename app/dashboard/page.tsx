@@ -73,7 +73,7 @@ export default async function DashboardIndexPage({}) {
               </CardHeader>
               <CardFooter>
                 <Button asChild className="w-full">
-                  <Link href={`/dashboard/sites/${listing.id}`}>
+                  <Link href={`/dashboard/listings/${listing.id}`}>
                     View Articles
                   </Link>
                 </Button>
@@ -84,7 +84,7 @@ export default async function DashboardIndexPage({}) {
       ) : (
         <EmptyState
           title="You don't have any listings yet."
-          href="/dashboard/sites/new"
+          href="/dashboard/listings/new"
           description="You currently dont have any listings. Please create one when you are ready."
           buttonText="Create Listing"
         />
@@ -111,7 +111,7 @@ export default async function DashboardIndexPage({}) {
               <CardFooter>
                 <Button asChild className="w-full">
                   <Link
-                    href={`/dashboard/sites/${article.listingId}/${article.id}`}
+                    href={`/dashboard/listings/${article.listingId}/${article.id}`}
                   >
                     Edit Article
                   </Link>
@@ -123,7 +123,7 @@ export default async function DashboardIndexPage({}) {
       ) : (
         <EmptyState
           title="You don't have any articles yet."
-          href="/dashboard/sites"
+          href="/dashboard/listings"
           description="You currently dont have any articles. Please create one when you are ready."
           buttonText="Create Article"
         />

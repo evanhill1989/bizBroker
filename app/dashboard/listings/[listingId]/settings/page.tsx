@@ -21,7 +21,7 @@ export default async function SettingsSiteRoute(props: {
     <>
       <div className="flex items-center gap-x-2">
         <Button variant="outline">
-          <Link href={`/dashboard/sites/${params.listingId}`}>
+          <Link href={`/dashboard/listings/${params.listingId}`}>
             <ChevronLeft />
           </Link>
         </Button>
