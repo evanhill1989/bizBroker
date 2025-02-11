@@ -2,9 +2,9 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { parseWithZod } from "@conform-to/zod";
-import { z } from "zod";
-import { ListingCreationSchema, PostSchema } from "../zodSchemas";
+import { parseWithZod, z } from "@conform-to/zod";
+
+import { ListingCreationSchema, PostSchema, BuyerSchema } from "../zodSchemas";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "../requireUser";
 
@@ -141,7 +141,7 @@ export async function DeleteListing(formData: FormData) {
   return redirect(`/dashboard/listings`);
 }
 
-export async function getExactMatchListings(criteria: Buyer ) {
+export async function getExactMatchListings(criteria: z.infer<typeof BuyerSchema>) {
 
   console.log(criteria, "criteria in getExactMatchListings");
   const queryCriteria = {
@@ -225,7 +225,34 @@ export async function updateListingPreference(
 
     return { success: true };
   } catch (error) {
-    console.error("Failed to update preference:", error.meta || error);
-    return { success: false, error: String(error) };
+    console.error("Failed to update preference:", error instanceof Error ? error.message : String(error));
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : String(error)
+    };
+  }
+}
+
+export async function deleteListingPreference(
+  buyerId: string,
+  listingId: string
+) {
+  try {
+    await prisma.buyerListingPreference.delete({
+      where: {
+        buyerId_listingId: {
+          buyerId,
+          listingId,
+        },
+      },
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.error("Failed to delete preference:", error instanceof Error ? error.message : String(error));
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : String(error)
+    };
   }
 }

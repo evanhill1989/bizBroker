@@ -10,13 +10,21 @@ export default async function ListingsIndexPage() {
     where: { userId: user.id },
   });
 
-  const listingPreferences = await prisma.buyerListingPreference.findMany({
-    where: { buyerId: buyer.id },
-  });
+  const listingPreferences = buyer
+    ? await prisma.buyerListingPreference.findMany({
+        where: { buyerId: buyer.id },
+      })
+    : [];
 
   const hiddenListingIds = new Set(
     listingPreferences
       .filter((pref) => pref.status === "HIDDEN")
+      .map((pref) => pref.listingId)
+  );
+
+  const likedListingIds = new Set(
+    listingPreferences
+      .filter((pref) => pref.status === "LIKED")
       .map((pref) => pref.listingId)
   );
 
@@ -46,7 +54,8 @@ export default async function ListingsIndexPage() {
       <FilteredListings
         listings={formattedListings}
         hiddenListingIds={hiddenListingIds}
-        buyerId={buyer.id}
+        buyerId={buyer?.id ?? ''}
+        likedListingIds={likedListingIds}
       />
     </>
   );

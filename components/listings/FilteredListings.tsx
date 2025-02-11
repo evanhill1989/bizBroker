@@ -9,14 +9,33 @@ import {
 } from "@/components/ui/card";
 import { Heart, EyeOff, Sunrise } from "lucide-react";
 import FilterBar from "@/components/listings/FilterBar";
-import { Button } from "../ui/button";
+
 import { Toggle } from "../ui/toggle";
-import { updateListingPreference } from "@/app/utils/actions/actions";
+import {
+  updateListingPreference,
+  deleteListingPreference,
+} from "@/app/utils/actions/actions";
+
+type Listing = {
+  id: string;
+  name: string;
+  businessModel: string;
+  description: string;
+  trailing12MonthRevenue: number;
+  trailing12MonthProfit: number;
+  price: number;
+};
 
 export default function FilteredListings({
   listings,
   hiddenListingIds,
   buyerId,
+  likedListingIds,
+}: {
+  listings: Listing[];
+  hiddenListingIds: Set<string>;
+  buyerId: string;
+  likedListingIds: Set<string>;
 }) {
   const [filters, setFilters] = useState({
     businessModel: ["online", "b2b", "retail"],
@@ -43,6 +62,22 @@ export default function FilteredListings({
     });
   }, [listings, filters, localHiddenListingIds]);
 
+  const handleFavoriteListing = async (listingId: string) => {
+    if (likedListingIds.has(listingId)) {
+      try {
+        await deleteListingPreference(buyerId, listingId);
+      } catch (error) {
+        console.error("Failed to update listing preference:", error);
+      }
+      return;
+    }
+    try {
+      await updateListingPreference(buyerId, listingId, "LIKED");
+    } catch (error) {
+      console.error("Failed to update listing preference:", error);
+    }
+  };
+
   const handleHideListing = async (listingId: string) => {
     // Immediately update local state for instant UI feedback
     setLocalHiddenListingIds((prev) => {
@@ -55,14 +90,15 @@ export default function FilteredListings({
     try {
       await updateListingPreference(buyerId, listingId, "HIDDEN");
     } catch (error) {
+      // Log the error for debugging purposes
+      console.error("Failed to update listing preference:", error);
+      
       // If server update fails, revert local state
       setLocalHiddenListingIds((prev) => {
         const reverted = new Set(prev);
         reverted.delete(listingId);
         return reverted;
       });
-      // Optionally show an error toast
-      console.error("Failed to update listing preference");
     }
   };
 
@@ -86,8 +122,9 @@ export default function FilteredListings({
                 <Toggle
                   asChild
                   onPressedChange={() => {
-                    console.log("Heart pressed");
+                    handleFavoriteListing(listing.id);
                   }}
+                  defaultPressed={likedListingIds.has(listing.id)}
                 >
                   <Heart size={20} />
                 </Toggle>

@@ -15,7 +15,22 @@ export const PostSchema = z.object({
   articleContent: z.string().min(1).max(5000),
 });
 
-export const BuyerSchema = z.object({});
+export const BuyerSchema = z.object({
+  id: z.string().optional(),
+  name: z.string().optional(),
+  scale: z.string().optional(),
+  businessModel: z.string().optional(),
+  maturity: z.string().optional(),
+  location: z.string().optional(),
+  minPriceRange: z.number().optional(),
+  maxPriceRange: z.number().optional(),
+  minRevenueMultiple: z.number().optional(),
+  maxRevenueMultiple: z.number().optional(),
+  minProfitMultiple: z.number().optional(),
+  maxProfitMultiple: z.number().optional(),
+  trailingProfit: z.number().optional(),
+  trailingRevenue: z.number().optional(),
+});
 
 export const PriceRangeFormSchema = z.object({
   minValue: z.number().min(0).max(1000000).optional(),

@@ -6,7 +6,7 @@ export default function Chart({
   chartMax,
   chartMin,
 }: {
-  chartData: any[];
+  chartData: ChartDataItem[];
   chartName: string;
   chartMax: string;
   chartMin: string;
@@ -32,4 +32,9 @@ export default function Chart({
       </div>
     </div>
   );
+}
+
+export interface ChartDataItem {
+  id: string | number;
+  count: number;
 }

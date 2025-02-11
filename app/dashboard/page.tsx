@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import { prisma } from "@/lib/prisma";
-import { requireUser } from "../utils/requireUser";
+
 import { EmptyState } from "@/components/dashboard/EmptyState";
 import {
   Card,
@@ -47,10 +47,6 @@ async function getData(userId: string) {
     articles,
   };
 }
-
-// !!!!!!!!!!!!!!!!!!!DEAD DEAD DEAD
-// !!!!!!!!!!!!!!!!!!!DEAD DEAD DEAD
-// !!!!!!!!!!!!!!!!!!!DEAD DEAD DEAD
 
 export default async function DashboardIndexPage({}) {
   // const user = await requireUser() || null;

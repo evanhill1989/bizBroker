@@ -1,8 +1,12 @@
 "use client";
 
-import { handleBackNavigation, UpdateBuyerPriceRangeStepAction } from "@/app/utils/actions/onboardingActions";
+import {
+  handleBackNavigation,
+  UpdateBuyerPriceRangeStepAction,
+} from "@/app/utils/actions/onboardingActions";
 
 import { PriceRangeFormSchema } from "@/app/utils/zodSchemas";
+import { ChartDataItem } from "./charts/Chart";
 import Chart from "./charts/Chart";
 import { CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -16,7 +20,7 @@ import { Label } from "@radix-ui/react-dropdown-menu";
 import { Button } from "@/components/ui/button";
 
 interface PriceRangeFormProps {
-  chartData?: any;
+  chartData?: ChartDataItem[];
 }
 
 export function PriceRangeForm({ chartData }: PriceRangeFormProps) {
@@ -63,7 +67,11 @@ export function PriceRangeForm({ chartData }: PriceRangeFormProps) {
         </CardContent>
 
         <CardFooter className="w-full flex justify-between">
-          <Button type="submit" variant="ghost" onClick={() => handleBackNavigation("price")}>
+          <Button
+            type="submit"
+            variant="ghost"
+            onClick={() => handleBackNavigation("price")}
+          >
             Back
           </Button>
           <SubmitButton text="Next" />

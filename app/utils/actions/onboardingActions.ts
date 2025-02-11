@@ -2,7 +2,9 @@
 
 import { redirect } from "next/navigation";
 import { parseWithZod } from "@conform-to/zod";
+import { Submission, SubmissionResult } from "@conform-to/react";
 import { z } from "zod";
+
 import {
   BuyerSchema,
   PriceRangeFormSchema,
@@ -14,14 +16,18 @@ import {
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "../requireUser";
 
+type FormSubmissionState = Submission<z.ZodType>;
+
 export async function UpdateBuyerAction(formData: FormData) {
   const user = await requireUser();
   const submission = parseWithZod(formData, {
     schema: BuyerSchema,
   });
   if (submission.status !== "success") return submission.reply();
-  const data = await prisma.buyer.Update({
+  const data = await prisma.buyer.update({
+    where: { userId: user.id },
     data: {
+      ...submission.value,
       userId: user.id,
     },
   });
@@ -167,38 +173,37 @@ export async function UpdateBuyerBusinessModelStepAction(formData: FormData) {
   return redirect(`/onboarding/buyers/price`);
 }
 
-export async function UpdateBuyerPriceRangeStepAction(
-  prevState: any,
-  formData: FormData
-) {
-  const user = await requireUser();
 
+
+export async function UpdateBuyerPriceRangeStepAction(
+  state: SubmissionResult<string[]> | undefined, 
+  formData: FormData
+): Promise<SubmissionResult<string[]>> {
+  const user = await requireUser();
   const submission = parseWithZod(formData, {
     schema: PriceRangeFormSchema,
   });
 
-  if (submission.status !== "success") return submission.reply();
+  if (submission.status !== "success") {
+    return submission.reply();
+  }
 
-  const min = formData.get("minValue") as string;
-  const max = formData.get("maxValue") as string;
-
-  const parsedMin = parseFloat(min);
-  const parsedMax = parseFloat(max);
-
-  await prisma.buyer.update({
+  const data = await prisma.buyer.update({
     where: { userId: user.id },
     data: {
-      minPriceRange: parsedMin,
-      maxPriceRange: parsedMax,
+      priceRange: submission.value.priceRange,
       onboardingStep: "revenuemultiple",
     },
   });
 
-  return redirect(`/onboarding/buyers/revenuemultiple`);
+  return {
+    status: "success",
+    data: ["Price range updated successfully"],
+  };
 }
 
 export async function UpdateBuyerRevenueMultipleStepAction(
-  prevState: any,
+  prevState: FormSubmissionState,
   formData: FormData
 ) {
   const user = await requireUser();
@@ -229,7 +234,7 @@ export async function UpdateBuyerRevenueMultipleStepAction(
 }
 
 export async function UpdateBuyerProfitMultipleStepAction(
-  prevState: any,
+  prevState: FormSubmissionState,
   formData: FormData
 ) {
   const user = await requireUser();
@@ -258,7 +263,7 @@ export async function UpdateBuyerProfitMultipleStepAction(
 }
 
 export async function UpdateBuyerTrailingProfitStepAction(
-  prevState: any,
+  prevState: FormSubmissionState,
   formData: FormData
 ) {
   const user = await requireUser();
@@ -287,7 +292,7 @@ export async function UpdateBuyerTrailingProfitStepAction(
   return redirect(`/onboarding/buyers/trailingrevenue`);
 }
 export async function UpdateBuyerTrailingRevenueStepAction(
-  prevState: any,
+  prevState: FormSubmissionState,
   formData: FormData
 ) {
   const user = await requireUser();
@@ -338,4 +343,3 @@ export async function UpdateBuyerLocationStepAction(formData: FormData) {
 
   return redirect(`/dashboard/buyer`);
 }
-

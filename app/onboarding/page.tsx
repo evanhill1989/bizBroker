@@ -1,5 +1,3 @@
-// import { OnboardingForm } from "@/components/onboarding/forms/BuyerOnboardingForm";
-
 export default function OnboardingPage() {
   return (
     <main className="flex flex-col items-center justify-center min-h-screen p-4">

@@ -4,9 +4,7 @@ import { TrailingProfitForm } from "@/components/onboarding/buyer/forms/Trailing
 
 import {
   Card,
-  CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";

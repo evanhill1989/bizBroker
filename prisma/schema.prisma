@@ -98,12 +98,12 @@ model Listing {
   businessModel          String
   location               String
   maturity               String
-  price                  Float
-  profitMultiple         Float
-  revenueMultiple        Float
-  scale                  String
-  trailing12MonthProfit  Float
-  trailing12MonthRevenue Float
+  price                  Float?
+  profitMultiple         Float?
+  revenueMultiple        Float?
+  scale                  String?
+  trailing12MonthProfit  Float?
+  trailing12MonthRevenue Float?
   Seller                 Seller?  @relation(fields: [sellerId], references: [id])
   User                   User?    @relation(fields: [userId], references: [id])
 

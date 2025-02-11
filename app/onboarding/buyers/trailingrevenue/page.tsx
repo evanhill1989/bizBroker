@@ -4,9 +4,7 @@ import { TrailingRevenueForm } from "@/components/onboarding/buyer/forms/Trailin
 
 import {
   Card,
-  CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
