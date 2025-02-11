@@ -199,3 +199,33 @@ export async function getExactMatchListings(criteria: Buyer ) {
   
   return listings;
 }
+
+export async function updateListingPreference(
+  buyerId: string,
+  listingId: string,
+  status: 'HIDDEN' | 'LIKED'
+) {
+  try {
+    await prisma.buyerListingPreference.upsert({
+      where: {
+        buyerId_listingId: {
+          buyerId,
+          listingId,
+        },
+      },
+      update: {
+        status,
+      },
+      create: {
+        buyerId,
+        listingId,
+        status,
+      },
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.error("Failed to update preference:", error.meta || error);
+    return { success: false, error: String(error) };
+  }
+}

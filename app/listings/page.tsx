@@ -1,6 +1,3 @@
-
-
-
 import { requireUser } from "../utils/requireUser";
 import { prisma } from "@/lib/prisma";
 
@@ -42,9 +39,15 @@ export default async function ListingsIndexPage() {
 
   return (
     <>
-      <h1 className="text-2xl font-semibold mt-5 mb-10 pb-5 border-b-[1px] border-slate-200">Listings</h1>
-    
-      <FilteredListings listings={formattedListings} hiddenListingIds={hiddenListingIds} />
+      <h1 className="text-2xl font-semibold mt-5 mb-10 pb-5 border-b-[1px] border-slate-200">
+        Listings
+      </h1>
+
+      <FilteredListings
+        listings={formattedListings}
+        hiddenListingIds={hiddenListingIds}
+        buyerId={buyer.id}
+      />
     </>
   );
 }
