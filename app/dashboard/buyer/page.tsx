@@ -32,24 +32,11 @@ export default async function BuyerDashboardPage() {
     where: { userId: user.id },
   });
 
+  if (!buyer) {
+    return <div>No matching listings found.</div>;
+  }
+
   const matchingListings = await getExactMatchListings(buyer);
-
-  // should i just get this with getExactMatchListings? const buyerListingPreferences = await getBuyerListingPreferences(buyer)
-
-  const tempMatchingListings = matchingListings.map((listing) => ({
-    id: listing.id,
-    name: listing.name,
-    description: listing.description,
-    subdirectory: listing.subdirectory,
-    price: Math.floor(listing.price / 1000),
-    businessModel: listing.businessModel,
-    scale: listing.scale,
-    maturity: listing.maturity,
-    trailing12MonthRevenue: Math.floor(listing.trailing12MonthRevenue / 1000),
-    trailing12MonthProfit: Math.floor(listing.trailing12MonthProfit / 1000),
-    profitMultiple: Math.floor(listing.profitMultiple),
-    revenueMultiple: Math.floor(listing.revenueMultiple),
-  }));
 
   return (
     <div className="grid grid-rows-3 gap-12">
@@ -84,7 +71,7 @@ export default async function BuyerDashboardPage() {
         <h4>Listings based on your criteria:</h4>
         <Carousel>
           <CarouselContent>
-            {tempMatchingListings.map((listing) => (
+            {matchingListings.map((listing) => (
               <CarouselItem
                 key={listing.id}
                 className="md:basis-1/2 lg:basis-1/3 p-4"
@@ -136,55 +123,9 @@ export default async function BuyerDashboardPage() {
           <CarouselPrevious />
           <CarouselNext />
         </Carousel>
-        {/* <div className="listings grid grid-flow-col gap-4 my-3 auto-cols-max overflow-x-auto whitespace-nowrap">
-          {tempMatchingListings.map((listing) => (
-            <Card
-              key={listing.id}
-              className="flex flex-col justify-between border gap-8 rounded-lg p-8 hover:border-black cursor-pointer"
-            >
-              <CardHeader className="flex flex-row p-0 justify-between">
-                <div className="flex gap-2">
-                  <Sunrise />
-                  <h2 className="text-lg font-semibold">
-                    {listing.businessModel}
-                  </h2>
-                </div>
-                <div className="like-toggles flex gap-4">
-                  <Heart />
-                  <EyeOff />
-                </div>
-              </CardHeader>
-              <CardDescription className="description text-base text-primary max-w-[40ch] line-clamp-3">
-                <p className="text-pretty">{listing.description}</p>
-              </CardDescription>
-              <CardFooter className="flex justify-between p-0">
-                <div>
-                  <p className="text-slate-400 font-semibold text-xs uppercase tracking-wide">
-                    TTM Revenue
-                  </p>
-                  <p className="text-xl font-semibold">
-                    ${listing.trailing12MonthRevenue}K
-                  </p>
-                </div>
-                <div>
-                  <p className="text-slate-400 font-semibold text-xs uppercase tracking-wide">
-                    TTM profit
-                  </p>
-                  <p className="text-xl font-semibold">
-                    ${listing.trailing12MonthProfit}K
-                  </p>
-                </div>
-                <div>
-                  <p className="text-slate-400 font-semibold text-xs uppercase tracking-wide">
-                    Asking Price
-                  </p>
-                  <p className="text-xl font-semibold">${listing.price}K</p>
-                </div>
-              </CardFooter>
-            </Card>
-          ))}
-        </div> */}
       </div>
     </div>
   );
+
+  // should i just get this with getExactMatchListings? const buyerListingPreferences = await getBuyerListingPreferences(buyer)
 }

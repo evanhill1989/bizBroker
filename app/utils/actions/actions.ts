@@ -3,46 +3,14 @@
 
 import { redirect } from "next/navigation";
 import { parseWithZod} from "@conform-to/zod";
-import { z } from 'zod';
 
-import { PostSchema, BuyerSchema } from "../zodSchemas";
+
+import { PostSchema} from "../zodSchemas";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "../requireUser";
 
-// export async function CreateListingAction(prevState: any, formData: FormData) {
-// OLD LISTING ACTION - completely different data, completely different purpose
-// WIll become a seller action eventually
-  // const user = await requireUser();
+import { Listing, Buyer } from "@prisma/client";
 
-  // const submission = await parseWithZod(formData, {
-  //   schema: ListingCreationSchema({
-  //     async isSubdirectoryUnique() {
-  //       const existingSubdirectory = await prisma.listing.findUnique({
-  //         where: {
-  //           subdirectory: formData.get("subdirectory") as string,
-  //         },
-  //       });
-
-  //       return !existingSubdirectory;
-  //     },
-  //   }),
-  //   async: true,
-  // });
-
-  // if (submission.status !== "success") return submission.reply();
-
-  // const response = await prisma.listing.create({
-  //   data: {
-  //     description: submission.value.description,
-  //     name: submission.value.name,
-  //     subdirectory: submission.value.subdirectory,
-  //     userId: user.id,
-  //   },
-  // });
-
-  // void response; // Prevents TS unused variable error
-//   return redirect(`/dashboard/listings`);
-// }
 
 export async function CreatePostAction(prevState: any, formData: FormData) {
   const user = await requireUser();
@@ -144,63 +112,75 @@ export async function DeleteListing(formData: FormData) {
   return redirect(`/dashboard/listings`);
 }
 
-export async function getExactMatchListings(criteria: z.infer<typeof BuyerSchema>) {
 
-  console.log(criteria, "criteria in getExactMatchListings");
-  const queryCriteria = {
-    // ...(criteria.name && { name: criteria.name }),
-    // ...(criteria.subdirectory && { subdirectory: criteria.subdirectory }),
-    // ...(criteria.description && { scale: criteria.description }),
-    ...(criteria.scale && { scale: criteria.scale }),
-    // ...(criteria.maturity && { maturity: criteria.maturity }),
-    // ...(criteria.businessModel && { businessModel: criteria.businessModel }),
-    // ...(criteria.location && { location: criteria.location }),
-    ...(criteria.minPriceRange !== null && criteria.maxPriceRange !== null && {
-      price: {
-        gte: criteria.minPriceRange, 
-        lte: criteria.maxPriceRange, 
-      },
-    }),
-    // ...(criteria.minProfitMultiple !== null && criteria.maxProfitMultiple !== null && {
-    //   profitMultiple: {
-    //     gte: criteria.minProfitMultiple, 
-    //     lte: criteria.maxProfitMultiple, 
-    //   },
-    // }),
-    // ...(criteria.minRevenueMultiple !== null && criteria.maxRevenueMultiple !== null && {
-    //   revenueMultiple: {
-    //     gte: criteria.minRevenueMultiple, 
-    //     lte: criteria.maxRevenueMultiple, 
-    //   },
-    // }),
-    // ...(criteria.minTrailing12MonthRevenue !== null && criteria.maxTrailing12MonthRevenue !== null && {
-    //   trailing12MonthRevenue: {
-    //     gte: criteria.minTrailing12MonthRevenue, 
-    //     lte: criteria.maxTrailing12MonthRevenue, 
-    //   },
-    // }),
-    // ...(criteria.minTrailing12MonthProfit !== null && criteria.maxTrailing12MonthProfit !== null && {
-    //   trailing12MonthProfit: {
-    //     gte: criteria.minTrailing12MonthProfit, 
-    //     lte: criteria.maxTrailing12MonthProfit, 
-    //   },
-    // }),
-  };
 
-  console.log(
-    typeof criteria.minPriceRange,
-    typeof criteria.maxPriceRange,
-    criteria.minPriceRange,
-    criteria.maxPriceRange
-  );
-  
+
+export async function getExactMatchListings(buyer: Buyer): Promise<Listing[]> {
+  if (!buyer) return [];
+
+  const {
+    businessModel,
+    
+    maturity,
+    scale,
+    minPriceRange,
+    maxPriceRange,
+    minProfitMultiple,
+    maxProfitMultiple,
+    // minRevenueMultiple,
+    // maxRevenueMultiple,
+    // minTrailing12MonthProfit,
+    // maxTrailing12MonthProfit,
+    // minTrailing12MonthRevenue,
+    // maxTrailing12MonthRevenue,
+  } = buyer;
 
   const listings = await prisma.listing.findMany({
-    where: queryCriteria,
+    where: {
+      // Match nullable string values exactly
+      businessModel: businessModel ? { equals: businessModel } : undefined,
+      
+      maturity: maturity ? { equals: maturity } : undefined,
+      scale: scale ? { equals: scale } : undefined,
+
+      price: {
+        gte: minPriceRange ?? undefined,
+        lte: maxPriceRange ?? undefined,
+      },
+      profitMultiple: {
+        gte: minProfitMultiple ?? undefined,
+        lte: maxProfitMultiple ?? undefined,
+      },
+      // revenueMultiple: {
+      //   gte: minRevenueMultiple ?? undefined,
+      //   lte: maxRevenueMultiple ?? undefined,
+      // },
+      // trailing12MonthProfit: {
+      //   gte: minTrailing12MonthProfit ?? undefined,
+      //   lte: maxTrailing12MonthProfit ?? undefined,
+      // },
+      // trailing12MonthRevenue: {
+      //   gte: minTrailing12MonthRevenue ?? undefined,
+      //   lte: maxTrailing12MonthRevenue ?? undefined,
+      // },
+    },
   });
 
-  
-  return listings;
+  const formattedListings = listings.map((listing) => {
+    listing.businessModel = listing.businessModel ?? "Unknown";
+    
+    listing.maturity = listing.maturity ?? "Unknown";
+    listing.scale = listing.scale ?? "Unknown";
+    listing.trailing12MonthProfit = Math.floor((listing.trailing12MonthProfit ?? 0) / 1000);
+    listing.trailing12MonthRevenue = Math.floor((listing.trailing12MonthRevenue ?? 0) / 1000);
+    listing.price = Math.floor((listing.price ?? 0) / 1000);
+    listing.profitMultiple = Math.floor(listing.profitMultiple ?? 0) ;
+    listing.revenueMultiple = Math.floor(listing.revenueMultiple ?? 0) ;
+
+    return listing;
+  })
+
+  return formattedListings;
 }
 
 export async function updateListingPreference(
