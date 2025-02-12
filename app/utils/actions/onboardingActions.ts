@@ -2,8 +2,8 @@
 
 import { redirect } from "next/navigation";
 import { parseWithZod } from "@conform-to/zod";
-import { Submission, SubmissionResult } from "@conform-to/react";
-import { z } from "zod";
+import {  SubmissionResult } from "@conform-to/react";
+
 
 import {
   BuyerSchema,
@@ -16,7 +16,6 @@ import {
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "../requireUser";
 
-type FormSubmissionState = Submission<z.ZodType>;
 
 export async function UpdateBuyerAction(formData: FormData) {
   const user = await requireUser();

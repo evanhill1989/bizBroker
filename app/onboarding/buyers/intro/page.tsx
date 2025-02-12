@@ -13,6 +13,8 @@ import {
   OnboardingSkipped,
   StartOnboarding,
 } from "@/app/utils/actions/onboardingActions";
+import { Goal } from "lucide-react";
+import { SubmitButton } from "@/components/dashboard/SubmitButtons";
 
 export default function buyerIntroRoute() {
   return (

@@ -2,44 +2,47 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { parseWithZod, z } from "@conform-to/zod";
+import { parseWithZod} from "@conform-to/zod";
+import { z } from 'zod';
 
-import { ListingCreationSchema, PostSchema, BuyerSchema } from "../zodSchemas";
+import { PostSchema, BuyerSchema } from "../zodSchemas";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "../requireUser";
 
-export async function CreateListingAction(prevState: any, formData: FormData) {
-  const user = await requireUser();
+// export async function CreateListingAction(prevState: any, formData: FormData) {
+// OLD LISTING ACTION - completely different data, completely different purpose
+// WIll become a seller action eventually
+  // const user = await requireUser();
 
-  const submission = await parseWithZod(formData, {
-    schema: ListingCreationSchema({
-      async isSubdirectoryUnique() {
-        const existingSubdirectory = await prisma.listing.findUnique({
-          where: {
-            subdirectory: formData.get("subdirectory") as string,
-          },
-        });
+  // const submission = await parseWithZod(formData, {
+  //   schema: ListingCreationSchema({
+  //     async isSubdirectoryUnique() {
+  //       const existingSubdirectory = await prisma.listing.findUnique({
+  //         where: {
+  //           subdirectory: formData.get("subdirectory") as string,
+  //         },
+  //       });
 
-        return !existingSubdirectory;
-      },
-    }),
-    async: true,
-  });
+  //       return !existingSubdirectory;
+  //     },
+  //   }),
+  //   async: true,
+  // });
 
-  if (submission.status !== "success") return submission.reply();
+  // if (submission.status !== "success") return submission.reply();
 
-  const response = await prisma.listing.create({
-    data: {
-      description: submission.value.description,
-      name: submission.value.name,
-      subdirectory: submission.value.subdirectory,
-      userId: user.id,
-    },
-  });
+  // const response = await prisma.listing.create({
+  //   data: {
+  //     description: submission.value.description,
+  //     name: submission.value.name,
+  //     subdirectory: submission.value.subdirectory,
+  //     userId: user.id,
+  //   },
+  // });
 
-  void response; // Prevents TS unused variable error
-  return redirect(`/dashboard/listings`);
-}
+  // void response; // Prevents TS unused variable error
+//   return redirect(`/dashboard/listings`);
+// }
 
 export async function CreatePostAction(prevState: any, formData: FormData) {
   const user = await requireUser();

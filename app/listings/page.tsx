@@ -35,14 +35,18 @@ export default async function ListingsIndexPage() {
     name: listing.name,
     description: listing.description,
     subdirectory: listing.subdirectory,
-    price: Math.floor(listing.price / 1000),
+    price: Math.floor((listing.price ?? 0) / 1000),
     businessModel: listing.businessModel,
     scale: listing.scale,
     maturity: listing.maturity,
-    trailing12MonthRevenue: Math.floor(listing.trailing12MonthRevenue / 1000),
-    trailing12MonthProfit: Math.floor(listing.trailing12MonthProfit / 1000),
-    profitMultiple: Math.floor(listing.profitMultiple),
-    revenueMultiple: Math.floor(listing.revenueMultiple),
+    trailing12MonthRevenue: Math.floor(
+      (listing.trailing12MonthRevenue ?? 0) / 1000
+    ),
+    trailing12MonthProfit: Math.floor(
+      (listing.trailing12MonthProfit ?? 0) / 1000
+    ),
+    profitMultiple: Math.floor(listing.profitMultiple ?? 0),
+    revenueMultiple: Math.floor(listing.revenueMultiple ?? 0),
   }));
 
   return (
@@ -54,7 +58,7 @@ export default async function ListingsIndexPage() {
       <FilteredListings
         listings={formattedListings}
         hiddenListingIds={hiddenListingIds}
-        buyerId={buyer?.id ?? ''}
+        buyerId={buyer?.id ?? ""}
         likedListingIds={likedListingIds}
       />
     </>
