@@ -187,25 +187,28 @@ export async function UpdateBuyerPriceRangeStepAction(
   if (submission.status !== "success") {
     return submission.reply();
   }
+  const min = formData.get("minValue") as string;
+  const max = formData.get("maxValue") as string;
 
-  const data = await prisma.buyer.update({
+  const parsedMin = parseFloat(min);
+  const parsedMax = parseFloat(max);
+
+  await prisma.buyer.update({
     where: { userId: user.id },
     data: {
-      priceRange: submission.value.priceRange,
+      minProfitMultiple: parsedMin,
+      maxProfitMultiple: parsedMax,
       onboardingStep: "revenuemultiple",
     },
   });
 
-  return {
-    status: "success",
-    data: ["Price range updated successfully"],
-  };
+  return redirect(`/onboarding/buyers/revenuemultiple`);
 }
 
 export async function UpdateBuyerRevenueMultipleStepAction(
-  prevState: FormSubmissionState,
+  state: SubmissionResult<string[]> | undefined, 
   formData: FormData
-) {
+): Promise<SubmissionResult<string[]>>  {
   const user = await requireUser();
 
   const submission = parseWithZod(formData, {
@@ -234,9 +237,9 @@ export async function UpdateBuyerRevenueMultipleStepAction(
 }
 
 export async function UpdateBuyerProfitMultipleStepAction(
-  prevState: FormSubmissionState,
+  state: SubmissionResult<string[]> | undefined, 
   formData: FormData
-) {
+): Promise<SubmissionResult<string[]>>  {
   const user = await requireUser();
 
   const submission = parseWithZod(formData, {
@@ -263,9 +266,9 @@ export async function UpdateBuyerProfitMultipleStepAction(
 }
 
 export async function UpdateBuyerTrailingProfitStepAction(
-  prevState: FormSubmissionState,
+  state: SubmissionResult<string[]> | undefined, 
   formData: FormData
-) {
+): Promise<SubmissionResult<string[]>>  {
   const user = await requireUser();
 
   const submission = parseWithZod(formData, {
@@ -292,9 +295,9 @@ export async function UpdateBuyerTrailingProfitStepAction(
   return redirect(`/onboarding/buyers/trailingrevenue`);
 }
 export async function UpdateBuyerTrailingRevenueStepAction(
-  prevState: FormSubmissionState,
+  state: SubmissionResult<string[]> | undefined, 
   formData: FormData
-) {
+): Promise<SubmissionResult<string[]>>  {
   const user = await requireUser();
 
   const submission = parseWithZod(formData, {

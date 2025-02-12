@@ -6,8 +6,10 @@ import {
 } from "@/app/utils/actions/onboardingActions";
 
 import { PriceRangeFormSchema } from "@/app/utils/zodSchemas";
-import { ChartDataItem } from "./charts/Chart";
+
 import Chart from "./charts/Chart";
+import { ChartDataItem } from "@/app/utils/chartTypes";
+
 import { CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { SubmitButton } from "@/components/dashboard/SubmitButtons";
@@ -23,7 +25,7 @@ interface PriceRangeFormProps {
   chartData?: ChartDataItem[];
 }
 
-export function PriceRangeForm({ chartData }: PriceRangeFormProps) {
+export function PriceRangeForm({ chartData = [] }: PriceRangeFormProps) {
   const [lastResult, action] = useActionState(
     UpdateBuyerPriceRangeStepAction,
     undefined

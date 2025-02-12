@@ -7,7 +7,7 @@ export async function getListingPrices(): Promise<number[]> {
   });
 
   return listings.map((listing) =>
-    listing.price
+    listing.price ?? 0
   );
 }
 
@@ -17,7 +17,7 @@ export async function getRevenueMultiples(): Promise<number[]> {
   });
 
   return revMultiples.map((listing) =>
-    listing.revenueMultiple
+    listing.revenueMultiple ?? 0
   );
 }
 
@@ -27,7 +27,7 @@ export async function getProfitMultiples(): Promise<number[]> {
   });
 
   return profitMultiples.map((listing) =>
-    listing.profitMultiple
+    listing.profitMultiple ?? 0
   );
 }
 
@@ -37,7 +37,7 @@ export async function getTrailingRevenue(): Promise<number[]> {
   });
 
   return revMultiples.map((listing) =>
-    listing.trailing12MonthRevenue
+    listing.trailing12MonthRevenue ?? 0
   );
 }
 
@@ -47,7 +47,7 @@ export async function getTrailingProfit(): Promise<number[]> {
   });
 
   return profitMultiples.map((listing) =>
-    listing.trailing12MonthProfit
+    listing.trailing12MonthProfit ?? 0
   );
 }
 
@@ -68,18 +68,12 @@ export function groupDataIntoBins(
 }
 
 // Convert binned data into a chart-friendly format
-export function createBinCounts(bins: number[]): {
-  count: number;
-}[] {
+
+export function createChartData(arr: number[], range: number, numBins: number) {
+  const bins = groupDataIntoBins(arr, range, numBins);
+  
   return bins.map((count, i) => ({
     id: i,
     count: count,
   }));
-}
-
-export function createChartData(arr: number[], range: number, numBins: number) {
-  const bins = groupDataIntoBins(arr, range, numBins);
-  const binCounts = createBinCounts(bins);
-
-  return binCounts;
 }

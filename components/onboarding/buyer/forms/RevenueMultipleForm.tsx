@@ -1,9 +1,14 @@
 "use client";
 
-import { handleBackNavigation, UpdateBuyerRevenueMultipleStepAction } from "@/app/utils/actions/onboardingActions";
+import {
+  handleBackNavigation,
+  UpdateBuyerRevenueMultipleStepAction,
+} from "@/app/utils/actions/onboardingActions";
 
 import { RevenueMultipleFormSchema } from "@/app/utils/zodSchemas";
 import Chart from "./charts/Chart";
+import { ChartDataItem } from "@/app/utils/chartTypes";
+
 import { CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { SubmitButton } from "@/components/dashboard/SubmitButtons";
@@ -16,10 +21,12 @@ import { Label } from "@radix-ui/react-dropdown-menu";
 import { Button } from "@/components/ui/button";
 
 interface RevenueMultipleFormProps {
-  chartData?: any;
+  chartData?: ChartDataItem[];
 }
 
-export function RevenueMultipleForm({ chartData }: RevenueMultipleFormProps) {
+export function RevenueMultipleForm({
+  chartData = [],
+}: RevenueMultipleFormProps) {
   const [lastResult, action] = useActionState(
     UpdateBuyerRevenueMultipleStepAction,
     undefined
@@ -63,7 +70,11 @@ export function RevenueMultipleForm({ chartData }: RevenueMultipleFormProps) {
         </CardContent>
 
         <CardFooter className="w-full flex justify-between">
-          <Button type="submit" variant="ghost" onClick={() => handleBackNavigation("revenuemultiple")}>
+          <Button
+            type="submit"
+            variant="ghost"
+            onClick={() => handleBackNavigation("revenuemultiple")}
+          >
             Back
           </Button>
           <SubmitButton text="Next" />

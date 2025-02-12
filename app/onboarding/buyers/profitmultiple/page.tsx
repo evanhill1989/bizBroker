@@ -14,7 +14,6 @@ import {
 export default async function ProfitMultiplePage() {
   const profitMultipleArr = await getProfitMultiples();
 
-  console.log(profitMultipleArr, "profitMultipleArr in chart page");
   const chartData = createChartData(profitMultipleArr, 1, 10);
 
   return (

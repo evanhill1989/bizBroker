@@ -1,26 +1,32 @@
 "use client";
 
-import { handleBackNavigation, UpdateBuyerTrailingProfitStepAction } from "@/app/utils/actions/onboardingActions";
+import {
+  handleBackNavigation,
+  UpdateBuyerTrailingProfitStepAction,
+} from "@/app/utils/actions/onboardingActions";
 
 import { TrailingProfitFormSchema } from "@/app/utils/zodSchemas";
 import Chart from "./charts/Chart";
+import { ChartDataItem } from "@/app/utils/chartTypes";
+
 import { CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { SubmitButton } from "@/components/dashboard/SubmitButtons";
-import { BackButton } from "@/components/dashboard/BackButton";
 
 import { useForm } from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod";
-import { useActionState, useState } from "react";
+import { useActionState } from "react";
 
 import { Label } from "@radix-ui/react-dropdown-menu";
 import { Button } from "@/components/ui/button";
 
 interface TrailingProfitFormProps {
-  chartData?: any;
+  chartData?: ChartDataItem[];
 }
 
-export function TrailingProfitForm({ chartData }: TrailingProfitFormProps) {
+export function TrailingProfitForm({
+  chartData = [],
+}: TrailingProfitFormProps) {
   const [lastResult, action] = useActionState(
     UpdateBuyerTrailingProfitStepAction,
     undefined
@@ -64,7 +70,11 @@ export function TrailingProfitForm({ chartData }: TrailingProfitFormProps) {
         </CardContent>
 
         <CardFooter className="w-full flex justify-between">
-          <Button type="submit" variant="ghost" onClick={() => handleBackNavigation("trailingprofit")}>
+          <Button
+            type="submit"
+            variant="ghost"
+            onClick={() => handleBackNavigation("trailingprofit")}
+          >
             Back
           </Button>
           <SubmitButton text="Next" />

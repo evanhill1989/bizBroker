@@ -1,26 +1,33 @@
 "use client";
 
-import { handleBackNavigation, UpdateBuyerProfitMultipleStepAction } from "@/app/utils/actions/onboardingActions";
+import {
+  handleBackNavigation,
+  UpdateBuyerProfitMultipleStepAction,
+} from "@/app/utils/actions/onboardingActions";
 
 import { ProfitMultipleFormSchema } from "@/app/utils/zodSchemas";
 import Chart from "./charts/Chart";
+
 import { CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { SubmitButton } from "@/components/dashboard/SubmitButtons";
-import { BackButton } from "@/components/dashboard/BackButton";
 
 import { useForm } from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod";
-import { useActionState, useState } from "react";
+import { useActionState } from "react";
 
 import { Label } from "@radix-ui/react-dropdown-menu";
 import { Button } from "@/components/ui/button";
 
+import { ChartDataItem } from "@/app/utils/chartTypes";
+
 interface ProfitMultipleFormProps {
-  chartData?: any;
+  chartData?: ChartDataItem[];
 }
 
-export function ProfitMultipleForm({ chartData }: ProfitMultipleFormProps) {
+export function ProfitMultipleForm({
+  chartData = [],
+}: ProfitMultipleFormProps) {
   const [lastResult, action] = useActionState(
     UpdateBuyerProfitMultipleStepAction,
     undefined
@@ -64,7 +71,11 @@ export function ProfitMultipleForm({ chartData }: ProfitMultipleFormProps) {
         </CardContent>
 
         <CardFooter className="w-full flex justify-between">
-          <Button type="submit" variant="ghost" onClick={() => handleBackNavigation("profitmultiple")}>
+          <Button
+            type="submit"
+            variant="ghost"
+            onClick={() => handleBackNavigation("profitmultiple")}
+          >
             Back
           </Button>
           <SubmitButton text="Next" />

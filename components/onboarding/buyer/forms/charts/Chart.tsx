@@ -1,5 +1,7 @@
 // should i make this "use server"?
 
+import { ChartDataItem } from "@/app/utils/chartTypes";
+
 export default function Chart({
   chartData,
   chartName,
@@ -32,9 +34,4 @@ export default function Chart({
       </div>
     </div>
   );
-}
-
-export interface ChartDataItem {
-  id: string | number;
-  count: number;
 }
