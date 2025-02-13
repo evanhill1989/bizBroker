@@ -1,10 +1,10 @@
-import { requireUser } from "../utils/requireUser";
+import { getUser } from "../utils/getUser";
 import { prisma } from "@/lib/prisma";
 
 import FilteredListings from "@/components/listings/FilteredListings";
 
 export default async function ListingsIndexPage() {
-  const user = await requireUser();
+  const user = await getUser();
 
   const buyer = await prisma.buyer.findUnique({
     where: { userId: user.id },
