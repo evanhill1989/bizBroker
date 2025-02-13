@@ -20,11 +20,21 @@ type Listing = {
   id: string;
   name: string;
   businessModel: string;
+  maturity: string;
   description: string;
   trailing12MonthRevenue: number;
   trailing12MonthProfit: number;
   price: number;
 };
+
+interface Filters {
+  businessModel: string[];
+  priceRange: {
+    min: number;
+    max: number;
+  };
+  maturity: string[];
+}
 
 export default function FilteredListings({
   listings,
@@ -37,10 +47,11 @@ export default function FilteredListings({
   buyerId: string;
   likedListingIds: Set<string>;
 }) {
-  const [filters, setFilters] = useState({
-    businessModel: ["online", "b2b", "retail"],
-    priceRange: null,
-    maturity: [],
+  const [filters, setFilters] = useState<Filters>({
+    businessModel: [],
+    priceRange: { min: 0, max: 1000 },
+
+    maturity: [], // Added maturity property
   });
 
   const [localHiddenListingIds, setLocalHiddenListingIds] = useState(
@@ -55,6 +66,14 @@ export default function FilteredListings({
       }
 
       if (!filters.businessModel.includes(listing.businessModel)) {
+        return false;
+      }
+
+      // Add maturity filter
+      if (
+        filters.maturity.length > 0 &&
+        !filters.maturity.includes(listing.maturity)
+      ) {
         return false;
       }
 
@@ -92,7 +111,7 @@ export default function FilteredListings({
     } catch (error) {
       // Log the error for debugging purposes
       console.error("Failed to update listing preference:", error);
-      
+
       // If server update fails, revert local state
       setLocalHiddenListingIds((prev) => {
         const reverted = new Set(prev);
@@ -104,7 +123,11 @@ export default function FilteredListings({
 
   return (
     <>
-      <FilterBar filters={filters} setFilters={setFilters} />{" "}
+      <FilterBar
+        filters={filters}
+        setFilters={(updater) => setFilters(updater)}
+      />
+
       {/* ✅ Now passing filters */}
       <div className="grid grid-cols-3 gap-12">
         {filteredListings.map((listing) => (

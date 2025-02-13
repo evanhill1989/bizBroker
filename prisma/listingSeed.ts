@@ -52,31 +52,26 @@ function generateListings(sellerId: string, userId: string) {
     businessModel: faker.helpers.arrayElement(businessModels),
     location: faker.location.city() + ", " + faker.location.country(),
     maturity: faker.helpers.arrayElement(["Startup", "Growing", "Established"]),
-    price: faker.commerce.price({
+    price: parseFloat(faker.commerce.price({
       min: 10000,
       max: 500000,
-      dec: 0,
-      symbol: "$",
-    }),
-    profitMultiple: faker.number
-      .float({ min: 1.5, max: 6, precision: 0.1 })
-      .toString(),
-    revenueMultiple: faker.number
-      .float({ min: 2, max: 8, precision: 0.1 })
-      .toString(),
+      dec: 0
+    })),
+    profitMultiple: faker.number.float({ min: 1.5, max: 6 }),
+    revenueMultiple: faker.number.float({ min: 2, max: 8 }),
     scale: faker.helpers.arrayElement(["Local", "National", "Global"]),
-    trailing12MonthProfit: faker.commerce.price({
+    trailing12MonthProfit: parseFloat(faker.commerce.price({
       min: 20000,
       max: 200000,
       dec: 0,
       symbol: "$",
-    }),
-    trailing12MonthRevenue: faker.commerce.price({
+    })),
+    trailing12MonthRevenue: parseFloat(faker.commerce.price({
       min: 50000,
       max: 500000,
       dec: 0,
       symbol: "$",
-    }),
+    })),
   }));
 }
 
