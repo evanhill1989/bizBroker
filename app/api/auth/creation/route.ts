@@ -48,19 +48,24 @@ export async function GET() {
     });
 
     console.log("New user created:", newUser);
-    return NextResponse.redirect(
-      `http://localhost:3000/onboarding/buyers/intro`
-    );
+    return NextResponse.redirect( process.env.NODE_ENV === "production"
+      ? `http://bizlists.vercel.app/onboarding/buyers/intro`
+      : `http://localhost:3000/onboarding/buyers/intro`);
   } else if (!onboardedUser && buyer) {
     // this conditional just very specifically tests/satisfies my current state.
     console.log("User not onboarded, redirecting to onboarding");
-    return NextResponse.redirect(
-      `http://localhost:3000/onboarding/buyers/${buyer.onboardingStep}`
-    );
+    return NextResponse.redirect( process.env.NODE_ENV === "production"
+      ? `http://bizlists.vercel.app/onboarding/buyers/${buyer.onboardingStep}`
+      : `http://localhost:3000/onboarding/buyers/${buyer.onboardingStep}`);
+  
   } else if (onboardedUser) {
     console.log("User already onboarded, redirecting to dashboard");
-    return NextResponse.redirect("http://localhost:3000/dashboard/buyer"); // Redirect to onboarding if incomplete
+    return NextResponse.redirect( process.env.NODE_ENV === "production"
+      ? "https://bizlists.vercel.app/dashboard/buyer"
+      : "http://localhost:3000/dashboard/buyer"); // Redirect to onboarding if incomplete
   } else {
-    return NextResponse.redirect("http://localhost:3000/onboarding");
+    return NextResponse.redirect( process.env.NODE_ENV === "production"
+      ? "https://bizlists.vercel.app/onboarding"
+      : "http://localhost:3000/onboarding");
   }
 }
