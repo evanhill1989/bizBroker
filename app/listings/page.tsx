@@ -1,10 +1,12 @@
-import { getUser } from "../utils/getUser";
+export const dynamic = "force-dynamic";
+
 import { prisma } from "@/lib/prisma";
+import { requireUser } from "../utils/requireUser";
 
 import FilteredListings from "@/components/listings/FilteredListings";
 
 export default async function ListingsIndexPage() {
-  const user = await getUser();
+  const user = await requireUser();
 
   const buyer = await prisma.buyer.findUnique({
     where: { userId: user.id },
