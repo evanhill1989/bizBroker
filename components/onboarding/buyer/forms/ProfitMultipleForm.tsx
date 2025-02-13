@@ -19,7 +19,7 @@ import { useActionState } from "react";
 import { Label } from "@radix-ui/react-dropdown-menu";
 import { Button } from "@/components/ui/button";
 
-import { ChartDataItem } from "@/app/utils/chartTypes";
+import { ChartDataItem } from "@/app/utils/types/chartTypes";
 
 interface ProfitMultipleFormProps {
   chartData?: ChartDataItem[];

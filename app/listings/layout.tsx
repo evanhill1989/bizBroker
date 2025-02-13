@@ -1,14 +1,20 @@
 import { ModeToggle } from "@/components/dashboard/ModeToggle";
 import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { CircleUser } from "lucide-react";
 import { ReactNode } from "react";
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
+import UserBasedRecommendations from "@/components/listings/UserBasedRecommendations";
 
-export default function DashboardLayout({ children }: { children: ReactNode }) {
+export default function ListingsLayout({ children }: { children: ReactNode }) {
   return (
     <div>
-       <div className="flex flex-col">
+      <div className="flex flex-col">
         <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
           <div className="ml-auto flex items-center gap-x-5">
             <ModeToggle />
@@ -31,9 +37,11 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             </DropdownMenu>
           </div>
         </header>
-        <main className="grid  w-11/12 max-w-9xl mx-auto">{children}</main>
+        <main className="grid  w-11/12 max-w-9xl mx-auto">
+          {children}
+          <UserBasedRecommendations />
+        </main>
       </div>
-      
     </div>
   );
 }

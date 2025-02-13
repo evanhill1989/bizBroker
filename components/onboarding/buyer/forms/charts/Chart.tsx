@@ -1,6 +1,6 @@
 // should i make this "use server"?
 
-import { ChartDataItem } from "@/app/utils/chartTypes";
+import { ChartDataItem } from "@/app/utils/types/chartTypes";
 
 export default function Chart({
   chartData,

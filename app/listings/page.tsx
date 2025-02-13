@@ -37,18 +37,24 @@ export default async function ListingsIndexPage() {
     name: listing.name,
     description: listing.description,
     subdirectory: listing.subdirectory,
-    price: Math.floor((listing.price ?? 0) / 1000),
+    createdAt: listing.createdAt,
+    updatedAt: listing.updatedAt,
+    imageUrl: listing.imageUrl,
+    userId: listing.userId,
+    sellerId: listing.sellerId,
     businessModel: listing.businessModel,
-    scale: listing.scale,
+    location: listing.location,
     maturity: listing.maturity,
-    trailing12MonthRevenue: Math.floor(
-      (listing.trailing12MonthRevenue ?? 0) / 1000
-    ),
-    trailing12MonthProfit: Math.floor(
-      (listing.trailing12MonthProfit ?? 0) / 1000
-    ),
-    profitMultiple: Math.floor(listing.profitMultiple ?? 0),
-    revenueMultiple: Math.floor(listing.revenueMultiple ?? 0),
+    price: listing.price,
+    profitMultiple: listing.profitMultiple,
+    revenueMultiple: listing.revenueMultiple,
+    scale: listing.scale,
+    trailing12MonthProfit: listing.trailing12MonthProfit,
+    trailing12MonthRevenue: listing.trailing12MonthRevenue,
+    posts: [],
+    BuyerListingPreference: [],
+    Seller: undefined,
+    User: undefined,
   }));
 
   return (

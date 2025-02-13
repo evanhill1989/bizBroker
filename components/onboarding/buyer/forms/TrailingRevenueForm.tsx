@@ -7,7 +7,7 @@ import {
 
 import { TrailingRevenueFormSchema } from "@/app/utils/zodSchemas";
 import Chart from "./charts/Chart";
-import { ChartDataItem } from "@/app/utils/chartTypes";
+import { ChartDataItem } from "@/app/utils/types/chartTypes";
 
 import { CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
