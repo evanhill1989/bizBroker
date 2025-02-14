@@ -37,7 +37,7 @@ export default function ListingsLayout({ children }: { children: ReactNode }) {
             </DropdownMenu>
           </div>
         </header>
-        <main className="grid  w-11/12 max-w-9xl mx-auto">
+        <main className="grid bg-muted w-full p-16 max-w-9xl mx-auto">
           {children}
           <UserBasedRecommendations />
         </main>

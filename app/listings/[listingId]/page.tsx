@@ -15,24 +15,49 @@ export default async function ListingIdRoute({
 }: {
   params: { listingId: string };
 }) {
-  const listing = await getListingById(params.listingId);
+  // I think there's a pattern for awaiting params that i've used elsewhere. I should look into it
+  const { listingId } = await params;
+  const listing = await getListingById(listingId);
 
   return (
-    <>
-      <section>
-        <div>
-          <div>
-            <Goal />
-            <h2>Listing Category</h2>
+    <div className="max-w-7xl mx-auto ">
+      <section className="my-10 bg-white p-16 rounded-sm border border-slate-300">
+        <div className="profile-basics grid grid-rows-2 justify-between py-6 gap-4">
+          <div className="flex items-center gap-4">
+            <Goal size={32} />
+            <h2 className="text-xl font-bold">#LISTINGCATEGORY</h2>
             <LocationWidget />
           </div>
-          <h1>Listing ID: {listing?.name}</h1>
+          <h4 className="text-lg font-semibold text-slate-900">
+            This is a super short description communicating 2 ideas
+          </h4>
         </div>
+        <div className="divider my-14 h-[1px] w-full bg-slate-300"></div>
         <div className="price">
-          <div>
-            <h3>Price</h3>
-            <p>{listing?.price}</p>
+          <div className="flex gap-4">
+            <div>
+              <h5 className="text-slate-400 font-semibold text-xs uppercase tracking-wide">
+                Price
+              </h5>
+              <p className="text-3xl text-muted-foreground font-semibold">
+                {listing?.price}
+              </p>
+            </div>
+            <div>
+              <h5 className="text-slate-400 font-semibold text-xs uppercase tracking-wide">
+                Multiples
+              </h5>
+              <div className="flex gap-4">
+                <p className="text-3xl text-muted-foreground font-semibold">
+                  {listing?.revenueMultiple}X Revenue
+                </p>
+                <p className="text-3xl text-muted-foreground font-semibold">
+                  {listing?.profitMultiple}X Profit
+                </p>
+              </div>
+            </div>
           </div>
+
           <div>
             <p>
               Price Reasoning will go here! Lorem ipsum dolor sit, amet
@@ -41,7 +66,8 @@ export default async function ListingIdRoute({
             </p>
           </div>
         </div>
-        <div className="financials">
+        <div className="divider my-14 h-[1px] w-full bg-slate-300"></div>
+        <div className="financials grid grid-cols-4 justify-between py-6 gap-4">
           {[
             {
               title: "TTM Revenue",
@@ -55,20 +81,26 @@ export default async function ListingIdRoute({
               title: "Last Month Revenue",
               value: "#LASTMONTHSREV",
             },
+            {
+              title: "Last Month Profit",
+              value: "#LASTMONTHSPROFIT",
+            },
           ].map(({ title, value }) => (
             <div key={title}>
               <h5 className="text-slate-400 font-semibold text-xs uppercase tracking-wide">
                 {title}
               </h5>
-              <div>
+              <div className="flex gap-2 mt-2">
                 <Goal />
                 <p className="text-lg font-semibold">{value}</p>
               </div>
             </div>
           ))}
         </div>
-        <div className="profile">
-          <div className="longform-description">
+        <div className="divider my-14 h-[1px] w-full bg-slate-300"></div>
+        <div className="profile-indepth">
+          <article className="longform-description prose">
+            <h2 className="text-xl font-bold">Company Profile</h2>
             <p className="underline text-lg font-semibold">#LONGDESCRIPTION</p>
             <p>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odio,
@@ -97,14 +129,76 @@ export default async function ListingIdRoute({
               laborum, unde reprehenderit accusamus saepe voluptates ea.
               Doloribus, consequatur!
             </p>
+          </article>
+          <div className="flex gap-8 my-10">
+            <div>
+              <h5 className="text-slate-400 font-semibold text-xs uppercase tracking-wide">
+                Date Founded
+              </h5>
+              <p className="underline mt-2 text-lg">#DateFounded</p>
+            </div>
+            <div>
+              <h5 className="text-slate-400 font-semibold text-xs uppercase tracking-wide">
+                # Employees
+              </h5>
+              <p className="underline mt-2 text-lg">#EMPLOYEES</p>
+            </div>
+          </div>
+          <div className="my-10">
+            <h5 className="text-slate-400 font-semibold text-xs uppercase tracking-wide">
+              Business Model
+            </h5>
+            <p className="underline mt-2 text-lg">#BUSINESSMODEL</p>
+          </div>
+          <div className="my-10">
+            <h5 className="text-slate-400 font-semibold text-xs uppercase tracking-wide">
+              Competitors
+            </h5>
+            <p className="underline mt-2 text-lg">#COMPETITORS</p>
+          </div>
+          <div className="my-10">
+            <h5 className="text-slate-400 font-semibold text-xs uppercase tracking-wide">
+              Growth Opportunities
+            </h5>
+            <p className="underline mt-2 text-lg">#GROWTHOPPORTUNITIES</p>
+          </div>
+          <div className="my-10">
+            <h5 className="text-slate-400 font-semibold text-xs uppercase tracking-wide">
+              Assets
+            </h5>
+            <p className="underline mt-2 text-lg">#ASSETS</p>
+          </div>
+        </div>
+        <div className="divider my-14 h-[1px] w-full bg-slate-300"></div>
+        <div className="acquisition-details">
+          <h2 className="text-xl font-bold">Acquisition Details</h2>
+          <div>
+            <h5 className="text-slate-400 font-semibold text-xs uppercase tracking-wide">
+              Reason for selling
+            </h5>
+            <p>
+              <span className="underline bold">#SELLINGREASON</span>Lorem ipsum
+              dolor sit amet consectetur, adipisicing elit. Quasi est
+              reprehenderit dicta provident corporis optio sit, porro aut quis
+              dolor sunt voluptates consequuntur, pariatur inventore unde vitae
+              sapiente possimus facilis.
+            </p>
           </div>
           <div>
-            <h4>Date Founded</h4>
-            <p className="underline">#DateFounded</p>
+            <h5 className="text-slate-400 font-semibold text-xs uppercase tracking-wide">
+              Financing
+            </h5>
+            <p>
+              <span className="underline bold">#FINANCING</span>Lorem ipsum
+              dolor sit amet consectetur, adipisicing elit. Quasi est
+              reprehenderit dicta provident corporis optio sit, porro aut quis
+              dolor sunt voluptates consequuntur, pariatur inventore unde vitae
+              sapiente possimus facilis.
+            </p>
           </div>
         </div>
       </section>
       <section className="metrics"></section>
-    </>
+    </div>
   );
 }
