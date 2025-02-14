@@ -9,8 +9,8 @@ import {
   deleteListingPreference,
 } from "@/app/utils/actions/actions";
 import FilteredCard from "./FilteredCard";
-import { ListingType } from "@/app/utils/types/dbTypes";
-import { FormattedFilteredListingType } from "@/app/utils/types/listingTypes";
+
+import { FormattedFilteredListListingType } from "@/app/utils/types/listingTypes";
 
 interface Filters {
   businessModel: string[];
@@ -27,7 +27,7 @@ export default function FilteredListings({
   buyerId,
   likedListingIds,
 }: {
-  listing={mapListingToFiltered(listing)};
+  listings: FormattedFilteredListListingType[];
   hiddenListingIds: Set<string>;
   buyerId: string;
   likedListingIds: Set<string>;
@@ -35,7 +35,6 @@ export default function FilteredListings({
   const [filters, setFilters] = useState<Filters>({
     businessModel: [],
     priceRange: { min: 0, max: 1000 },
-
     maturity: [],
   });
 
