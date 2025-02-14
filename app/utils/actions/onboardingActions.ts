@@ -84,6 +84,8 @@ export async function handleBackNavigation(currentStep: string) {
 
   redirect(`/onboarding/buyers/${previousStep}`);
 
+
+// DOES THIS CONTINUE RUNNING IN BG AFTER REDIRECT?
   const user = await requireUser();
   
   await prisma.buyer.update({

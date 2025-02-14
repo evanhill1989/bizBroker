@@ -9,7 +9,8 @@ import {
   deleteListingPreference,
 } from "@/app/utils/actions/actions";
 import FilteredCard from "./FilteredCard";
-import { ListingType } from "@/app/utils/types/listingTypes";
+import { ListingType } from "@/app/utils/types/dbTypes";
+import { FormattedFilteredListingType } from "@/app/utils/types/listingTypes";
 
 interface Filters {
   businessModel: string[];
@@ -26,7 +27,7 @@ export default function FilteredListings({
   buyerId,
   likedListingIds,
 }: {
-  listings: ListingType[];
+  listing={mapListingToFiltered(listing)};
   hiddenListingIds: Set<string>;
   buyerId: string;
   likedListingIds: Set<string>;

@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { requireUser } from "../utils/requireUser";
 
 import FilteredListings from "@/components/listings/FilteredListings";
+import { mapToFormattedListing } from "@/app/utils/types/mappers";
 
 export default async function ListingsIndexPage() {
   const user = await requireUser();
@@ -31,6 +32,8 @@ export default async function ListingsIndexPage() {
   );
 
   const listings = await prisma.listing.findMany();
+
+  const formattedListing = mapToFormattedListing(listings);
 
   const formattedListings = listings.map((listing) => ({
     id: listing.id,

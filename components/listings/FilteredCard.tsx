@@ -1,8 +1,9 @@
 import { EyeOff, Heart, Sunrise } from "lucide-react";
 import { Card, CardDescription, CardFooter, CardHeader } from "../ui/card";
 import { Toggle } from "../ui/toggle";
-import { ListingType } from "@/app/utils/types/listingTypes";
+
 import Link from "next/link";
+import { FormattedFilteredListingType } from "@/app/utils/types/listingTypes";
 
 export default function FilteredCard({
   listing,
@@ -10,7 +11,7 @@ export default function FilteredCard({
   onFavorite,
   onHide,
 }: {
-  listing: ListingType;
+  listing: FormattedFilteredListingType;
   likedListingIds: Set<string>;
   onFavorite: (id: string) => void;
   onHide: (id: string) => void;
@@ -27,20 +28,13 @@ export default function FilteredCard({
           <div className="like-toggles flex gap-4">
             <Toggle
               asChild
-              onPressedChange={() => {
-                onFavorite(listing.id);
-              }}
+              onPressedChange={() => onFavorite(listing.id)}
               defaultPressed={likedListingIds.has(listing.id)}
             >
               <Heart size={20} />
             </Toggle>
 
-            <Toggle
-              asChild
-              onPressedChange={() => {
-                onHide(listing.id);
-              }}
-            >
+            <Toggle asChild onPressedChange={() => onHide(listing.id)}>
               <EyeOff size={20} />
             </Toggle>
           </div>
@@ -54,10 +48,7 @@ export default function FilteredCard({
               TTM Revenue
             </p>
             <p className="text-lg font-semibold">
-              $
-              {listing.trailing12MonthRevenue &&
-                Math.round(listing.trailing12MonthRevenue / 1000)}
-              K
+              {listing.formattedTrailing12MonthRevenue}
             </p>
           </div>
           <div>
@@ -65,19 +56,14 @@ export default function FilteredCard({
               TTM profit
             </p>
             <p className="text-lg font-semibold">
-              $
-              {listing.trailing12MonthProfit &&
-                Math.round(listing.trailing12MonthProfit / 1000)}
-              K
+              {listing.formattedTrailing12MonthProfit}
             </p>
           </div>
           <div>
             <p className="text-slate-400 font-semibold text-xs uppercase tracking-wide">
               Asking Price
             </p>
-            <p className="text-lg font-semibold">
-              ${listing.price && Math.round(listing.price / 1000)}K
-            </p>
+            <p className="text-lg font-semibold">{listing.formattedPrice}</p>
           </div>
         </CardFooter>
       </Card>
