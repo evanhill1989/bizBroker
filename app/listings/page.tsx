@@ -35,31 +35,6 @@ export default async function ListingsIndexPage() {
 
   const formattedListings = listings.map(mapToFormattedListing);
 
-  // const formattedListings = listings.map((listing) => ({
-  //   id: listing.id,
-  //   name: listing.name,
-  //   description: listing.description,
-  //   subdirectory: listing.subdirectory,
-  //   createdAt: listing.createdAt,
-  //   updatedAt: listing.updatedAt,
-  //   imageUrl: listing.imageUrl,
-  //   userId: listing.userId,
-  //   sellerId: listing.sellerId,
-  //   businessModel: listing.businessModel,
-  //   location: listing.location,
-  //   maturity: listing.maturity,
-  //   price: listing.price,
-  //   profitMultiple: listing.profitMultiple,
-  //   revenueMultiple: listing.revenueMultiple,
-  //   scale: listing.scale,
-  //   trailing12MonthProfit: listing.trailing12MonthProfit,
-  //   trailing12MonthRevenue: listing.trailing12MonthRevenue,
-  //   posts: [],
-  //   BuyerListingPreference: [],
-  //   Seller: undefined,
-  //   User: undefined,
-  // }));
-
   return (
     <>
       <h1 className="text-2xl font-semibold mt-5 mb-10 pb-5 border-b-[1px] border-slate-200">

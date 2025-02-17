@@ -3,7 +3,7 @@ import { Card, CardDescription, CardFooter, CardHeader } from "../ui/card";
 import { Toggle } from "../ui/toggle";
 
 import Link from "next/link";
-import { FormattedFilteredListListingType } from "@/app/utils/types/listingTypes";
+import { FormattedFilteredListingType } from "@/app/utils/types/listingTypes";
 
 export default function FilteredCard({
   listing,
@@ -11,7 +11,7 @@ export default function FilteredCard({
   onFavorite,
   onHide,
 }: {
-  listing: FormattedFilteredListListingType;
+  listing: FormattedFilteredListingType;
   likedListingIds: Set<string>;
   onFavorite: (id: string) => void;
   onHide: (id: string) => void;
