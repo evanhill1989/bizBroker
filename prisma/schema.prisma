@@ -86,44 +86,37 @@ model Seller {
 }
 
 model Listing {
-  id               String   @id @default(uuid())
-  name             String
-  description      String
-  microDescription String?
-  longDescription  String?
-  subdirectory     String   @unique
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-  imageUrl         String?
-  userId           String?
-  sellerId         String?
-
-  businessModel String
-  scale         String?
-  maturity      String
-
-  location            String
-  foundedDate         DateTime?
-  numEmployees        Int?
-  competitors         String[]
-  growthOpportunities String[]
-  assets              String[]
-
-  sellingReason String
-  financing     String
-
-  price           Float?
-  profitMultiple  Float?
-  revenueMultiple Float?
-
+  id                     String                   @id @default(uuid())
+  name                   String
+  description            String
+  shortDescription       String?
+  longDescription        String?
+  subdirectory           String                   @unique
+  createdAt              DateTime                 @default(now())
+  updatedAt              DateTime                 @updatedAt
+  imageUrl               String?
+  userId                 String?
+  sellerId               String?
+  businessModel          String
+  scale                  String?
+  maturity               String
+  location               String
+  foundedDate            DateTime?
+  numEmployees           Int?
+  competitors            String[]
+  growthOpportunities    String[]
+  assets                 String[]
+  sellingReason          String?
+  financing              String?
+  price                  Float?
+  profitMultiple         Float?
+  revenueMultiple        Float?
   trailing12MonthProfit  Float?
   trailing12MonthRevenue Float?
   lastMonthRevenue       Float?
   lastMonthProfit        Float?
-
-  Seller Seller? @relation(fields: [sellerId], references: [id])
-  User   User?   @relation(fields: [userId], references: [id])
-
+  Seller                 Seller?                  @relation(fields: [sellerId], references: [id])
+  User                   User?                    @relation(fields: [userId], references: [id])
   posts                  Post[]
   BuyerListingPreference BuyerListingPreference[]
 }
