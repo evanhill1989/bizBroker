@@ -33,7 +33,9 @@ export default async function ListingsIndexPage() {
 
   const listings = await prisma.listing.findMany();
 
-  const formattedListings = listings.map(mapToFormattedListing);
+  const formattedListings = listings.map((listing) =>
+    mapToFormattedListing(listing)
+  );
 
   return (
     <>

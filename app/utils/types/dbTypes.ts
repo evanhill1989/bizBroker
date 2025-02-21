@@ -2,8 +2,8 @@ export interface ListingType {
   id: string;
   name: string;
   description: string;
-  shortDescription?: string;
-  longDescription?: string;
+  shortDescription?: string | null;
+  longDescription?: string | null;
   subdirectory: string;
   createdAt: Date;
   updatedAt: Date;

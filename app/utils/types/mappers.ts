@@ -27,17 +27,18 @@ export function mapToFormattedListing(
   };
 }
 
-export function mapToFormattedListingDetails(
+export function formatListingDetails(
   listing: ListingDetailsType
 ): FormattedListingDetailsType {
   return {
     id: listing.id,
     name: listing.name,
     description: listing.description,
+
+    longDescription: listing.longDescription ? listing.longDescription : "#N/A",
     shortDescription: listing.shortDescription
       ? listing.shortDescription
       : "#N/A",
-    longDescription: listing.longDescription ? listing.longDescription : "#N/A",
     businessModel: listing.businessModel,
     scale: listing.scale ? listing.scale : "#N/A",
     maturity: listing.maturity,
@@ -59,16 +60,16 @@ export function mapToFormattedListingDetails(
       ? `${Math.round(listing.revenueMultiple)}`
       : "#N/A",
     trailing12MonthProfit: listing.trailing12MonthProfit
-      ? `$${Math.round(listing.trailing12MonthProfit / 100)}0K`
+      ? `$${Math.round(listing.trailing12MonthProfit / 1000)}K`
       : "#N/A",
     trailing12MonthRevenue: listing.trailing12MonthRevenue
-      ? `$${Math.round(listing.trailing12MonthRevenue / 100)}0K`
+      ? `$${Math.round(listing.trailing12MonthRevenue / 1000)}K`
       : "#N/A",
     lastMonthRevenue: listing.lastMonthRevenue
-      ? `$${Math.round(listing.lastMonthRevenue / 100)}0K`
+      ? `$${Math.round(listing.lastMonthRevenue / 1000)}K`
       : "#N/A",
     lastMonthProfit: listing.lastMonthProfit
-      ? `$${Math.round(listing.lastMonthProfit / 100)}0K`
+      ? `$${Math.round(listing.lastMonthProfit / 1000)}K`
       : "#N/A",
   };
 }

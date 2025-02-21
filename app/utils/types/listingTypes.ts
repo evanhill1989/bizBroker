@@ -45,7 +45,7 @@ export type FormattedListingDetailsType = {
   id: string;
   name: string;
   description: string;
-  shortDescription: string;
+  shortDescription: string ;
   longDescription: string;
   businessModel: string;
   scale: string;
