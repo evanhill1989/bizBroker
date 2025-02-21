@@ -10,13 +10,11 @@ async function getListingById(listingId: string) {
   });
 }
 
-export default async function ListingIdRoute({
-  params,
-}: {
-  params: { listingId: string };
+export default async function ListingIdRoute(props: {
+  params: Promise<{ listingId: string }>;
 }) {
   // I think there's a pattern for awaiting params that i've used elsewhere. I should look into it
-  const { listingId } = await params;
+  const { listingId } = await props.params;
   const listing = await getListingById(listingId);
 
   return (
