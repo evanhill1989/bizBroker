@@ -1,6 +1,6 @@
 "use client";
 
-import { handleBackNavigation } from "@/app/utils/actions/buyerOnboardingActions";
+import { handleBackNavigation } from "@/app/utils/actions/onboardingActions";
 import { SubmitButton } from "@/components/dashboard/SubmitButtons";
 import { Button } from "@/components/ui/button";
 import { CardContent, CardFooter } from "@/components/ui/card";

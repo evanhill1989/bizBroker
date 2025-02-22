@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  handleBackNavigation,
-  UpdateBuyerTrailingProfitStepAction,
-} from "@/app/utils/actions/buyerOnboardingActions";
+import { handleBackNavigation } from "@/app/utils/actions/onboardingActions";
 
 import { TrailingProfitFormSchema } from "@/app/utils/zodSchemas";
 import Chart from "./charts/Chart";
@@ -19,6 +16,7 @@ import { useActionState } from "react";
 
 import { Label } from "@radix-ui/react-dropdown-menu";
 import { Button } from "@/components/ui/button";
+import { UpdateBuyerTrailingProfitStepAction } from "@/app/utils/actions/buyerOnboardingActions";
 
 interface TrailingProfitFormProps {
   chartData?: ChartDataItem[];

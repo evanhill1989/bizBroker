@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  handleBackNavigation,
-  UpdateBuyerPriceRangeStepAction,
-} from "@/app/utils/actions/buyerOnboardingActions";
-
+import { handleBackNavigation } from "@/app/utils/actions/onboardingActions";
 import { PriceRangeFormSchema } from "@/app/utils/zodSchemas";
 
 import Chart from "./charts/Chart";
@@ -20,6 +16,7 @@ import { useActionState } from "react";
 
 import { Label } from "@radix-ui/react-dropdown-menu";
 import { Button } from "@/components/ui/button";
+import { UpdateBuyerPriceRangeStepAction } from "@/app/utils/actions/buyerOnboardingActions";
 
 interface PriceRangeFormProps {
   chartData?: ChartDataItem[];

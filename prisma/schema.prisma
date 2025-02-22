@@ -9,94 +9,57 @@ datasource db {
 }
 
 model User {
-  id                  String    @id @unique
-  email               String    @unique
+  id                  String   @id @unique
+  email               String   @unique
   firstName           String?
   lastName            String?
   profileImage        String?
-  createdAt           DateTime  @default(now())
-  onboardingCompleted Boolean   @default(false)
-  buyerProfile        Buyer?    @relation("BuyerProfile")
-  Listing             Listing[]
-  Post                Post[]
-  sellerProfile       Seller?   @relation("SellerProfile")
-}
+  createdAt           DateTime @default(now())
+  onboardingCompleted Boolean  @default(false)
 
-model Buyer {
-  id                String    @id @unique @default(uuid())
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
-  userId            String    @unique
-  onboardingStep    String    @default("intro")
-  onboardingSkipped Boolean   @default(false)
-  user              User      @relation("BuyerProfile", fields: [userId], references: [id])
-  inquiries         Inquiry[]
+  // Buyer fields
+  buyerOnboardingStep            String                   @default("intro")
+  buyerOnboardingSkipped         Boolean                  @default(false)
+  buyerListingPreferences        BuyerListingPreference[]
+  buyerScale                     String?
+  buyerMaturity                  String?
+  buyerBusinessModel             String?
+  buyerLocation                  String?
+  buyerMinPriceRange             Float?
+  buyerMaxPriceRange             Float?
+  buyerMinProfitMultiple         Float?
+  buyerMaxProfitMultiple         Float?
+  buyerMinRevenueMultiple        Float?
+  buyerMaxRevenueMultiple        Float?
+  buyerMinTrailing12MonthProfit  Float?
+  buyerMaxTrailing12MonthProfit  Float?
+  buyerMinTrailing12MonthRevenue Float?
+  buyerMaxTrailing12MonthRevenue Float?
 
-  listingPreferences BuyerListingPreference[]
+  // Seller fields
+  sellerBusinessNames     String[]
+  sellerOnboardingStep    String    @default("intro")
+  sellerOnboardingSkipped Boolean   @default(false)
+  sellerPhoneNumber       String
+  sellerWebsite           String?
+  sellerListings          Listing[] @relation("UserListings") // Specify relation name
 
-  scale         String?
-  maturity      String?
-  businessModel String?
-  location      String?
-
-  minPriceRange Float?
-  maxPriceRange Float?
-
-  minProfitMultiple Float?
-  maxProfitMultiple Float?
-
-  minRevenueMultiple Float?
-  maxRevenueMultiple Float?
-
-  minTrailing12MonthProfit Float?
-  maxTrailing12MonthProfit Float?
-
-  minTrailing12MonthRevenue Float?
-  maxTrailing12MonthRevenue Float?
-}
-
-model BuyerListingPreference {
-  id        String           @id @default(uuid())
-  buyerId   String
-  listingId String
-  status    PreferenceStatus
-
-  buyer   Buyer   @relation(fields: [buyerId], references: [id], onDelete: Cascade)
-  listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
-
-  @@unique([buyerId, listingId]) // Ensures a buyer can only have one preference per listing
-}
-
-enum PreferenceStatus {
-  LIKED
-  HIDDEN
-}
-
-model Seller {
-  id          String    @id @unique @default(uuid())
-  companyName String
-  phoneNumber String
-  website     String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  userId      String    @unique
-  Inquiry     Inquiry[]
-  listings    Listing[]
-  user        User      @relation("SellerProfile", fields: [userId], references: [id])
+  // Relationships
+  Inquiry Inquiry[]
+  Post    Post[]
 }
 
 model Listing {
-  id                     String                   @id @default(uuid())
+  id                     String    @id @default(uuid())
   businessName           String
   description            String
   shortDescription       String?
   longDescription        String?
-  subdirectory           String                   @unique
-  createdAt              DateTime                 @default(now())
-  updatedAt              DateTime                 @updatedAt
+  subdirectory           String    @unique
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
   imageUrl               String?
-  userId                 String?
-  sellerId               String?
+  userId                 String
   businessModel          String
   scale                  String?
   maturity               String
@@ -113,12 +76,28 @@ model Listing {
   revenueMultiple        Float?
   trailing12MonthProfit  Float?
   trailing12MonthRevenue Float?
-  lastMonthRevenue       Float?
-  lastMonthProfit        Float?
-  Seller                 Seller?                  @relation(fields: [sellerId], references: [id])
-  User                   User?                    @relation(fields: [userId], references: [id])
+
   posts                  Post[]
   BuyerListingPreference BuyerListingPreference[]
+
+  User User @relation(fields: [userId], references: [id], name: "UserListings")
+}
+
+model BuyerListingPreference {
+  id        String           @id @default(uuid())
+  userId    String
+  listingId String
+  status    PreferenceStatus
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, listingId]) // Ensures a user can only have one preference per listing
+}
+
+enum PreferenceStatus {
+  LIKED
+  HIDDEN
 }
 
 model Post {
@@ -142,8 +121,6 @@ model Inquiry {
   status    String   @default("pending")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  buyerId   String
-  sellerId  String
-  buyer     Buyer    @relation(fields: [buyerId], references: [id])
-  seller    Seller   @relation(fields: [sellerId], references: [id])
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
 }

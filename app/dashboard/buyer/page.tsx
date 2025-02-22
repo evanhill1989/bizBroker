@@ -24,6 +24,7 @@ import {
   MapPinHouse,
   Sunrise,
 } from "lucide-react";
+import { redirect } from "next/navigation";
 
 export default async function BuyerDashboardPage() {
   const user = await requireUser();
@@ -32,8 +33,11 @@ export default async function BuyerDashboardPage() {
     where: { userId: user.id },
   });
 
+  if (buyer?.onboardingStep === "intro")
+    return redirect("/onboarding/buyers/intro");
+
   if (!buyer) {
-    return <div>No matching listings found.</div>;
+    return redirect("/onboarding/buyers/intro");
   }
 
   const matchingListings = await getExactMatchListings(buyer);

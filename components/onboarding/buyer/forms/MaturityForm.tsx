@@ -1,15 +1,12 @@
 "use client";
 
-import {
-  handleBackNavigation,
-  UpdateBuyerMaturityStepAction,
-} from "@/app/utils/actions/buyerOnboardingActions";
-
+import { handleBackNavigation } from "@/app/utils/actions/onboardingActions";
 import { CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { SubmitButton } from "@/components/dashboard/SubmitButtons";
 
 import { Button } from "@/components/ui/button";
+import { UpdateBuyerMaturityStepAction } from "@/app/utils/actions/buyerOnboardingActions";
 
 export function MaturityForm() {
   return (

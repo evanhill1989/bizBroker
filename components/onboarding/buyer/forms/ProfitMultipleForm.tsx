@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  handleBackNavigation,
-  UpdateBuyerProfitMultipleStepAction,
-} from "@/app/utils/actions/buyerOnboardingActions";
+import { handleBackNavigation } from "@/app/utils/actions/onboardingActions";
 
 import { ProfitMultipleFormSchema } from "@/app/utils/zodSchemas";
 import Chart from "./charts/Chart";
@@ -20,6 +17,7 @@ import { Label } from "@radix-ui/react-dropdown-menu";
 import { Button } from "@/components/ui/button";
 
 import { ChartDataItem } from "@/app/utils/types/chartTypes";
+import { UpdateBuyerProfitMultipleStepAction } from "@/app/utils/actions/buyerOnboardingActions";
 
 interface ProfitMultipleFormProps {
   chartData?: ChartDataItem[];
