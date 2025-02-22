@@ -21,10 +21,8 @@ export default function buyerIntroRoute() {
     <div className="flex flex-col items-center justify-center">
       <Card className="max-w-[450px]">
         <CardHeader>
-          <CardTitle>Create Listing</CardTitle>
-          <CardDescription>
-            Create your Listing here. Click button below when finished.
-          </CardDescription>
+          <CardTitle>Build your first search</CardTitle>
+          <CardDescription></CardDescription>
         </CardHeader>
 
         <CardContent>

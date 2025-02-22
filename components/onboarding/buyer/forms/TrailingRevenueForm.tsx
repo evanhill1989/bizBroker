@@ -3,7 +3,7 @@
 import {
   handleBackNavigation,
   UpdateBuyerTrailingRevenueStepAction,
-} from "@/app/utils/actions/onboardingActions";
+} from "@/app/utils/actions/buyerOnboardingActions";
 
 import { TrailingRevenueFormSchema } from "@/app/utils/zodSchemas";
 import Chart from "./charts/Chart";

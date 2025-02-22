@@ -87,7 +87,7 @@ model Seller {
 
 model Listing {
   id                     String                   @id @default(uuid())
-  name                   String
+  businessName           String
   description            String
   shortDescription       String?
   longDescription        String?

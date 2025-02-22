@@ -3,7 +3,7 @@
 import {
   handleBackNavigation,
   UpdateBuyerPriceRangeStepAction,
-} from "@/app/utils/actions/onboardingActions";
+} from "@/app/utils/actions/buyerOnboardingActions";
 
 import { PriceRangeFormSchema } from "@/app/utils/zodSchemas";
 

@@ -1,20 +1,16 @@
 "use client";
 
-import {
-  handleBackNavigation,
-  UpdateBuyerBusinessModelStepAction,
-} from "@/app/utils/actions/buyerOnboardingActions";
-
+import { handleBackNavigation } from "@/app/utils/actions/buyerOnboardingActions";
+import { SubmitButton } from "@/components/dashboard/SubmitButtons";
+import { Button } from "@/components/ui/button";
 import { CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { SubmitButton } from "@/components/dashboard/SubmitButtons";
+import { UpdateDescriptions } from "@/app/utils/actions/sellerOnboardingActions";
 
-import { Button } from "@/components/ui/button";
-
-export function BusinessModelForm() {
+export default function DescriptionsForm() {
   return (
     <>
-      <form action={UpdateBuyerBusinessModelStepAction}>
+      <form action={UpdateDescriptions}>
         <CardContent>
           <fieldset className="flex flex-col space-y-2">
             <legend className="text-lg font-medium">

@@ -2,8 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { parseWithZod } from "@conform-to/zod";
-import {  SubmissionResult } from "@conform-to/react";
-
+import { SubmissionResult } from "@conform-to/react";
 
 import {
   BuyerSchema,
@@ -15,7 +14,6 @@ import {
 } from "../zodSchemas";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "../requireUser";
-
 
 export async function UpdateBuyerAction(formData: FormData) {
   const user = await requireUser();
@@ -38,64 +36,6 @@ export async function UpdateBuyerAction(formData: FormData) {
   });
   void data;
   return redirect("/buyer/dashboard");
-}
-
-export async function StartOnboarding() {
-  const user = await requireUser();
-
-  await prisma.buyer.update({
-    where: { userId: user.id },
-    data: {
-      onboardingStep: "scale",
-    },
-  });
-
-  return redirect("/onboarding/buyers/scale");
-}
-
-export async function OnboardingSkipped() {
-  const user = await requireUser();
-
-  await prisma.buyer.update({
-    where: { id: user.id },
-    data: {
-      onboardingSkipped: true,
-    },
-  });
-
-  return redirect("/buyer/dashboard");
-}
-
-export async function handleBackNavigation(currentStep: string) {
-  const stepMapping: { [key: string]: string } = {
-    'location': 'trailingrevenue',
-    'trailingrevenue': 'trailingprofit',
-    'trailingprofit': 'revenuemultiple',
-    'revenuemultiple': 'profitmultiple',
-    'profitmultiple': 'revenuemargin',
-    'revenuemargin': 'profitmargin',
-    'profitmargin': 'price',
-    'price': 'businessmodel',
-    'businessmodel': 'maturity',
-
-  };
-
-  const previousStep = stepMapping[currentStep];
-
-  redirect(`/onboarding/buyers/${previousStep}`);
-
-
-// DOES THIS CONTINUE RUNNING IN BG AFTER REDIRECT?
-  const user = await requireUser();
-  
-  await prisma.buyer.update({
-    where: { userId: user.id },
-    data: {
-      onboardingStep: previousStep
-    }
-  });
-
-  
 }
 
 export async function UpdateBuyerScaleStepAction(formData: FormData) {
@@ -174,10 +114,8 @@ export async function UpdateBuyerBusinessModelStepAction(formData: FormData) {
   return redirect(`/onboarding/buyers/price`);
 }
 
-
-
 export async function UpdateBuyerPriceRangeStepAction(
-  state: SubmissionResult<string[]> | undefined, 
+  state: SubmissionResult<string[]> | undefined,
   formData: FormData
 ): Promise<SubmissionResult<string[]>> {
   const user = await requireUser();
@@ -207,9 +145,9 @@ export async function UpdateBuyerPriceRangeStepAction(
 }
 
 export async function UpdateBuyerRevenueMultipleStepAction(
-  state: SubmissionResult<string[]> | undefined, 
+  state: SubmissionResult<string[]> | undefined,
   formData: FormData
-): Promise<SubmissionResult<string[]>>  {
+): Promise<SubmissionResult<string[]>> {
   const user = await requireUser();
 
   const submission = parseWithZod(formData, {
@@ -238,9 +176,9 @@ export async function UpdateBuyerRevenueMultipleStepAction(
 }
 
 export async function UpdateBuyerProfitMultipleStepAction(
-  state: SubmissionResult<string[]> | undefined, 
+  state: SubmissionResult<string[]> | undefined,
   formData: FormData
-): Promise<SubmissionResult<string[]>>  {
+): Promise<SubmissionResult<string[]>> {
   const user = await requireUser();
 
   const submission = parseWithZod(formData, {
@@ -267,9 +205,9 @@ export async function UpdateBuyerProfitMultipleStepAction(
 }
 
 export async function UpdateBuyerTrailingProfitStepAction(
-  state: SubmissionResult<string[]> | undefined, 
+  state: SubmissionResult<string[]> | undefined,
   formData: FormData
-): Promise<SubmissionResult<string[]>>  {
+): Promise<SubmissionResult<string[]>> {
   const user = await requireUser();
 
   const submission = parseWithZod(formData, {
@@ -296,9 +234,9 @@ export async function UpdateBuyerTrailingProfitStepAction(
   return redirect(`/onboarding/buyers/trailingrevenue`);
 }
 export async function UpdateBuyerTrailingRevenueStepAction(
-  state: SubmissionResult<string[]> | undefined, 
+  state: SubmissionResult<string[]> | undefined,
   formData: FormData
-): Promise<SubmissionResult<string[]>>  {
+): Promise<SubmissionResult<string[]>> {
   const user = await requireUser();
 
   const submission = parseWithZod(formData, {
@@ -336,14 +274,12 @@ export async function UpdateBuyerLocationStepAction(formData: FormData) {
     },
   });
 
- 
   await prisma.user.update({
-      where: { id: user.id },
-      data: {
-        onboardingCompleted: true,
-      },
-    })
-  
+    where: { id: user.id },
+    data: {
+      onboardingCompleted: true,
+    },
+  });
 
   return redirect(`/dashboard/buyer`);
 }

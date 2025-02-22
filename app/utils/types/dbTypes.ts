@@ -1,6 +1,6 @@
 export interface ListingType {
   id: string;
-  name: string;
+  businessName: string;
   description: string;
   shortDescription?: string | null;
   longDescription?: string | null;
@@ -90,6 +90,8 @@ enum PreferenceStatusType {
 
 interface SellerType {
   id: string;
+  onboardingStep: string;
+  onboardingSkipped: boolean;
   companyName: string;
   phoneNumber: string;
   website?: string;

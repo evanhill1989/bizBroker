@@ -5,7 +5,7 @@ import { ListingType } from "./dbTypes";
 export type FilteredListingType = Pick<
   ListingType,
   | "id"
-  | "name"
+  | "businessName"
   | "description"
   | "maturity"
   | "businessModel"
@@ -17,7 +17,7 @@ export type FilteredListingType = Pick<
 // Define a formatted version of the type
 export type FormattedFilteredListingType = {
   id: string;
-  name: string;
+  businessName: string;
   description: string;
   maturity: string;
   businessModel: string;
@@ -43,9 +43,9 @@ export type ListingDetailsType = Omit<
 
 export type FormattedListingDetailsType = {
   id: string;
-  name: string;
+  businessName: string;
   description: string;
-  shortDescription: string ;
+  shortDescription: string;
   longDescription: string;
   businessModel: string;
   scale: string;

@@ -3,7 +3,7 @@
 import {
   handleBackNavigation,
   UpdateBuyerProfitMultipleStepAction,
-} from "@/app/utils/actions/onboardingActions";
+} from "@/app/utils/actions/buyerOnboardingActions";
 
 import { ProfitMultipleFormSchema } from "@/app/utils/zodSchemas";
 import Chart from "./charts/Chart";
