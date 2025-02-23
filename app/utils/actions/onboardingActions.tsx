@@ -1,8 +1,6 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { parseWithZod } from "@conform-to/zod";
-import { SubmissionResult } from "@conform-to/react";
 
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "../requireUser";
@@ -10,10 +8,10 @@ import { requireUser } from "../requireUser";
 export async function StartOnboarding() {
   const user = await requireUser();
 
-  await prisma.buyer.update({
-    where: { userId: user.id },
+  await prisma.user.update({
+    where: { id: user.id },
     data: {
-      onboardingStep: "scale",
+      buyerOnboardingStep: "scale",
     },
   });
 
@@ -23,10 +21,10 @@ export async function StartOnboarding() {
 export async function OnboardingSkipped() {
   const user = await requireUser();
 
-  await prisma.buyer.create({
+  await prisma.user.update({
     where: { id: user.id },
     data: {
-      onboardingSkipped: true,
+      buyerOnboardingStep: "complete",
     },
   });
 
@@ -55,10 +53,10 @@ export async function handleBackNavigation(currentStep: string) {
   // DOES THIS CONTINUE RUNNING IN BG AFTER REDIRECT?
   const user = await requireUser();
 
-  await prisma.buyer.update({
-    where: { userId: user.id },
+  await prisma.user.update({
+    where: { id: user.id },
     data: {
-      onboardingStep: previousStep,
+      buyerOnboardingStep: previousStep,
     },
   });
 }

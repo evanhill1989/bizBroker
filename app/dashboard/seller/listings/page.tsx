@@ -62,13 +62,15 @@ export default async function ListingsRoute() {
             <Card key={listing.id}>
               <Image
                 src={listing.imageUrl ?? DefaultImage}
-                alt={listing.name}
+                alt={listing.businessName}
                 className="rounded-t-lg object-cover w-full h-[200px]"
                 width={400}
                 height={200}
               />
               <CardHeader>
-                <CardTitle className="truncate">{listing.name}</CardTitle>
+                <CardTitle className="truncate">
+                  {listing.businessName}
+                </CardTitle>
                 <CardDescription className="line-clamp-3">
                   {listing.description}
                 </CardDescription>

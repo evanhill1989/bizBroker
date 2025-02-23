@@ -22,7 +22,7 @@ export default function FilteredCard({
         <CardHeader className="flex flex-row p-0 justify-between">
           <div className="flex gap-2">
             <Sunrise />
-            <h2 className="text-md font-semibold">{listing.name}</h2>
+            <h2 className="text-md font-semibold">{listing.businessName}</h2>
             <p>{listing.businessModel}</p>
           </div>
           <div className="like-toggles flex gap-4">

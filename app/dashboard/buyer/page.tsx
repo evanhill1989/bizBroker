@@ -29,18 +29,14 @@ import { redirect } from "next/navigation";
 export default async function BuyerDashboardPage() {
   const user = await requireUser();
 
-  const buyer = await prisma.buyer.findUnique({
-    where: { userId: user.id },
+  const dbUser = await prisma.user.findUnique({
+    where: { id: user.id },
   });
 
-  if (buyer?.onboardingStep === "intro")
-    return redirect("/onboarding/buyers/intro");
+  if (dbUser?.buyerOnboardingStep !== "complete")
+    return redirect(`/onboarding/buyers/${dbUser?.buyerOnboardingStep}`);
 
-  if (!buyer) {
-    return redirect("/onboarding/buyers/intro");
-  }
-
-  const matchingListings = await getExactMatchListings(buyer);
+  const matchingListings = await getExactMatchListings(dbUser);
 
   return (
     <div className="grid grid-rows-3 gap-12">

@@ -20,7 +20,7 @@ async function getData(subDir: string) {
       subdirectory: subDir,
     },
     select: {
-      name: true,
+      businessName: true,
       posts: {
         select: {
           smallDescription: true,
@@ -62,7 +62,9 @@ export default async function BlogIndexPage(props: {
             width={40}
             height={40}
           />
-          <h1 className="text-3xl font-semibold tracking-tight">{data.name}</h1>
+          <h1 className="text-3xl font-semibold tracking-tight">
+            {data.businessName}
+          </h1>
         </div>
 
         <div className="col-span-1 flex justify-end w-full">

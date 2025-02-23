@@ -2,15 +2,13 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { parseWithZod} from "@conform-to/zod";
+import { parseWithZod } from "@conform-to/zod";
 
-
-import { PostSchema} from "../zodSchemas";
+import { PostSchema } from "../zodSchemas";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "../requireUser";
 
-import { Listing, Buyer } from "@prisma/client";
-
+import { Listing, User } from "@prisma/client";
 
 export async function CreatePostAction(prevState: any, formData: FormData) {
   const user = await requireUser();
@@ -112,87 +110,90 @@ export async function DeleteListing(formData: FormData) {
   return redirect(`/dashboard/listings`);
 }
 
-
-
-
-export async function getExactMatchListings(buyer: Buyer): Promise<Listing[]> {
-  if (!buyer) return [];
+export async function getExactMatchListings(dbUser: User): Promise<Listing[]> {
+  if (!dbUser) return [];
 
   const {
-    businessModel,
-    
-    maturity,
-    scale,
-    minPriceRange,
-    maxPriceRange,
-    minProfitMultiple,
-    maxProfitMultiple,
+    buyerBusinessModel,
+
+    buyerMaturity,
+    buyerScale,
+    buyerMinPriceRange,
+    buyerMaxPriceRange,
+    buyerMinProfitMultiple,
+    buyerMaxProfitMultiple,
     // minRevenueMultiple,
     // maxRevenueMultiple,
     // minTrailing12MonthProfit,
     // maxTrailing12MonthProfit,
     // minTrailing12MonthRevenue,
     // maxTrailing12MonthRevenue,
-  } = buyer;
+  } = dbUser;
 
   const listings = await prisma.listing.findMany({
     where: {
       // Match nullable string values exactly
-      businessModel: businessModel ? { equals: businessModel } : undefined,
-      
-      maturity: maturity ? { equals: maturity } : undefined,
-      scale: scale ? { equals: scale } : undefined,
+      businessModel: buyerBusinessModel
+        ? { equals: buyerBusinessModel }
+        : undefined,
+
+      maturity: buyerMaturity ? { equals: buyerMaturity } : undefined,
+      scale: buyerScale ? { equals: buyerScale } : undefined,
 
       price: {
-        gte: minPriceRange ?? undefined,
-        lte: maxPriceRange ?? undefined,
+        gte: buyerMinPriceRange ?? undefined,
+        lte: buyerMaxPriceRange ?? undefined,
       },
       profitMultiple: {
-        gte: minProfitMultiple ?? undefined,
-        lte: maxProfitMultiple ?? undefined,
+        gte: buyerMinProfitMultiple ?? undefined,
+        lte: buyerMaxProfitMultiple ?? undefined,
       },
       // revenueMultiple: {
-      //   gte: minRevenueMultiple ?? undefined,
-      //   lte: maxRevenueMultiple ?? undefined,
+      //   gte: buyerMinRevenueMultiple ?? undefined,
+      //   lte: buyerMaxRevenueMultiple ?? undefined,
       // },
       // trailing12MonthProfit: {
-      //   gte: minTrailing12MonthProfit ?? undefined,
-      //   lte: maxTrailing12MonthProfit ?? undefined,
+      //   gte: buyerMinTrailing12MonthProfit ?? undefined,
+      //   lte: buyerMaxTrailing12MonthProfit ?? undefined,
       // },
       // trailing12MonthRevenue: {
-      //   gte: minTrailing12MonthRevenue ?? undefined,
-      //   lte: maxTrailing12MonthRevenue ?? undefined,
+      //   gte: buyerMinTrailing12MonthRevenue ?? undefined,
+      //   lte: buyerMaxTrailing12MonthRevenue ?? undefined,
       // },
     },
   });
 
   const formattedListings = listings.map((listing) => {
     listing.businessModel = listing.businessModel ?? "Unknown";
-    
+
     listing.maturity = listing.maturity ?? "Unknown";
     listing.scale = listing.scale ?? "Unknown";
-    listing.trailing12MonthProfit = Math.floor((listing.trailing12MonthProfit ?? 0) / 1000);
-    listing.trailing12MonthRevenue = Math.floor((listing.trailing12MonthRevenue ?? 0) / 1000);
+    listing.trailing12MonthProfit = Math.floor(
+      (listing.trailing12MonthProfit ?? 0) / 1000
+    );
+    listing.trailing12MonthRevenue = Math.floor(
+      (listing.trailing12MonthRevenue ?? 0) / 1000
+    );
     listing.price = Math.floor((listing.price ?? 0) / 1000);
-    listing.profitMultiple = Math.floor(listing.profitMultiple ?? 0) ;
-    listing.revenueMultiple = Math.floor(listing.revenueMultiple ?? 0) ;
+    listing.profitMultiple = Math.floor(listing.profitMultiple ?? 0);
+    listing.revenueMultiple = Math.floor(listing.revenueMultiple ?? 0);
 
     return listing;
-  })
+  });
 
   return formattedListings;
 }
 
 export async function updateListingPreference(
-  buyerId: string,
+  userId: string,
   listingId: string,
-  status: 'HIDDEN' | 'LIKED'
+  status: "HIDDEN" | "LIKED"
 ) {
   try {
     await prisma.buyerListingPreference.upsert({
       where: {
-        buyerId_listingId: {
-          buyerId,
+        userId_listingId: {
+          userId,
           listingId,
         },
       },
@@ -200,7 +201,7 @@ export async function updateListingPreference(
         status,
       },
       create: {
-        buyerId,
+        userId,
         listingId,
         status,
       },
@@ -208,23 +209,26 @@ export async function updateListingPreference(
 
     return { success: true };
   } catch (error) {
-    console.error("Failed to update preference:", error instanceof Error ? error.message : String(error));
-    return { 
-      success: false, 
-      error: error instanceof Error ? error.message : String(error)
+    console.error(
+      "Failed to update preference:",
+      error instanceof Error ? error.message : String(error)
+    );
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : String(error),
     };
   }
 }
 
 export async function deleteListingPreference(
-  buyerId: string,
+  userId: string,
   listingId: string
 ) {
   try {
     await prisma.buyerListingPreference.delete({
       where: {
-        buyerId_listingId: {
-          buyerId,
+        userId_listingId: {
+          userId,
           listingId,
         },
       },
@@ -232,10 +236,13 @@ export async function deleteListingPreference(
 
     return { success: true };
   } catch (error) {
-    console.error("Failed to delete preference:", error instanceof Error ? error.message : String(error));
-    return { 
-      success: false, 
-      error: error instanceof Error ? error.message : String(error)
+    console.error(
+      "Failed to delete preference:",
+      error instanceof Error ? error.message : String(error)
+    );
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : String(error),
     };
   }
 }

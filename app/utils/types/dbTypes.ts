@@ -9,7 +9,7 @@ export interface ListingType {
   updatedAt: Date;
   imageUrl?: string | null;
   userId?: string | null;
-  sellerId?: string | null;
+
   businessModel: string;
   scale?: string | null;
   maturity: string;
@@ -28,58 +28,80 @@ export interface ListingType {
   trailing12MonthRevenue?: number | null;
   lastMonthRevenue?: number | null;
   lastMonthProfit?: number | null;
-  Seller?: SellerType | null;
-  User?: UserType | null;
+
+  User?: DbUserType | null;
   posts: PostType[];
   BuyerListingPreference: BuyerListingPreferenceType[];
 }
 
-interface UserType {
+export interface DbUserType {
   id: string;
   email: string;
   firstName?: string;
   lastName?: string;
   profileImage?: string;
   createdAt: Date;
-  onboardingCompleted: boolean;
-  buyerProfile?: BuyerType;
-  sellerProfile?: SellerType;
-  listings: ListingType[];
+  updatedAt: Date;
+
+  buyerOnboardingStep: string;
+
+  buyerListingPreferences: BuyerListingPreferenceType[];
+  buyerScale: string;
+  buyerMaturity: string;
+  buyerBusinessModel: string;
+  buyerLocation: string;
+  buyerMinPriceRange: number;
+  buyerMaxPriceRange: number;
+  buyerMinProfitMultiple: number;
+  buyerMaxProfitMultiple: number;
+  buyerMinRevenueMultiple: number;
+  buyerMaxRevenueMultiple: number;
+  buyerMinTrailing12MonthProfit: number;
+  buyerMaxTrailing12MonthProfit: number;
+  buyerMinTrailing12MonthRevenue: number;
+  buyerMaxTrailing12MonthRevenue: number;
+
+  sellerBusinessNames: string[];
+  sellerOnboardingStep: string;
+  sellerPhoneNumber: string;
+  sellerWebsite?: string;
+  sellerListings: ListingType[];
+  Inquiry: InquiryType[];
   posts: PostType[];
 }
 
-interface BuyerType {
-  id: string;
-  createdAt: Date;
-  updatedAt: Date;
-  userId: string;
-  onboardingStep: string;
-  onboardingSkipped: boolean;
-  user: UserType;
-  inquiries: InquiryType[];
-  listingPreferences: BuyerListingPreferenceType[];
-  scale?: string;
-  maturity?: string;
-  businessModel?: string;
-  location?: string;
-  minPriceRange?: number;
-  maxPriceRange?: number;
-  minProfitMultiple?: number;
-  maxProfitMultiple?: number;
-  minRevenueMultiple?: number;
-  maxRevenueMultiple?: number;
-  minTrailing12MonthProfit?: number;
-  maxTrailing12MonthProfit?: number;
-  minTrailing12MonthRevenue?: number;
-  maxTrailing12MonthRevenue?: number;
-}
+// interface BuyerType {
+//   id: string;
+//   createdAt: Date;
+//   updatedAt: Date;
+//   userId: string;
+//   onboardingStep: string;
+//   onboardingSkipped: boolean;
+//   user: UserType;
+//   inquiries: InquiryType[];
+//   listingPreferences: BuyerListingPreferenceType[];
+//   scale?: string;
+//   maturity?: string;
+//   businessModel?: string;
+//   location?: string;
+//   minPriceRange?: number;
+//   maxPriceRange?: number;
+//   minProfitMultiple?: number;
+//   maxProfitMultiple?: number;
+//   minRevenueMultiple?: number;
+//   maxRevenueMultiple?: number;
+//   minTrailing12MonthProfit?: number;
+//   maxTrailing12MonthProfit?: number;
+//   minTrailing12MonthRevenue?: number;
+//   maxTrailing12MonthRevenue?: number;
+// }
 
 interface BuyerListingPreferenceType {
   id: string;
   buyerId: string;
   listingId: string;
   status: PreferenceStatusType;
-  buyer: BuyerType;
+  buyer: DbUserType;
   listing: ListingType;
 }
 
@@ -88,20 +110,20 @@ enum PreferenceStatusType {
   HIDDEN = "HIDDEN",
 }
 
-interface SellerType {
-  id: string;
-  onboardingStep: string;
-  onboardingSkipped: boolean;
-  companyName: string;
-  phoneNumber: string;
-  website?: string;
-  createdAt: Date;
-  updatedAt: Date;
-  userId: string;
-  inquiries: InquiryType[];
-  listings: ListingType[];
-  user: UserType;
-}
+// interface SellerType {
+//   id: string;
+//   onboardingStep: string;
+//   onboardingSkipped: boolean;
+//   companyName: string;
+//   phoneNumber: string;
+//   website?: string;
+//   createdAt: Date;
+//   updatedAt: Date;
+//   userId: string;
+//   inquiries: InquiryType[];
+//   listings: ListingType[];
+//   user: UserType;
+// }
 
 interface InquiryType {
   id: string;
@@ -111,8 +133,8 @@ interface InquiryType {
   updatedAt: Date;
   buyerId: string;
   sellerId: string;
-  buyer: BuyerType;
-  seller: SellerType;
+  buyer: DbUserType;
+  seller: DbUserType;
 }
 
 interface PostType {
@@ -127,5 +149,5 @@ interface PostType {
   userId?: string;
   listingId?: string;
   listing?: ListingType;
-  user?: UserType;
+  user?: DbUserType;
 }

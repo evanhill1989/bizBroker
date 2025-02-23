@@ -11,7 +11,7 @@ export function mapToFormattedListing(
 ): FormattedFilteredListingType {
   return {
     id: listing.id,
-    name: listing.name,
+    businessName: listing.businessName,
     description: listing.description,
     maturity: listing.maturity,
     businessModel: listing.businessModel,
@@ -32,7 +32,7 @@ export function formatListingDetails(
 ): FormattedListingDetailsType {
   return {
     id: listing.id,
-    name: listing.name,
+    businessName: listing.businessName,
     description: listing.description,
 
     longDescription: listing.longDescription ? listing.longDescription : "#N/A",

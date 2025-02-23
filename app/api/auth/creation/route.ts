@@ -27,44 +27,35 @@ export async function GET() {
         email: user.email ?? "",
         profileImage:
           user.picture ?? `https://avatar.vercel.sh/${user.given_name}`,
-        // onboardingCompleted: false,
-      },
-    });
 
-    await prisma.buyer.create({
-      data: {
-        userId: user.id,
-        onboardingStep: "intro",
-        onboardingSkipped: false,
-        scale: null,
-        maturity: null,
-        businessModel: null,
-        location: null,
-        minPriceRange: null,
-        maxPriceRange: null,
-        minProfitMultiple: null,
-        maxProfitMultiple: null,
-        minRevenueMultiple: null,
-        maxRevenueMultiple: null,
-        minTrailing12MonthProfit: null,
-        maxTrailing12MonthProfit: null,
-        minTrailing12MonthRevenue: null,
-        maxTrailing12MonthRevenue: null,
-      },
-    });
+        buyerOnboardingStep: "intro",
+        buyerOnboardingSkipped: false,
+        buyerScale: null,
+        buyerMaturity: null,
+        buyerBusinessModel: null,
+        buyerLocation: null,
+        buyerMinPriceRange: null,
+        buyerMaxPriceRange: null,
+        buyerMinProfitMultiple: null,
+        buyerMaxProfitMultiple: null,
+        buyerMinRevenueMultiple: null,
+        buyerMaxRevenueMultiple: null,
+        buyerMinTrailing12MonthProfit: null,
+        buyerMaxTrailing12MonthProfit: null,
+        buyerMinTrailing12MonthRevenue: null,
+        buyerMaxTrailing12MonthRevenue: null,
 
-    await prisma.seller.create({
-      data: {
-        userId: user.id,
-        onboardingStep: "intro",
-        onboardingSkipped: false,
-        phoneNumber: null,
-        website: null,
-        businessNames: [],
+        sellerBusinessNames: [],
+
+        sellerOnboardingStep: "intro",
+        sellerOnboardingSkipped: false,
+        sellerPhoneNumber: "",
+        sellerWebsite: null,
       },
     });
 
     console.log("New user created:", newUser);
+    // initially we'll just let this be redirect to buyers, but probably need to grab the user intention if they clicked on "buyers" or "sellers" link from landing page passed via params. pretty aspirational though.
     return NextResponse.redirect(
       process.env.NODE_ENV === "production"
         ? `http://bizlists.vercel.app/onboarding/buyers/intro`
@@ -72,26 +63,32 @@ export async function GET() {
     );
   }
 
-  if (!onboardedUser && buyer) {
-    // this conditional just very specifically tests/satisfies my current state.
-    console.log("User not onboarded, redirecting to onboarding");
+  if (dbUser.buyerOnboardingStep === "complete") {
     return NextResponse.redirect(
       process.env.NODE_ENV === "production"
-        ? `http://bizlists.vercel.app/onboarding/buyers/${buyer.onboardingStep}`
-        : `http://localhost:3000/onboarding/buyers/${buyer.onboardingStep}`
+        ? `http://bizlists.vercel.app/dashboard/buyer`
+        : `http://localhost:3000/dashboard/buyer`
     );
-  } else if (onboardedUser) {
-    console.log("User already onboarded, redirecting to dashboard");
+  } else if (
+    !(dbUser.buyerOnboardingStep === "complete") &&
+    !(dbUser.sellerOnboardingStep === "complete")
+  ) {
     return NextResponse.redirect(
       process.env.NODE_ENV === "production"
-        ? "https://bizlists.vercel.app/dashboard/buyer"
-        : "http://localhost:3000/dashboard/buyer"
-    ); // Redirect to onboarding if incomplete
+        ? `http://bizlists.vercel.app/onboarding/buyers/${dbUser.buyerOnboardingStep}`
+        : `http://localhost:3000/onboarding/buyers/${dbUser.buyerOnboardingStep}`
+    );
+  } else if (dbUser.sellerOnboardingStep === "complete") {
+    return NextResponse.redirect(
+      process.env.NODE_ENV === "production"
+        ? `http://bizlists.vercel.app/dashboard/seller`
+        : `http://localhost:3000/dashboard/seller`
+    );
   } else {
     return NextResponse.redirect(
       process.env.NODE_ENV === "production"
-        ? "https://bizlists.vercel.app/onboarding"
-        : "http://localhost:3000/onboarding"
+        ? `http://bizlists.vercel.app/onboarding/sellers/${dbUser.sellerOnboardingStep}`
+        : `http://localhost:3000/onboarding/sellers/${dbUser.sellerOnboardingStep}`
     );
   }
 }

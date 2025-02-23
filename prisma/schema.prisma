@@ -15,11 +15,10 @@ model User {
   lastName            String?
   profileImage        String?
   createdAt           DateTime @default(now())
-  onboardingCompleted Boolean  @default(false)
-
+  updatedAt           DateTime @default(now()) @updatedAt
   // Buyer fields
-  buyerOnboardingStep            String                   @default("intro")
-  buyerOnboardingSkipped         Boolean                  @default(false)
+  buyerOnboardingStep String   @default("intro")
+
   buyerListingPreferences        BuyerListingPreference[]
   buyerScale                     String?
   buyerMaturity                  String?
@@ -37,12 +36,12 @@ model User {
   buyerMaxTrailing12MonthRevenue Float?
 
   // Seller fields
-  sellerBusinessNames     String[]
-  sellerOnboardingStep    String    @default("intro")
-  sellerOnboardingSkipped Boolean   @default(false)
-  sellerPhoneNumber       String
-  sellerWebsite           String?
-  sellerListings          Listing[] @relation("UserListings") // Specify relation name
+  sellerBusinessNames  String[]
+  sellerOnboardingStep String   @default("intro")
+
+  sellerPhoneNumber String?
+  sellerWebsite     String?
+  sellerListings    Listing[] @relation("UserListings") // Specify relation name
 
   // Relationships
   Inquiry Inquiry[]

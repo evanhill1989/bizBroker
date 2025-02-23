@@ -1,8 +1,6 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { parseWithZod } from "@conform-to/zod";
-import { SubmissionResult } from "@conform-to/react";
 
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "../requireUser";
@@ -15,8 +13,8 @@ export async function UpdateDescriptions(formData: FormData) {
   const shortDescription = formData.get("shortDescription") as string;
   const longDescription = formData.get("longDescription") as string;
 
-  const seller = await prisma.seller.findUnique({
-    where: { userId: user.id },
+  const seller = await prisma.user.findUnique({
+    where: { id: user.id },
   });
 
   if (!seller) {
@@ -24,7 +22,7 @@ export async function UpdateDescriptions(formData: FormData) {
   }
 
   await prisma.listing.update({
-    where: { userId: user.id },
+    where: { id: user.id },
     data: {
       businessName,
       description,
@@ -33,10 +31,10 @@ export async function UpdateDescriptions(formData: FormData) {
     },
   });
 
-  await prisma.seller.update({
-    where: { userId: user.id },
+  await prisma.user.update({
+    where: { id: user.id },
     data: {
-      onboardingStep: "price",
+      sellerOnboardingStep: "price",
     },
   });
 

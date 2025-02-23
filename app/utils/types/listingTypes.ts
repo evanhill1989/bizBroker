@@ -34,8 +34,6 @@ export type ListingDetailsType = Omit<
   | "updatedAt"
   | "imageUrl"
   | "userId"
-  | "sellerId"
-  | "Seller"
   | "User"
   | "posts"
   | "BuyerListingPreference"

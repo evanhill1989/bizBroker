@@ -24,12 +24,12 @@ interface Filters {
 export default function FilteredListings({
   listings,
   hiddenListingIds,
-  buyerId,
+  dbUserId,
   likedListingIds,
 }: {
   listings: FormattedFilteredListingType[];
   hiddenListingIds: Set<string>;
-  buyerId: string;
+  dbUserId: string;
   likedListingIds: Set<string>;
 }) {
   const [filters, setFilters] = useState<Filters>({
@@ -68,14 +68,14 @@ export default function FilteredListings({
   const handleFavoriteListing = async (listingId: string) => {
     if (likedListingIds.has(listingId)) {
       try {
-        await deleteListingPreference(buyerId, listingId);
+        await deleteListingPreference(dbUserId, listingId);
       } catch (error) {
         console.error("Failed to update listing preference:", error);
       }
       return;
     }
     try {
-      await updateListingPreference(buyerId, listingId, "LIKED");
+      await updateListingPreference(dbUserId, listingId, "LIKED");
     } catch (error) {
       console.error("Failed to update listing preference:", error);
     }
@@ -89,7 +89,7 @@ export default function FilteredListings({
     });
 
     try {
-      await updateListingPreference(buyerId, listingId, "HIDDEN");
+      await updateListingPreference(dbUserId, listingId, "HIDDEN");
     } catch (error) {
       // Log the error for debugging purposes
       console.error("Failed to update listing preference:", error);

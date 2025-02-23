@@ -9,13 +9,13 @@ import { mapToFormattedListing } from "@/app/utils/types/mappers";
 export default async function ListingsIndexPage() {
   const user = await requireUser();
 
-  const buyer = await prisma.buyer.findUnique({
-    where: { userId: user.id },
+  const dbUser = await prisma.user.findUnique({
+    where: { id: user.id },
   });
 
-  const listingPreferences = buyer
+  const listingPreferences = dbUser
     ? await prisma.buyerListingPreference.findMany({
-        where: { buyerId: buyer.id },
+        where: { userId: dbUser.id },
       })
     : [];
 
@@ -46,7 +46,7 @@ export default async function ListingsIndexPage() {
       <FilteredListings
         listings={formattedListings}
         hiddenListingIds={hiddenListingIds}
-        buyerId={buyer?.id ?? ""}
+        dbUserId={dbUser?.id ?? ""}
         likedListingIds={likedListingIds}
       />
     </>
