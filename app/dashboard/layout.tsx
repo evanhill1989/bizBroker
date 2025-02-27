@@ -17,8 +17,8 @@ import { CircleUser } from "lucide-react";
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
-    <section className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
-      <div className="hidden border-r bg-muted/40 md:block">
+    <div className="grid min-h-screen w-full md:grid-cols-[1em_1fr_1em] md:grid-rows lg:grid-cols-[1em_1fr_1em]">
+      <div className="hidden  bg-muted/40 md:block">
         <div className="flex h-full max-h-screen flex-col gap-2">
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
             <Link href="/" className="flex items-center gap-2 font-semibold">
@@ -28,16 +28,22 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
               </h3>
             </Link>
           </div>
-          <div className="flex-1">
-            <nav className="grid items-start px-2 font-medium lgp:px-4">
-              <DashboardItems />
-            </nav>
-          </div>
         </div>
       </div>
       <div className="flex flex-col">
         <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
           <div className="ml-auto flex items-center gap-x-5">
+            <Link
+              href={
+                window.location.pathname.includes("/seller")
+                  ? "/dashboard/buyer"
+                  : "/dashboard/seller"
+              }
+              href="/dashboard/seller"
+              className="flex items-center gap-2 font-semibold"
+            >
+              Seller Dashboard
+            </Link>
             <ModeToggle />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -58,10 +64,8 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             </DropdownMenu>
           </div>
         </header>
-        <main className="flex flex-1 flex-col p-4 lg:p-6 lg:gap-6">
-          {children}
-        </main>
+        <main className="">{children}</main>
       </div>
-    </section>
+    </div>
   );
 }
