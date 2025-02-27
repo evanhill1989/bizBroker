@@ -14,8 +14,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import { CircleUser } from "lucide-react";
+import DashboardStatusLink from "@/components/dashboard/DashboardStatusLink";
 
-export default function DashboardLayout({ children }: { children: ReactNode }) {
+export default async function DashboardLayout({
+  children,
+}: {
+  children: ReactNode;
+}) {
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[1em_1fr_1em] md:grid-rows lg:grid-cols-[1em_1fr_1em]">
       <div className="hidden  bg-muted/40 md:block">
@@ -33,17 +38,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       <div className="flex flex-col">
         <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
           <div className="ml-auto flex items-center gap-x-5">
-            <Link
-              href={
-                window.location.pathname.includes("/seller")
-                  ? "/dashboard/buyer"
-                  : "/dashboard/seller"
-              }
-              href="/dashboard/seller"
-              className="flex items-center gap-2 font-semibold"
-            >
-              Seller Dashboard
-            </Link>
+            <DashboardStatusLink />
             <ModeToggle />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
