@@ -5,7 +5,6 @@ import { parseWithZod } from "@conform-to/zod";
 import { SubmissionResult } from "@conform-to/react";
 
 import {
-  BuyerSchema,
   PriceRangeFormSchema,
   ProfitMultipleFormSchema,
   RevenueMultipleFormSchema,
@@ -14,29 +13,6 @@ import {
 } from "../zodSchemas";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "../requireUser";
-
-export async function UpdateBuyerAction(formData: FormData) {
-  const user = await requireUser();
-  const submission = parseWithZod(formData, {
-    schema: BuyerSchema,
-  });
-  if (submission.status !== "success") return submission.reply();
-  const data = await prisma.user.update({
-    where: { id: user.id },
-    data: {
-      ...submission.value,
-      id: user.id,
-    },
-  });
-  await prisma.user.update({
-    where: { id: user.id },
-    data: {
-      onboardingCompleted: true,
-    },
-  });
-  void data;
-  return redirect("/buyer/dashboard");
-}
 
 export async function UpdateBuyerScaleStepAction(formData: FormData) {
   const user = await requireUser();

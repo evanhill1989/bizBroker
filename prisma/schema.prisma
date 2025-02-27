@@ -75,6 +75,8 @@ model Listing {
   revenueMultiple        Float?
   trailing12MonthProfit  Float?
   trailing12MonthRevenue Float?
+  lastMonthRevenue       Float?
+  lastMonthProfit        Float?
 
   posts                  Post[]
   BuyerListingPreference BuyerListingPreference[]

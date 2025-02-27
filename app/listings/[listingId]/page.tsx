@@ -5,13 +5,14 @@ import { formatListingDetails } from "@/app/utils/types/mappers";
 export default async function ListingIdRoute(props: {
   params: Promise<{ listingId: string }>;
 }) {
-  // I think there's a pattern for awaiting params that i've used elsewhere. I should look into it
-  const { listingId } = await props.params;
+  
+  const params = await props.params;
+  console.log(params.listingId, "params.listingId in listingId route");
+  console.log(params, "params in listingId route");
   const listing = await prisma.listing.findUnique({
-    where: {
-      id: listingId,
-    },
+    where: { id: params.listingId },
   });
+
 
   const formattedListing = listing ? formatListingDetails(listing) : null;
 

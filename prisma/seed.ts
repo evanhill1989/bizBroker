@@ -3,23 +3,6 @@ import { faker } from "@faker-js/faker";
 
 const prisma = new PrismaClient();
 
-const users = [
-  { id: "1" },
-  { id: "2" },
-  { id: "3" },
-  { id: "4" },
-  { id: "5" },
-  { id: "6" },
-  { id: "7" },
-  { id: "8" },
-  { id: "9" },
-  { id: "10" },
-  { id: "11" },
-  { id: "12" },
-  { id: "13" },
-  { id: "14" },
-  { id: "15" },
-];
 
 // List of business models for variation
 const businessModels = ["retail", "online", "b2b"];
@@ -145,6 +128,17 @@ function generateListings(userId: string) {
 }
 
 async function seed() {
+
+  const users = Array.from({ length: 15 }).map((_, index) => ({
+    id: (index + 1).toString(), // This will create IDs from 1 to 15
+    email: faker.internet.email(),
+    firstName: faker.name.firstName(),
+    lastName: faker.name.lastName(),
+    // Add other user fields as necessary
+  }));
+
+  await prisma.user.createMany({ data: users });
+
   console.log("Seeding listings...");
 
   for (const user of users) {

@@ -29,7 +29,7 @@ export async function GET() {
           user.picture ?? `https://avatar.vercel.sh/${user.given_name}`,
 
         buyerOnboardingStep: "intro",
-        buyerOnboardingSkipped: false,
+       
         buyerScale: null,
         buyerMaturity: null,
         buyerBusinessModel: null,
@@ -48,7 +48,7 @@ export async function GET() {
         sellerBusinessNames: [],
 
         sellerOnboardingStep: "intro",
-        sellerOnboardingSkipped: false,
+        
         sellerPhoneNumber: "",
         sellerWebsite: null,
       },

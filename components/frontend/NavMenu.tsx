@@ -26,7 +26,7 @@ export function NavigationMenuComponent() {
                 <NavigationMenuLink asChild>
                   <Link
                     className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                    href="/list"
+                    href="/dashboard/seller/listings/new"
                   >
                     <div className="mb-2 mt-4 text-md font-medium">
                       List your business
