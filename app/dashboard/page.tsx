@@ -87,7 +87,7 @@ export default async function DashboardIndexPage({}) {
       ) : (
         <EmptyState
           title="You don't have any listings yet."
-          href="/dashboard/listings/new"
+          href="/dashboard/onboarding/sellers/descriptions"
           description="You currently dont have any listings. Please create one when you are ready."
           buttonText="Create Listing"
         />

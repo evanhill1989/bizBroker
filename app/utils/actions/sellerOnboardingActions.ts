@@ -8,7 +8,6 @@ import { requireUser } from "../requireUser";
 export async function UpdateDescriptions(formData: FormData) {
   const user = await requireUser();
 
-  const businessName = formData.get("businessName") as string;
   const description = formData.get("description") as string;
   const shortDescription = formData.get("shortDescription") as string;
   const longDescription = formData.get("longDescription") as string;
@@ -39,4 +38,41 @@ export async function UpdateDescriptions(formData: FormData) {
   });
 
   return redirect(`/onboarding/sellers/price`);
+}
+
+export async function CreateListing(formData: FormData) {
+  const user = await requireUser();
+
+  const businessName = formData.get("businessName") as string;
+
+  const dbUser = await prisma.user.findUnique({
+    where: { id: user.id },
+  });
+
+  if (!dbUser) {
+    throw new Error("Buyer not found.");
+  }
+
+  await prisma.user.update({
+    where: { id: dbUser.id },
+    data: {
+      sellerOnboardingStep: "description",
+    },
+  });
+
+  await prisma.listing.create({
+    data: {
+      userId: dbUser.id,
+      businessName: businessName,
+      description: "",
+      shortDescription: "",
+      longDescription: "",
+      subdirectory: "",
+      businessModel: "",
+      maturity: "",
+      location: "",
+    },
+  });
+
+  return redirect(`/onboarding/sellers/description`);
 }

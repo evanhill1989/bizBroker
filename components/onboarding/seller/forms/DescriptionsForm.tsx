@@ -12,26 +12,33 @@ export default function DescriptionsForm() {
     <>
       <form action={UpdateDescriptions}>
         <CardContent>
-          <fieldset className="flex flex-col space-y-2">
-            <legend className="text-lg font-medium">
-              Select your preferred business model:
-            </legend>
+          <label className="flex items-center space-x-2">
+            <Input
+              type="text"
+              name="businessName"
+              placeholder="Business Name"
+            />
+          </label>
 
-            <label className="flex items-center space-x-2">
-              <Input type="radio" name="businessmodel" value="retail" />
-              <span>Retail</span>
-            </label>
+          <label className="flex items-center space-x-2">
+            <Input type="text" name="description" placeholder="Description" />
+          </label>
 
-            <label className="flex items-center space-x-2">
-              <Input type="radio" name="businessmodel" value="online" />
-              <span>Online</span>
-            </label>
+          <label className="flex items-center space-x-2">
+            <Input
+              type="text"
+              name="shortDescription"
+              placeholder="Short Description"
+            />
+          </label>
 
-            <label className="flex items-center space-x-2">
-              <Input type="radio" name="businessmodel" value="b2b" />
-              <span>Business to Business</span>
-            </label>
-          </fieldset>
+          <label className="flex items-center space-x-2">
+            <Input
+              type="text"
+              name="longDescription"
+              placeholder="Short Description"
+            />
+          </label>
         </CardContent>
 
         <CardFooter className="w-full flex justify-between">
