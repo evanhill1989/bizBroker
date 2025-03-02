@@ -5,15 +5,15 @@ import { SubmitButton } from "@/components/dashboard/SubmitButtons";
 import { Button } from "@/components/ui/button";
 import { CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { UpdateDescriptions } from "@/app/utils/actions/sellerOnboardingActions";
-import TailwindEditor from "@/components/dashboard/EditorWrapper";
+import { UpdatePrice } from "@/app/utils/actions/sellerOnboardingActions";
+
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
-export default function DescriptionsForm() {
+export default function PriceForm() {
   return (
     <>
-      <form action={UpdateDescriptions} className="flex flex-col gap-4">
+      <form action={UpdatePrice} className="flex flex-col gap-4">
         <CardContent className="flex flex-col gap-4">
           <label className="flex items-center space-x-2">
             <Input type="text" name="description" placeholder="Description" />

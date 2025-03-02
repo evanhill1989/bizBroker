@@ -34,7 +34,11 @@ export default function NewListingDialog() {
               <Label htmlFor="name" className="text-right">
                 Business Name
               </Label>
-              <Input id="businessName" className="col-span-3" />
+              <Input
+                id="businessName"
+                name="businessName"
+                className="col-span-3"
+              />
             </div>
           </div>
           <DialogFooter>

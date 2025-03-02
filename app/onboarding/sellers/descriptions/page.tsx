@@ -12,9 +12,11 @@ export default async function DescriptionsPage() {
     <>
       <Card className=" m-auto border-none shadow-none  lg:px-12 lg:w-2/3">
         <CardHeader>
-          <CardTitle>What is your revenue multiple target range?</CardTitle>
+          <CardTitle>Describe your business</CardTitle>
           <CardDescription>
-            Choose the range of revenue multiples you are looking for
+            You can provide three different depths of descriptions. It is
+            advisable to fill out all three as best you can now, but you will
+            always be able to update this later.
           </CardDescription>
         </CardHeader>
         <DescriptionsForm />
