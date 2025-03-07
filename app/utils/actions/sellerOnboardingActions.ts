@@ -32,7 +32,7 @@ export async function CreateListing(formData: FormData) {
       description: "",
       shortDescription: "",
       longDescription: "",
-      subdirectory: "",
+      subdirectory: businessName.toLowerCase().replace(/[^a-zA-Z0-9]/g, "-"),
       businessModel: "",
       maturity: "",
       location: "",

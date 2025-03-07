@@ -1,3 +1,26 @@
-export default function SellersPricePage() {
-  return <h1>Broken for now</h1>;
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+
+import PriceForm from "@/components/onboarding/seller/forms/DescriptionsForm";
+
+export default async function PricePage() {
+  return (
+    <>
+      <Card className=" m-auto border-none shadow-none  lg:px-12 lg:w-2/3">
+        <CardHeader>
+          <CardTitle>Describe your business</CardTitle>
+          <CardDescription>
+            You can provide three different depths of descriptions. It is
+            advisable to fill out all three as best you can now, but you will
+            always be able to update this later.
+          </CardDescription>
+        </CardHeader>
+        <PriceForm />
+      </Card>
+    </>
+  );
 }

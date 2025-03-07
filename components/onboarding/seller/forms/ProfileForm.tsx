@@ -15,23 +15,34 @@ export default function ProfileForm() {
     <>
       <form action={UpdateProfile} className="flex flex-col gap-4">
         <CardContent className="flex flex-col gap-4">
-          <label className="flex items-center space-x-2">
-            <Input type="text" name="description" placeholder="Description" />
-          </label>
+          <fieldset className="flex flex-col space-y-2">
+            <legend className="text-lg font-medium">
+              Select your primary business model:
+            </legend>
 
-          <label className="flex items-center space-x-2">
-            <Input
-              type="text"
-              name="shortDescription"
-              placeholder="Short Description"
-            />
-          </label>
+            <label className="flex items-center space-x-2">
+              <Input type="radio" name="businessmodel" value="retail" />
+              <span>Retail</span>
+            </label>
 
-          <Label className="flex items-center space-x-2">
-            Long Description
-          </Label>
-          <Textarea name="longDescription" placeholder="Long Description" />
-          {/* <TailwindEditor  /> */}
+            <label className="flex items-center space-x-2">
+              <Input type="radio" name="businessmodel" value="online" />
+              <span>Online</span>
+            </label>
+
+            <label className="flex items-center space-x-2">
+              <Input type="radio" name="businessmodel" value="b2b" />
+              <span>Business to Business</span>
+            </label>
+          </fieldset>
+
+          <fieldset className="flex flex-col space-y-2">
+            <legend className="text-lg font-medium">Select your scale:</legend>
+
+            <label className="flex items-center space-x-2">
+              <Input type="radio" name="scale" value="micro" />
+              <span>Micro</span>
+            </label>
         </CardContent>
 
         <CardFooter className="w-full flex justify-between">
