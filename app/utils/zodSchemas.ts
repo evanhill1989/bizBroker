@@ -107,3 +107,11 @@ export function ListingCreationSchema(options?: {
     description: z.string().min(1).max(150),
   });
 }
+
+// seller onboarding
+
+export const DescriptionSchema = z.object({
+  description: z.string().min(1).max(150),
+  shortDescription: z.string().min(1).max(50).optional(),
+  longDescription: z.string().min(50).max(500).optional(),
+});

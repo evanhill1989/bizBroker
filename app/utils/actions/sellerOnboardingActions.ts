@@ -4,7 +4,10 @@ import { redirect } from "next/navigation";
 
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "../requireUser";
-import { parse } from "path";
+import { parseWithZod } from "@conform-to/zod";
+
+import { DescriptionSchema } from "../zodSchemas";
+import { SubmissionResult } from "@conform-to/react";
 
 export async function CreateListing(formData: FormData) {
   const user = await requireUser();
@@ -45,8 +48,17 @@ export async function CreateListing(formData: FormData) {
   return redirect(`/onboarding/sellers/descriptions`);
 }
 
-export async function UpdateDescriptions(formData: FormData) {
+export async function UpdateDescriptions(
+  state: SubmissionResult<string[]> | undefined,
+  formData: FormData
+): Promise<SubmissionResult<string[]>> {
   const user = await requireUser();
+
+  const submission = parseWithZod(formData, {
+    schema: DescriptionSchema,
+  });
+
+  if (submission.status !== "success") return submission.reply();
 
   const description = formData.get("description") as string;
   const shortDescription = formData.get("shortDescription") as string;
