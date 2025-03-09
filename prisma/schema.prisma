@@ -59,15 +59,15 @@ model Listing {
   updatedAt              DateTime  @updatedAt
   imageUrl               String?
   userId                 String
-  businessModel          String
+  businessModel          String?
   scale                  String?
-  maturity               String
+  maturity               String?
   location               String
   foundedDate            DateTime?
   numEmployees           Int?
-  competitors            String[]
-  growthOpportunities    String[]
-  assets                 String[]
+  competitors            String?
+  growthOpportunities    String?
+  assets                 String?
   sellingReason          String?
   financing              String?
   price                  Float?

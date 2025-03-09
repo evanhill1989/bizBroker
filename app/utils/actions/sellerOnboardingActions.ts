@@ -6,7 +6,7 @@ import { prisma } from "@/lib/prisma";
 import { requireUser } from "../requireUser";
 import { parseWithZod } from "@conform-to/zod";
 
-import { DescriptionSchema } from "../zodSchemas";
+import { DescriptionSchema, PriceSchema, ProfileSchema } from "../zodSchemas";
 import { SubmissionResult } from "@conform-to/react";
 
 export async function CreateListing(formData: FormData) {
@@ -80,115 +80,96 @@ export async function UpdateDescriptions(
   return redirect(`/onboarding/sellers/price`);
 }
 
-export async function UpdatePrice(formData: FormData) {
+export async function UpdatePrice(
+  state: SubmissionResult<string[]> | undefined,
+  formData: FormData
+) {
   const user = await requireUser();
-  const price = parseFloat(formData.get("price") as string) || null;
-  const profitMultiple =
-    parseFloat(formData.get("profitMultiple") as string) || null;
-  const revenueMultiple =
-    parseFloat(formData.get("revenueMultiple") as string) || null;
-  const trailing12MonthProfit =
-    parseFloat(formData.get("trailing12MonthProfit") as string) || null;
-  const trailing12MonthRevenue =
-    parseFloat(formData.get("trailing12MonthRevenue") as string) || null;
-  const lastMonthRevenue =
-    parseFloat(formData.get("lastMonthRevenue") as string) || null;
-  const lastMonthProfit =
-    parseFloat(formData.get("lastMonthProfit") as string) || null;
+  const listingId = formData.get("listingId") as string;
+
+  if (!listingId) {
+    throw new Error("No listing ID provided.");
+  }
+
+  const submission = parseWithZod(formData, { schema: PriceSchema });
+  if (submission.status !== "success") return submission.reply();
 
   await prisma.$transaction(async (tx) => {
-    const seller = await tx.user.findUnique({
-      where: { id: user.id },
-    });
-
-    if (!seller) {
-      throw new Error("Seller not found.");
-    }
-
-    const listings = await tx.listing.findMany({
-      where: { userId: seller.id }, // Use userId directly for clarity
-    });
-
-    if (listings.length === 0) {
-      throw new Error("No listings found for the seller.");
-    }
-
     await tx.listing.update({
-      where: { id: listings[0].id },
+      where: { id: listingId, userId: user.id },
       data: {
-        price,
-        profitMultiple,
-        revenueMultiple,
-        trailing12MonthProfit,
-        trailing12MonthRevenue,
-        lastMonthRevenue,
-        lastMonthProfit,
+        price: parseFloat((formData.get("price") as string) || "0"),
+        profitMultiple: parseFloat(
+          (formData.get("profitMultiple") as string) || "0"
+        ),
+        revenueMultiple: parseFloat(
+          (formData.get("revenueMultiple") as string) || "0"
+        ),
+        trailing12MonthProfit: parseFloat(
+          (formData.get("trailing12MonthProfit") as string) || "0"
+        ),
+        trailing12MonthRevenue: parseFloat(
+          (formData.get("trailing12MonthRevenue") as string) || "0"
+        ),
+        lastMonthRevenue: parseFloat(
+          (formData.get("lastMonthRevenue") as string) || "0"
+        ),
+        lastMonthProfit: parseFloat(
+          (formData.get("lastMonthProfit") as string) || "0"
+        ),
+        listingOnboardingStep: "profile",
       },
     });
 
     await tx.user.update({
       where: { id: user.id },
-      data: {
-        sellerOnboardingStep: "profile",
-      },
+      data: { sellerOnboardingStep: "profile" },
     });
   });
 
   return redirect(`/onboarding/sellers/profile`);
 }
 
-export async function UpdateProfile(formData: FormData) {
+export async function UpdateProfile(
+  state: SubmissionResult<string[]> | undefined,
+  formData: FormData
+) {
   const user = await requireUser();
 
-  const businessModel = formData.get("businessModel") as string;
-  const scale = formData.get("scale") as string;
-  const maturity = formData.get("maturity") as string;
-  const location = formData.get("location") as string;
-  const numEmployees = parseInt(formData.get("numEmployees") as string) || null;
-  const foundedDate = formData.get("foundedDate")
-    ? new Date(formData.get("foundedDate") as string)
-    : null;
+  const listingId = formData.get("listingId") as string;
 
-  // Handle competitors as an array
-  let competitors: string[] = [];
-  const competitorsRaw = formData.get("competitors");
-
-  if (competitorsRaw) {
-    competitors = competitorsRaw
-      .split(",") // Split by commas
-      .map((c) => c.trim()) // Trim spaces
-      .filter((c) => c.length > 0); // Remove empty entries
+  if (!listingId) {
+    throw new Error("No listing ID provided.");
   }
 
+  const submission = parseWithZod(formData, { schema: ProfileSchema });
+  if (submission.status !== "success") return submission.reply();
+
   await prisma.$transaction(async (tx) => {
-    const seller = await tx.user.findUnique({
-      where: { id: user.id },
-    });
-
-    if (!seller) {
-      throw new Error("Seller not found.");
-    }
-
-    const listings = await tx.listing.findMany({
-      where: { userId: seller.id },
-    });
-
-    if (listings.length === 0) {
-      throw new Error("No listings found for the seller.");
-    }
-
     await tx.listing.update({
-      where: { id: listings[0].id },
+      where: { id: listingId, userId: user.id },
       data: {
-        businessModel,
-        scale,
-        maturity,
-        location,
-        numEmployees,
-        foundedDate,
-        competitors, // Now correctly stored as an array
+        foundedDate: new Date((formData.get("foundedDate") as string) || "0"),
+        numEmployees: parseInt((formData.get("numEmployees") as string) || "0"),
+        competitors: (formData.get("competitors") as string) || "",
+        growthOpportunities:
+          (formData.get("growthOpportunities") as string) || "",
+        assets: (formData.get("assets") as string) || "",
+        sellingReason: (formData.get("sellingReason") as string) || "",
+        financing: (formData.get("financing") as string) || "",
+        scale: (formData.get("scale") as string) || "",
+        businessModel: (formData.get("businessModel") as string) || "",
+        maturity: (formData.get("maturity") as string) || "",
+        location: (formData.get("location") as string) || "",
+
+        listingOnboardingStep: "profile",
       },
     });
+
+    await tx.user.update({
+      where: { id: user.id },
+      data: { sellerOnboardingStep: "profile" },
+    });
   });
-  return redirect(`/onboarding/sellers/profile`);
+  return redirect(`/onboarding/sellers/completed`);
 }

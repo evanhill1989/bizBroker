@@ -4,10 +4,26 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { requireUser } from "@/app/utils/requireUser";
+import { prisma } from "@/lib/prisma";
+import { redirect } from "next/navigation";
 
-import PriceForm from "@/components/onboarding/seller/forms/DescriptionsForm";
+import PriceForm from "@/components/onboarding/seller/forms/PriceForm";
 
 export default async function PricePage() {
+  const user = await requireUser();
+  const listing = await prisma.listing.findFirst({
+    where: {
+      userId: user.id,
+      listingOnboardingStep: { not: "completed" },
+    },
+    orderBy: { createdAt: "desc" },
+  });
+  if (!listing) return redirect("/");
+  if (listing.listingOnboardingStep !== "price") {
+    return redirect(`/onboarding/sellers/${listing.listingOnboardingStep}`);
+  }
+
   return (
     <>
       <Card className=" m-auto border-none shadow-none  lg:px-12 lg:w-2/3">
@@ -19,7 +35,7 @@ export default async function PricePage() {
             always be able to update this later.
           </CardDescription>
         </CardHeader>
-        <PriceForm />
+        <PriceForm listingId={listing.id} />
       </Card>
     </>
   );
