@@ -6,20 +6,22 @@ import {
 } from "@/components/ui/card";
 
 import DescriptionsForm from "@/components/onboarding/seller/forms/DescriptionsForm";
-import { requireUser } from "@/app/utils/auth";
-import { prisma } from "@/app/utils/db";
+import { requireUser } from "@/app/utils/requireUser";
+import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 
 export default async function DescriptionsPage() {
-  // Fetch user and their latest listing
   const user = await requireUser();
   const listing = await prisma.listing.findFirst({
-    where: { userId: user.id },
+    where: {
+      userId: user.id,
+      listingOnboardingStep: { not: "complete" },
+    },
+    orderBy: { createdAt: "desc" },
   });
-
-  // Redirect if user doesn't have a listing or is on the wrong step
-  if (!listing || user.sellerOnboardingStep !== "descriptions") {
-    return redirect(`/onboarding/sellers/${user.sellerOnboardingStep}`);
+  if (!listing) return redirect("/");
+  if (listing.listingOnboardingStep !== "descriptions") {
+    return redirect(`/onboarding/sellers/${listing.listingOnboardingStep}`);
   }
 
   return (
@@ -32,7 +34,7 @@ export default async function DescriptionsPage() {
           always be able to update this later.
         </CardDescription>
       </CardHeader>
-      <DescriptionsForm listing={listing} />
+      <DescriptionsForm listingId={listing.id} />
     </Card>
   );
 }

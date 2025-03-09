@@ -78,6 +78,8 @@ model Listing {
   lastMonthRevenue       Float?
   lastMonthProfit        Float?
 
+  listingOnboardingStep String @default("intro")
+
   posts                  Post[]
   BuyerListingPreference BuyerListingPreference[]
 

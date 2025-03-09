@@ -53,49 +53,28 @@ export async function UpdateDescriptions(
   formData: FormData
 ): Promise<SubmissionResult<string[]>> {
   const user = await requireUser();
+  const listingId = formData.get("listingId") as string;
 
-  const submission = parseWithZod(formData, {
-    schema: DescriptionSchema,
-  });
+  if (!listingId) {
+    throw new Error("No listing ID provided.");
+  }
 
+  const submission = parseWithZod(formData, { schema: DescriptionSchema });
   if (submission.status !== "success") return submission.reply();
 
-  const description = formData.get("description") as string;
-  const shortDescription = formData.get("shortDescription") as string;
-  const longDescription = formData.get("longDescription") as string;
+  await prisma.listing.update({
+    where: { id: listingId, userId: user.id }, // Now it's scoped correctly
+    data: {
+      description: formData.get("description") as string,
+      shortDescription: formData.get("shortDescription") as string,
+      longDescription: formData.get("longDescription") as string,
+      listingOnboardingStep: "price",
+    },
+  });
 
-  await prisma.$transaction(async (tx) => {
-    const seller = await tx.user.findUnique({
-      where: { id: user.id },
-    });
-
-    if (!seller) {
-      throw new Error("Seller not found.");
-    }
-
-    const listings = await tx.listing.findMany({
-      where: { userId: seller.id }, // Use userId directly for clarity
-    });
-
-    if (listings.length === 0) {
-      throw new Error("No listings found for the seller.");
-    }
-
-    await tx.listing.update({
-      where: { id: listings[0].id },
-      data: {
-        description,
-        shortDescription,
-        longDescription,
-      },
-    });
-
-    await tx.user.update({
-      where: { id: user.id },
-      data: {
-        sellerOnboardingStep: "price",
-      },
-    });
+  await prisma.user.update({
+    where: { id: user.id },
+    data: { sellerOnboardingStep: "price" },
   });
 
   return redirect(`/onboarding/sellers/price`);

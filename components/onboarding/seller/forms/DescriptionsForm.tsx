@@ -15,7 +15,7 @@ import { useActionState } from "react";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
-export default function DescriptionsForm() {
+export default function DescriptionsForm({ listingId }: { listingId: string }) {
   const [lastResult, action] = useActionState(UpdateDescriptions, undefined);
 
   const [form, fields] = useForm({
@@ -35,6 +35,7 @@ export default function DescriptionsForm() {
         action={action}
         className="flex flex-col gap-4"
       >
+        <input type="hidden" name="listingId" value={listingId} />
         <CardContent className="flex flex-col gap-4">
           <label className="flex items-center space-x-2">
             <Input
