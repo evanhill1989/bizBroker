@@ -15,7 +15,7 @@ export default async function DescriptionsPage() {
   const listing = await prisma.listing.findFirst({
     where: {
       userId: user.id,
-      listingOnboardingStep: { not: "complete" },
+      listingOnboardingStep: { not: "completed" },
     },
     orderBy: { createdAt: "desc" },
   });
