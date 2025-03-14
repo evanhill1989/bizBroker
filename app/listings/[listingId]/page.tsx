@@ -5,14 +5,11 @@ import { formatListingDetails } from "@/app/utils/types/mappers";
 export default async function ListingIdRoute(props: {
   params: Promise<{ listingId: string }>;
 }) {
-  
   const params = await props.params;
-  console.log(params.listingId, "params.listingId in listingId route");
-  console.log(params, "params in listingId route");
+
   const listing = await prisma.listing.findUnique({
     where: { id: params.listingId },
   });
-
 
   const formattedListing = listing ? formatListingDetails(listing) : null;
 
@@ -132,31 +129,21 @@ export default async function ListingIdRoute(props: {
             <h5 className="text-slate-400 font-semibold text-xs uppercase tracking-wide">
               Competitors
             </h5>
-            <p className=" mt-2 text-lg">
-              {formattedListing?.competitors.map((comp) => (
-                <li key={comp}>{comp}</li>
-              ))}
-            </p>
+            <p className=" mt-2 text-lg">{formattedListing?.competitors}</p>
           </div>
           <div className="my-10">
             <h5 className="text-slate-400 font-semibold text-xs uppercase tracking-wide">
               Growth Opportunities
             </h5>
             <p className=" mt-2 text-lg">
-              {formattedListing?.growthOpportunities.map((opp) => (
-                <li key={opp}>{opp}</li>
-              ))}
+              {formattedListing?.growthOpportunities}
             </p>
           </div>
           <div className="my-10">
             <h5 className="text-slate-400 font-semibold text-xs uppercase tracking-wide">
               Assets
             </h5>
-            <p className=" mt-2 text-lg">
-              {formattedListing?.assets.map((asset) => (
-                <li key={asset}>{asset}</li>
-              ))}
-            </p>
+            <p className=" mt-2 text-lg">{formattedListing?.assets}</p>
           </div>
         </div>
         <div className="divider my-14 h-[1px] w-full bg-slate-300"></div>
