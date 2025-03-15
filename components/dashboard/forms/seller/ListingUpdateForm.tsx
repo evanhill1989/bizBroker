@@ -10,23 +10,49 @@ import { parseWithZod } from "@conform-to/zod";
 import { useActionState } from "react";
 import { UpdateWholeListing } from "@/app/utils/actions/sellerOnboardingActions";
 import { WholeListingSchema } from "@/app/utils/zodSchemas";
-import { fieldsConfig } from "./listingUpdateFieldsConfig";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
-interface Field {
-  label: string;
-  name: string;
-  placeholder?: string;
-  type?: string;
-  error?: string;
-}
-
-interface ListingUpdateFormProps {
-  listingId: string;
+interface ListingData {
+  id: string;
+  businessName: string;
+  description: string;
+  shortDescription: string;
+  longDescription: string;
+  subdirectory: string;
+  createdAt: string; // ISO string format
+  updatedAt: string; // ISO string format
+  imageUrl: string;
+  userId: string;
+  businessModel: string;
+  scale: string;
+  maturity: string;
+  location: string;
+  foundedDate: string; // ISO string format
+  numEmployees: number;
+  competitors: string | null;
+  growthOpportunities: string | null;
+  assets: string | null;
+  sellingReason: string;
+  financing: string;
+  price: number;
+  profitMultiple: number;
+  revenueMultiple: number;
+  trailing12MonthProfit: number;
+  trailing12MonthRevenue: number;
+  lastMonthRevenue: number;
+  lastMonthProfit: number;
+  listingOnboardingStep: string;
 }
 
 export default function ListingUpdateForm({
   listingId,
-}: ListingUpdateFormProps) {
+  listingData,
+}: {
+  listingId: string;
+  listingData: ListingData;
+}) {
   const [lastResult, action] = useActionState(UpdateWholeListing, undefined);
 
   const [form, fields] = useForm({
@@ -38,57 +64,58 @@ export default function ListingUpdateForm({
     shouldRevalidate: "onInput",
   });
 
-  const fieldsConfig = [
+  console.log("fields in listing update form", fields);
+
+  const editableFields = [
+    { fieldName: "businessName", type: "text", label: "Business Name" },
+    { fieldName: "description", type: "textarea", label: "Description" },
     {
-      label: "Price",
-      name: fields.price.name,
-      placeholder: "Price",
-      type: "number",
-      error: fields.price.errors,
+      fieldName: "shortDescription",
+      type: "textarea",
+      label: "Short Description",
     },
     {
-      label: "Profit Multiple",
-      name: fields.profitMultiple.name,
-      placeholder: "Profit Multiple",
+      fieldName: "longDescription",
+      type: "textarea",
+      label: "Long Description",
+    },
+    { fieldName: "businessModel", type: "text", label: "Business Model" },
+    { fieldName: "scale", type: "text", label: "Scale" },
+    { fieldName: "maturity", type: "text", label: "Maturity" },
+    { fieldName: "location", type: "text", label: "Location" },
+    { fieldName: "foundedDate", type: "date", label: "Founded Date" },
+    { fieldName: "numEmployees", type: "number", label: "Number of Employees" },
+    { fieldName: "sellingReason", type: "text", label: "Selling Reason" },
+    { fieldName: "financing", type: "text", label: "Financing" },
+    { fieldName: "price", type: "number", label: "Price" },
+    { fieldName: "profitMultiple", type: "number", label: "Profit Multiple" },
+    { fieldName: "revenueMultiple", type: "number", label: "Revenue Multiple" },
+    {
+      fieldName: "trailing12MonthProfit",
       type: "number",
-      error: fields.profitMultiple.errors,
+      label: "Trailing 12-Month Profit",
     },
     {
-      label: "Revenue Multiple",
-      name: fields.revenueMultiple.name,
-      placeholder: "0",
+      fieldName: "trailing12MonthRevenue",
       type: "number",
-      error: fields.revenueMultiple.errors,
+      label: "Trailing 12-Month Revenue",
     },
     {
-      label: "Trailing 12 month profit",
-      name: fields.trailing12MonthProfit.name,
-      placeholder: "0",
+      fieldName: "lastMonthRevenue",
       type: "number",
-      error: fields.trailing12MonthProfit.errors,
+      label: "Last Month Revenue",
     },
     {
-      label: "Trailing 12 month revenue",
-      name: fields.trailing12MonthRevenue.name,
-      placeholder: "0",
+      fieldName: "lastMonthProfit",
       type: "number",
-      error: fields.trailing12MonthRevenue.errors,
-    },
-    {
-      label: "Last month revenue",
-      name: fields.lastMonthRevenue.name,
-      placeholder: "0",
-      type: "number",
-      error: fields.lastMonthRevenue.errors,
-    },
-    {
-      label: "Last month profit",
-      name: fields.lastMonthProfit.name,
-      placeholder: "0",
-      type: "number",
-      error: fields.lastMonthProfit.errors,
+      label: "Last Month Profit",
     },
   ];
+
+  type CommonKeys = keyof typeof fields & keyof typeof listingData;
+
+  const fieldName = name as CommonKeys;
+  const listingDataName = name as CommonKeys;
 
   return (
     <form
@@ -100,13 +127,38 @@ export default function ListingUpdateForm({
       <input type="hidden" name="listingId" value={listingId} />
 
       <CardContent className="flex flex-col gap-4">
-        {fieldsConfig.map((field, index) => (
-          <FormInput key={index} {...field} />
+        {editableFields.map(({ name, type, label }) => (
+          <div key={name} className="flex flex-col gap-1">
+            <Label htmlFor={fields[fieldName]?.name}>{label}</Label>
+
+            {type === "textarea" ? (
+              <Textarea
+                name={fields[fieldName]?.name}
+                id={fields[fieldName]?.name}
+                placeholder={listingData?.[listingDataName]?.toString() || ""}
+                defaultValue={listingData[listingDataName] || ""}
+              />
+            ) : (
+              <Input
+                type={type}
+                name={fields[fieldName]?.name}
+                id={fields[fieldName]?.name}
+                placeholder={listingData?.[listingDataName]?.toString() || ""}
+                defaultValue={listingData[listingDataName] || ""}
+              />
+            )}
+
+            {fields[fieldName]?.errors && (
+              <p className="text-xs text-red-500 mt-1">
+                {fields[fieldName]?.errors}
+              </p>
+            )}
+          </div>
         ))}
       </CardContent>
 
       <CardFooter className="w-full flex justify-between">
-        <SubmitButton text="Next" />
+        <SubmitButton text="Save" />
       </CardFooter>
     </form>
   );

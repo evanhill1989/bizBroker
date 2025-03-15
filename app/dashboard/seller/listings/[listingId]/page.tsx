@@ -17,21 +17,16 @@ export default async function ListingUpdatePage(props: {
 
   const data = await prisma.listing.findUnique({
     where: {
-      userId: user.id,
       id: params.listingId,
     },
   });
 
   console.log(data, "data in [listingId] page inside getData");
+  console.log("listingId", params.listingId);
 
   return (
     <>
-      <ListingUpdateForm
-        fields={fieldsConfig}
-        listingId={listingId}
-        action={action}
-        form={form}
-      />
+      <ListingUpdateForm listingId={params.listingId} listingData={data} />
     </>
   );
 }
