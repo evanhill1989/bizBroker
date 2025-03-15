@@ -4,9 +4,7 @@ import { prisma } from "@/lib/prisma";
 
 import { redirect } from "next/navigation";
 
-import { fieldsConfig } from "@/components/dashboard/forms/seller/listingUpdateFieldsConfig";
-
-export default async function ListingUpdateRoute(props: {
+export default async function ListingUpdatePage(props: {
   params: Promise<{ listingId: string }>;
 }) {
   const params = await props.params;

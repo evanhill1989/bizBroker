@@ -173,3 +173,61 @@ export async function UpdateProfile(
   });
   return redirect(`/onboarding/sellers/completed`);
 }
+
+export async function UpdateWholeListing(
+  state: SubmissionResult<string[]> | undefined,
+  formData: FormData
+) {
+  const user = await requireUser();
+
+  const listingId = formData.get("listingId") as string;
+
+  if (!listingId) {
+    throw new Error("No listing ID provided.");
+  }
+
+  const submission = parseWithZod(formData, { schema: ProfileSchema });
+  if (submission.status !== "success") return submission.reply();
+
+  await prisma.listing.update({
+    where: { id: listingId, userId: user.id },
+    data: {
+      foundedDate: new Date((formData.get("foundedDate") as string) || "0"),
+      numEmployees: parseInt((formData.get("numEmployees") as string) || "0"),
+      competitors: (formData.get("competitors") as string) || "",
+      growthOpportunities:
+        (formData.get("growthOpportunities") as string) || "",
+      assets: (formData.get("assets") as string) || "",
+      sellingReason: (formData.get("sellingReason") as string) || "",
+      financing: (formData.get("financing") as string) || "",
+      scale: (formData.get("scale") as string) || "",
+      businessModel: (formData.get("businessModel") as string) || "",
+      maturity: (formData.get("maturity") as string) || "",
+      location: (formData.get("location") as string) || "",
+
+      listingOnboardingStep: "profile",
+      price: parseFloat((formData.get("price") as string) || "0"),
+      profitMultiple: parseFloat(
+        (formData.get("profitMultiple") as string) || "0"
+      ),
+      revenueMultiple: parseFloat(
+        (formData.get("revenueMultiple") as string) || "0"
+      ),
+      trailing12MonthProfit: parseFloat(
+        (formData.get("trailing12MonthProfit") as string) || "0"
+      ),
+      trailing12MonthRevenue: parseFloat(
+        (formData.get("trailing12MonthRevenue") as string) || "0"
+      ),
+      lastMonthRevenue: parseFloat(
+        (formData.get("lastMonthRevenue") as string) || "0"
+      ),
+      lastMonthProfit: parseFloat(
+        (formData.get("lastMonthProfit") as string) || "0"
+      ),
+      description: formData.get("description") as string,
+      shortDescription: formData.get("shortDescription") as string,
+      longDescription: formData.get("longDescription") as string,
+    },
+  });
+}

@@ -6,12 +6,15 @@ export async function GET() {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
   console.log(user, "user in GET");
+  console.log("User ID before querying database:", user?.id);
 
   const dbUser = await prisma.user.findUnique({
     where: {
       id: user.id,
     },
   });
+
+  console.log("dbUser in Get ------->>>", dbUser);
 
   if (!dbUser) {
     console.log(
@@ -29,7 +32,7 @@ export async function GET() {
           user.picture ?? `https://avatar.vercel.sh/${user.given_name}`,
 
         buyerOnboardingStep: "intro",
-       
+
         buyerScale: null,
         buyerMaturity: null,
         buyerBusinessModel: null,
@@ -48,7 +51,7 @@ export async function GET() {
         sellerBusinessNames: [],
 
         sellerOnboardingStep: "intro",
-        
+
         sellerPhoneNumber: "",
         sellerWebsite: null,
       },
