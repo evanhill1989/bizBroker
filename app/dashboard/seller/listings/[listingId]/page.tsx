@@ -1,5 +1,5 @@
 import { requireUser } from "@/app/utils/requireUser";
-import ListingUpdateForm from "@/components/dashboard/forms/seller/ListingUpdateForm";
+import NewListingUpdateForm from "@/components/dashboard/forms/seller/NewListingUpdateForm";
 import { prisma } from "@/lib/prisma";
 
 import { redirect } from "next/navigation";
@@ -19,14 +19,24 @@ export default async function ListingUpdatePage(props: {
     where: {
       id: params.listingId,
     },
+    select: {
+      description: true,
+      shortDescription: true,
+      longDescription: true,
+      // id: true,
+    },
   });
-
-  console.log(data, "data in [listingId] page inside getData");
-  console.log("listingId", params.listingId);
 
   return (
     <>
-      <ListingUpdateForm listingId={params.listingId} listingData={data} />
+      <NewListingUpdateForm
+        data={
+          data
+            ? data
+            : { description: "", shortDescription: "", longDescription: "" }
+        }
+        listingId={params.listingId}
+      />
     </>
   );
 }

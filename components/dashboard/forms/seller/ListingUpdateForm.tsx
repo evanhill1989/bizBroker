@@ -64,8 +64,6 @@ export default function ListingUpdateForm({
     shouldRevalidate: "onInput",
   });
 
-  console.log("fields in listing update form", fields);
-
   const editableFields = [
     { fieldName: "businessName", type: "text", label: "Business Name" },
     { fieldName: "description", type: "textarea", label: "Description" },

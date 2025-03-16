@@ -80,6 +80,34 @@ export async function UpdateDescriptions(
   return redirect(`/onboarding/sellers/price`);
 }
 
+export async function SimpleUpdateDescriptions(
+  state: SubmissionResult<string[]> | undefined,
+  formData: FormData
+) {
+  const user = await requireUser();
+  formData.forEach((value, key) => console.log(key, value)); // Debugging
+
+  const listingId = formData.get("listingId") as string;
+  console.log(`Extracted listingId: ${listingId}`);
+
+  // if (!listingId) {
+  //   throw new Error("No listing ID provided.");
+  // }
+
+  // console.log(listingId, "!!!!!!!!!!!!listingId in SimpleUpdateDescriptions");
+
+  await prisma.listing.update({
+    where: { id: "09248347-6955-45d6-98ed-feb8518c1f5f" }, // Now it's scoped correctly
+    data: {
+      description: formData.get("description") as string,
+      shortDescription: formData.get("shortDescription") as string,
+      longDescription: formData.get("longDescription") as string,
+    },
+  });
+
+  // return redirect(`/dashboard/listings/${listingId}`);
+}
+
 export async function UpdatePrice(
   state: SubmissionResult<string[]> | undefined,
   formData: FormData
