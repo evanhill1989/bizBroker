@@ -40,7 +40,12 @@ export default async function ListingUpdatePage(props: {
           <CardTitle>Update your listing</CardTitle>
           <CardDescription>Update your entire listing here.</CardDescription>
         </CardHeader>
-        <NewListingUpdateForm listingId={params.listingId} />
+        {listingData && (
+          <NewListingUpdateForm
+            listingData={listingData}
+            listingId={params.listingId}
+          />
+        )}
       </Card>
     </>
   );

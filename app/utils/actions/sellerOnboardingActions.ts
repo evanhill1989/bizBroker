@@ -91,25 +91,31 @@ export async function SimpleUpdateDescriptions(
 ) {
   const data = Object.fromEntries(formData.entries());
 
+  const listingId = data.listingId as string;
   const description = data.description as string;
   const shortDescription = data.shortDescription as string;
   const longDescription = data.longDescription as string;
+
+  console.log(description, "description in my update server action");
+  console.log(listingId, "listingId in my update server action");
 
   if (!data) {
     throw new Error("No data provided.");
   }
 
-  const submission = parseWithZod(formData, { schema: WholeListingSchema });
+  const submission = parseWithZod(formData, { schema: DescriptionSchema });
   if (submission.status !== "success") return submission.reply();
 
   await prisma.listing.update({
-    where: { id: "09248347-6955-45d6-98ed-feb8518c1f5f" },
+    where: { id: listingId },
     data: {
       description: description || "",
       shortDescription: shortDescription || "",
       longDescription: longDescription || "",
     },
   });
+
+  return redirect(`/dashboard/seller`);
 }
 
 export async function UpdatePrice(

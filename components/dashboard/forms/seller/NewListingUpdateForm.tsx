@@ -10,29 +10,22 @@ import { useActionState } from "react";
 import { toast } from "@/hooks/use-toast";
 import { useForm } from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod";
-import { WholeListingSchema } from "@/app/utils/zodSchemas";
-import { fi } from "@faker-js/faker";
+import { DescriptionSchema } from "@/app/utils/zodSchemas";
 
-// interface ListingUpdateFormProps {
-//   data: {
-//     description: string | null;
-//     shortDescription: string | null;
-//     longDescription: string | null;
-//   };
-//   listingId: string;
-// }
+interface ListingUpdateFormProps {
+  listingData: {
+    description: string;
+    shortDescription?: string | null | undefined;
+    longDescription?: string | null | undefined;
+  };
 
-// export default function NewListingUpdateForm({
-//   data,
-//   listingId,
-// }: ListingUpdateFormProps) {
-//   console.log(listingId, "listingId in NewListingUpdateForm");
+  listingId: string;
+}
 
 export default function NewListingUpdateForm({
+  listingData,
   listingId,
-}: {
-  listingId: string;
-}) {
+}: ListingUpdateFormProps) {
   const [lastResult, formAction] = useActionState(
     SimpleUpdateDescriptions,
     undefined
@@ -41,12 +34,12 @@ export default function NewListingUpdateForm({
   const [form, fields] = useForm({
     lastResult,
     defaultValue: {
-      competitors: "test",
-      growthOpportunities: "test",
-      assets: "test",
+      description: listingData.description,
+      shortDescription: listingData.shortDescription,
+      longDescription: listingData.longDescription,
     },
     onValidate({ formData }) {
-      return parseWithZod(formData, { schema: WholeListingSchema });
+      return parseWithZod(formData, { schema: DescriptionSchema });
     },
     shouldValidate: "onBlur",
     shouldRevalidate: "onInput",
