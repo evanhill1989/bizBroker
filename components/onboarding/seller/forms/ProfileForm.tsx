@@ -20,6 +20,11 @@ export default function ProfileForm({ listingId }: { listingId: string }) {
 
   const [form, fields] = useForm({
     lastResult,
+    defaultValue: {
+      competitors: "test",
+      growthOpportunities: "test",
+      assets: "test",
+    },
     onValidate({ formData }) {
       return parseWithZod(formData, { schema: ProfileSchema });
     },
@@ -68,6 +73,7 @@ export default function ProfileForm({ listingId }: { listingId: string }) {
           <Label>Growth Opportunities</Label>
           <Input
             type="text"
+            defaultValue={fields.growthOpportunities.value}
             name={fields.growthOpportunities.name}
             placeholder="Growth Opportunities"
           />

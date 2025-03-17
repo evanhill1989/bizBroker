@@ -20,6 +20,11 @@ export default function DescriptionsForm({ listingId }: { listingId: string }) {
 
   const [form, fields] = useForm({
     lastResult,
+    defaultValue: {
+      description: "test",
+      shortDescription: "test",
+      longDescription: "test",
+    },
     onValidate({ formData }) {
       return parseWithZod(formData, { schema: DescriptionSchema });
     },

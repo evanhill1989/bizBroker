@@ -6,7 +6,12 @@ import { prisma } from "@/lib/prisma";
 import { requireUser } from "../requireUser";
 import { parseWithZod } from "@conform-to/zod";
 
-import { DescriptionSchema, PriceSchema, ProfileSchema } from "../zodSchemas";
+import {
+  DescriptionSchema,
+  PriceSchema,
+  ProfileSchema,
+  WholeListingSchema,
+} from "../zodSchemas";
 import { SubmissionResult } from "@conform-to/react";
 
 export async function CreateListing(formData: FormData) {
@@ -84,28 +89,27 @@ export async function SimpleUpdateDescriptions(
   state: SubmissionResult<string[]> | undefined,
   formData: FormData
 ) {
-  const user = await requireUser();
-  formData.forEach((value, key) => console.log(key, value)); // Debugging
+  const data = Object.fromEntries(formData.entries());
 
-  const listingId = formData.get("listingId") as string;
-  console.log(`Extracted listingId: ${listingId}`);
+  const description = data.description as string;
+  const shortDescription = data.shortDescription as string;
+  const longDescription = data.longDescription as string;
 
-  // if (!listingId) {
-  //   throw new Error("No listing ID provided.");
-  // }
+  if (!data) {
+    throw new Error("No data provided.");
+  }
 
-  // console.log(listingId, "!!!!!!!!!!!!listingId in SimpleUpdateDescriptions");
+  const submission = parseWithZod(formData, { schema: WholeListingSchema });
+  if (submission.status !== "success") return submission.reply();
 
   await prisma.listing.update({
-    where: { id: "09248347-6955-45d6-98ed-feb8518c1f5f" }, // Now it's scoped correctly
+    where: { id: "09248347-6955-45d6-98ed-feb8518c1f5f" },
     data: {
-      description: formData.get("description") as string,
-      shortDescription: formData.get("shortDescription") as string,
-      longDescription: formData.get("longDescription") as string,
+      description: description || "",
+      shortDescription: shortDescription || "",
+      longDescription: longDescription || "",
     },
   });
-
-  // return redirect(`/dashboard/listings/${listingId}`);
 }
 
 export async function UpdatePrice(
