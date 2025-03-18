@@ -6,9 +6,9 @@ import { FormInput } from "./FormInput";
 interface Field {
   label: string;
   name: string;
-  placeholder?: string;
-  type?: string;
-  error?: string;
+  placeholder: string;
+  type: string;
+  error: string;
 }
 
 interface ListingUpdateFormProps {

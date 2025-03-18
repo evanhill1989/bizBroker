@@ -30,19 +30,21 @@ export default function DescriptionsFormRefactor({
       name: fields.description.name,
       placeholder: "Description",
       type: "number",
-      error: fields.description.errors,
+      error: fields.description.errors?.join(", ") || "",
     },
     {
       label: "Short Description",
       name: fields.shortDescription.name,
       placeholder: "Short Description",
-      error: fields.shortDescription.errors,
+      type: "number",
+      error: fields.shortDescription.errors?.join(", ") || "",
     },
     {
       label: "Long Description",
       name: fields.longDescription.name,
       placeholder: "Long Description",
-      error: fields.longDescription.errors,
+      type: "number",
+      error: fields.longDescription.errors?.join(", ") || "",
     },
   ];
 

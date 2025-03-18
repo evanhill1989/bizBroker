@@ -14,23 +14,143 @@ import { useActionState } from "react";
 
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { FormInput } from "./FormInput";
+import { Placeholder } from "novel/extensions";
 
 export default function ProfileForm({ listingId }: { listingId: string }) {
   const [lastResult, action] = useActionState(UpdateProfile, undefined);
 
   const [form, fields] = useForm({
     lastResult,
-    defaultValue: {
-      competitors: "test",
-      growthOpportunities: "test",
-      assets: "test",
-    },
+
     onValidate({ formData }) {
       return parseWithZod(formData, { schema: ProfileSchema });
     },
     shouldValidate: "onBlur",
     shouldRevalidate: "onInput",
   });
+  const fieldsConfig = [
+    {
+      label: "Date of Establishment",
+      name: fields.foundedDate.name,
+      placeholder: "Founded Date",
+      type: "date",
+      error: fields.foundedDate.errors?.join(", ") || "",
+    },
+    {
+      label: "Number of Employees",
+      name: fields.numEmployees.name,
+      placeholder: "Number of Employees",
+      type: "number",
+      error: fields.numEmployees.errors?.join(", ") || "",
+    },
+    {
+      label: "Competitors",
+      name: fields.competitors.name,
+      placeholder: "Competitors",
+      type: "text",
+      error: fields.competitors.errors?.join(", ") || "",
+    },
+    {
+      label: "Growth Opportunities",
+      name: fields.growthOpportunities.name,
+      placeholder: "Growth Opportunities",
+      type: "text",
+      error: fields.growthOpportunities.errors?.join(", ") || "",
+    },
+    {
+      label: "Assets",
+      name: fields.assets.name,
+      placeholder: "Assets",
+      type: "text",
+      error: fields.assets.errors?.join(", ") || "",
+    },
+    {
+      label: "Selling Reason",
+      name: fields.sellingReason.name,
+      placeholder: "Selling Reason",
+      type: "textarea",
+      error: fields.sellingReason.errors?.join(", ") || "",
+    },
+    {
+      label: "Financing",
+      name: fields.financing.name,
+      placeholder: "Financing",
+      type: "textarea",
+      error: fields.financing.errors?.join(", ") || "",
+    },
+    {
+      label: "Retail",
+      name: fields.businessModel.name,
+      placeholder: "Retail",
+      type: "radio",
+      error: fields.businessModel.errors?.join(", ") || "",
+    },
+    {
+      label: "Online",
+      name: fields.businessModel.name,
+      placeholder: "Online",
+      type: "radio",
+      error: fields.businessModel.errors?.join(", ") || "",
+    },
+    {
+      label: "Business to Business",
+      name: fields.businessModel.name,
+      placeholder: "Business to Business",
+      type: "radio",
+      error: fields.businessModel.errors?.join(", ") || "",
+    },
+    {
+      label: "Local",
+      name: fields.scale.name,
+      placeholder: "Local",
+      type: "radio",
+      error: fields.scale.errors?.join(", ") || "",
+    },
+    {
+      label: "Regional",
+      name: fields.scale.name,
+      placeholder: "Regional",
+      type: "radio",
+      error: fields.scale.errors?.join(", ") || "",
+    },
+    {
+      label: "National",
+      name: fields.scale.name,
+      placeholder: "National",
+      type: "radio",
+      error: fields.scale.errors?.join(", ") || "",
+    },
+    {
+      label: "Global",
+      name: fields.scale.name,
+      placeholder: "Global",
+      type: "radio",
+      error: fields.scale.errors?.join(", ") || "",
+    },
+
+    {
+      label: "Startup",
+      name: fields.maturity.name,
+      placeholder: "Startup",
+      type: "radio",
+      error: fields.maturity.errors?.join(", ") || "",
+    },
+    {
+      label: "Growing",
+      name: fields.maturity.name,
+      placeholder: "Growing",
+      type: "radio",
+      error: fields.maturity.errors?.join(", ") || "",
+    },
+    {
+      label: "Established",
+      name: fields.maturity.name,
+      placeholder: "Established",
+      type: "radio",
+      error: fields.maturity.errors?.join(", ") || "",
+    },
+  ];
   return (
     <>
       <form
@@ -41,118 +161,30 @@ export default function ProfileForm({ listingId }: { listingId: string }) {
       >
         <input type="hidden" name="listingId" value={listingId} />
         <CardContent className="flex flex-col gap-4">
-          <Label>Date of Establishment</Label>
-          <Input
-            type="date"
-            name={fields.foundedDate.name}
-            placeholder="Date of Establishment"
-          />
-          <p className="text-xs text-red-500 mt-2">
-            {fields.foundedDate.errors}
-          </p>
-          <Label>Number of Employees</Label>
-          <Input
-            type="number"
-            name={fields.numEmployees.name}
-            placeholder="Number of Employees"
-          />
-          <p className="text-xs text-red-500 mt-2">
-            {fields.numEmployees.errors}
-          </p>
-
-          <Label>Competitors</Label>
-          <Input
-            type="text"
-            name={fields.competitors.name}
-            placeholder="Competitors"
-          />
-          <p className="text-xs text-red-500 mt-2">
-            {fields.competitors.errors}
-          </p>
-
-          <Label>Growth Opportunities</Label>
-          <Input
-            type="text"
-            defaultValue={fields.growthOpportunities.value}
-            name={fields.growthOpportunities.name}
-            placeholder="Growth Opportunities"
-          />
-          <p className="text-xs text-red-500 mt-2">
-            {fields.growthOpportunities.errors}
-          </p>
-
-          <Label>Assets</Label>
-          <Input type="text" name={fields.assets.name} placeholder="Assets" />
-          <p className="text-xs text-red-500 mt-2">{fields.assets.errors}</p>
-
-          <Label>Selling Reason</Label>
-          <Textarea
-            name={fields.sellingReason.name}
-            placeholder="Selling Reason"
-          />
-          <p className="text-xs text-red-500 mt-2">
-            {fields.sellingReason.errors}
-          </p>
-
-          <Label>Financing</Label>
-          <Textarea name={fields.financing.name} placeholder="Financing" />
-          <p className="text-xs text-red-500 mt-2">{fields.financing.errors}</p>
+          <FormInput {...fieldsConfig[0]} />
+          <FormInput {...fieldsConfig[1]} />
+          <FormInput {...fieldsConfig[2]} />
+          <FormInput {...fieldsConfig[3]} />
+          <FormInput {...fieldsConfig[4]} />
+          <FormInput {...fieldsConfig[5]} />
+          <FormInput {...fieldsConfig[6]} />
 
           <fieldset className="flex flex-col space-y-2">
             <legend className="text-lg font-medium">
               Select your primary business model:
             </legend>
 
-            <Label className="flex items-center space-x-2">
-              <Input
-                type="radio"
-                name={fields.businessModel.name}
-                value="retail"
-              />
-              <span>Retail</span>
-            </Label>
-
-            <Label className="flex items-center space-x-2">
-              <Input
-                type="radio"
-                name={fields.businessModel.name}
-                value="online"
-              />
-              <span>Online</span>
-            </Label>
-
-            <Label className="flex items-center space-x-2">
-              <Input
-                type="radio"
-                name={fields.businessModel.name}
-                value="b2b"
-              />
-              <span>Business to Business</span>
-            </Label>
+            <FormInput {...fieldsConfig[7]} />
+            <FormInput {...fieldsConfig[8]} />
+            <FormInput {...fieldsConfig[9]} />
           </fieldset>
 
           <fieldset className="flex flex-col space-y-2">
             <legend className="text-lg font-medium">Select your scale:</legend>
-
-            <Label className="flex items-center space-x-2">
-              <Input type="radio" name={fields.scale.name} value="local" />
-              <span>Local</span>
-            </Label>
-
-            <Label className="flex items-center space-x-2">
-              <Input type="radio" name={fields.scale.name} value="regional" />
-              <span>Regional</span>
-            </Label>
-
-            <Label className="flex items-center space-x-2">
-              <Input type="radio" name={fields.scale.name} value="national" />
-              <span>National</span>
-            </Label>
-
-            <Label className="flex items-center space-x-2">
-              <Input type="radio" name={fields.scale.name} value="global" />
-              <span>Global</span>
-            </Label>
+            <FormInput {...fieldsConfig[10]} />
+            <FormInput {...fieldsConfig[11]} />
+            <FormInput {...fieldsConfig[12]} />
+            <FormInput {...fieldsConfig[13]} />
           </fieldset>
 
           <fieldset className="flex flex-col space-y-2">
@@ -160,24 +192,9 @@ export default function ProfileForm({ listingId }: { listingId: string }) {
               Select your maturity:
             </legend>
 
-            <Label className="flex items-center space-x-2">
-              <Input type="radio" name={fields.maturity.name} value="startup" />
-              <span>Startup</span>
-            </Label>
-
-            <Label className="flex items-center space-x-2">
-              <Input type="radio" name={fields.maturity.name} value="growing" />
-              <span>Growing</span>
-            </Label>
-
-            <Label className="flex items-center space-x-2">
-              <Input
-                type="radio"
-                name={fields.maturity.name}
-                value="established"
-              />
-              <span>Established</span>
-            </Label>
+            <FormInput {...fieldsConfig[14]} />
+            <FormInput {...fieldsConfig[15]} />
+            <FormInput {...fieldsConfig[16]} />
           </fieldset>
         </CardContent>
 
