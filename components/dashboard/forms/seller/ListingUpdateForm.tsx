@@ -64,6 +64,8 @@ export default function ListingUpdateForm({
     shouldRevalidate: "onInput",
   });
 
+  console.log("fields in listing update form", fields);
+
   const editableFields = [
     { fieldName: "businessName", type: "text", label: "Business Name" },
     { fieldName: "description", type: "textarea", label: "Description" },
@@ -110,11 +112,6 @@ export default function ListingUpdateForm({
     },
   ];
 
-  type CommonKeys = keyof typeof fields & keyof typeof listingData;
-
-  const fieldName = name as CommonKeys;
-  const listingDataName = name as CommonKeys;
-
   return (
     <form
       id={form.id}
@@ -125,15 +122,15 @@ export default function ListingUpdateForm({
       <input type="hidden" name="listingId" value={listingId} />
 
       <CardContent className="flex flex-col gap-4">
-        {editableFields.map(({ name, type, label }) => (
-          <div key={name} className="flex flex-col gap-1">
-            <Label htmlFor={fields[fieldName]?.name}>{label}</Label>
+        {editableFields.map(({ fieldName, type, label }) => (
+          <div key={fieldName} className="flex flex-col gap-1">
+            <Label htmlFor={fieldName}>{label}</Label>
 
             {type === "textarea" ? (
               <Textarea
-                name={fields[fieldName]?.name}
+                name={fieldName}
                 id={fields[fieldName]?.name}
-                placeholder={listingData?.[listingDataName]?.toString() || ""}
+                placeholder={}
                 defaultValue={listingData[listingDataName] || ""}
               />
             ) : (
