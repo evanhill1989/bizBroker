@@ -39,6 +39,7 @@ export default async function ListingsRoute() {
   }
 
   const data = await getData(user.id);
+  console.log(data, "<<----------- data in listings page");
 
   return (
     <>

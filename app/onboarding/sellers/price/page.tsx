@@ -20,9 +20,6 @@ export default async function PricePage() {
     orderBy: { createdAt: "desc" },
   });
   if (!listing) return redirect("/");
-  // if (listing.listingOnboardingStep !== "price") {
-  //   return redirect(`/onboarding/sellers/${listing.listingOnboardingStep}`);
-  // }
 
   return (
     <>
