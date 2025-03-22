@@ -1,3 +1,4 @@
+import { requireUser } from "@/app/utils/requireUser";
 import ListingPreviewCardCarousel from "@/components/dashboard/ListingPreviewCardCarousel";
 import NewListingDialog from "@/components/onboarding/seller/NewListingDialog";
 
@@ -16,11 +17,13 @@ import {
 } from "@/components/ui/carousel";
 
 import { mockMatchingListings } from "@/lib/mockMatchingListings";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+
 import { EyeOff, Heart, Sunrise } from "lucide-react";
 import Link from "next/link";
 
-export default function SellersDashboard() {
+export default async function SellerDashboardPage() {
+  const kindeUser = await requireUser();
+
   return (
     <div>
       <h1>Sellers Dashboard</h1>
@@ -32,8 +35,8 @@ export default function SellersDashboard() {
       </div>
       {/* New Listing Dialog */}
       <NewListingDialog />
-      <ListingPreviewCardCarousel data={data} />
-      <div>
+      {/* <ListingPreviewCardCarousel userId={kindeUser.id} /> */}
+      {/* <div>
         <Carousel>
           <CarouselContent>
             {mockMatchingListings.map((listing) => (
@@ -153,7 +156,7 @@ export default function SellersDashboard() {
           <CarouselPrevious />
           <CarouselNext />
         </Carousel>
-      </div>
+      </div> */}
     </div>
   );
 }
