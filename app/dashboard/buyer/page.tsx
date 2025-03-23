@@ -1,6 +1,8 @@
 import { getExactMatchListings } from "@/app/utils/actions/actions";
 import { requireUser } from "@/app/utils/requireUser";
 
+import ListingPreviewCardCarousel from "@/components/dashboard/ListingPreviewCardCarousel";
+
 import {
   Card,
   CardDescription,
@@ -69,60 +71,7 @@ export default async function BuyerDashboardPage() {
 
       <div className="max-w-[1200px] mx-auto listings flex flex-col gap-3 row-span-2  ">
         <h4>Listings based on your criteria:</h4>
-        <Carousel>
-          <CarouselContent>
-            {matchingListings.map((listing) => (
-              <CarouselItem
-                key={listing.id}
-                className="md:basis-1/2 lg:basis-1/3 p-4"
-              >
-                <Card className="flex flex-col justify-between border gap-8 rounded-lg p-8 hover:border-slate-400 hover:shadow-lg  cursor-pointer">
-                  <CardHeader className="flex flex-row p-0 justify-between">
-                    <div className="flex gap-2">
-                      <Sunrise />
-                      <h2 className="text-lg font-semibold">
-                        {listing.businessModel}
-                      </h2>
-                    </div>
-                    <div className="like-toggles flex gap-4">
-                      <Heart />
-                      <EyeOff />
-                    </div>
-                  </CardHeader>
-                  <CardDescription className="description text-base text-primary max-w-[40ch] line-clamp-3">
-                    <p className="text-pretty">{listing.description}</p>
-                  </CardDescription>
-                  <CardFooter className="flex justify-between p-0">
-                    <div>
-                      <p className="text-slate-400 font-semibold text-xs uppercase tracking-wide">
-                        TTM Revenue
-                      </p>
-                      <p className="text-xl font-semibold">
-                        ${listing.trailing12MonthRevenue}K
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-slate-400 font-semibold text-xs uppercase tracking-wide">
-                        TTM profit
-                      </p>
-                      <p className="text-xl font-semibold">
-                        ${listing.trailing12MonthProfit}K
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-slate-400 font-semibold text-xs uppercase tracking-wide">
-                        Asking Price
-                      </p>
-                      <p className="text-xl font-semibold">${listing.price}K</p>
-                    </div>
-                  </CardFooter>
-                </Card>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
+        <ListingPreviewCardCarousel listings={matchingListings} />
       </div>
     </div>
   );

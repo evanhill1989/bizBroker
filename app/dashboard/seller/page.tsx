@@ -1,31 +1,18 @@
 import { requireUser } from "@/app/utils/requireUser";
 import ListingPreviewCardCarousel from "@/components/dashboard/ListingPreviewCardCarousel";
 import NewListingDialog from "@/components/onboarding/seller/NewListingDialog";
-
-import {
-  Card,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-
-import { mockMatchingListings } from "@/lib/mockMatchingListings";
-
-import { EyeOff, Heart, Sunrise } from "lucide-react";
-import Link from "next/link";
+import { prisma } from "@/lib/prisma";
 
 export default async function SellerDashboardPage() {
   const kindeUser = await requireUser();
+  const listings = await prisma.listing.findMany({
+    where: {
+      userId: kindeUser.id,
+    },
+  });
 
   return (
-    <div>
+    <div className="wrapper">
       <h1>Sellers Dashboard</h1>
       <div>
         <h3>Listing Metrics</h3>
@@ -35,7 +22,13 @@ export default async function SellerDashboardPage() {
       </div>
       {/* New Listing Dialog */}
       <NewListingDialog />
-      {/* <ListingPreviewCardCarousel userId={kindeUser.id} /> */}
+      <div className="px-12 carousel-arrow-hack">
+        {/* Above hack is Only simple way to keep carousel pagination from jumping the wrapper */}
+        <div className="wrapper">
+          <ListingPreviewCardCarousel listings={listings} />
+        </div>
+      </div>
+
       {/* <div>
         <Carousel>
           <CarouselContent>

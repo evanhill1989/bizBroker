@@ -108,11 +108,13 @@ export async function UpdateBuyerPriceRangeStepAction(
   const parsedMin = parseFloat(min);
   const parsedMax = parseFloat(max);
 
+  console.log(parsedMin, parsedMax, "min and max parsed in price range action");
+
   await prisma.user.update({
     where: { id: user.id },
     data: {
-      buyerMinProfitMultiple: parsedMin,
-      buyerMaxProfitMultiple: parsedMax,
+      buyerMinPriceRange: parsedMin,
+      buyerMaxPriceRange: parsedMax,
       buyerOnboardingStep: "revenuemultiple",
     },
   });

@@ -1,4 +1,3 @@
-import { prisma } from "@/lib/prisma";
 import {
   Carousel,
   CarouselContent,
@@ -11,19 +10,12 @@ import { Card, CardDescription, CardFooter, CardHeader } from "../ui/card";
 import { EyeOff, Heart, Sunrise } from "lucide-react";
 
 export default async function ListingPreviewCardCarousel({
-  userId,
+  listings,
 }: {
-  userId: string;
+  listings: any;
 }) {
-  console.log("userId", userId);
-  const listings = await prisma.listing.findMany({
-    where: {
-      userId: userId,
-    },
-  });
-  console.log(listings, "listingData");
   return (
-    <Carousel>
+    <Carousel className="">
       <CarouselContent>
         {listings.map((listing) => (
           <CarouselItem key={listing.id} className="md:basis-1/2 lg:basis-1/3">

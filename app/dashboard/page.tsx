@@ -52,7 +52,7 @@ export default async function DashboardIndexPage({}) {
   // const user = await requireUser() || null;
   const { listings, articles } = await getData("123");
   return (
-    <div>
+    <div className="wrapper">
       <h1 className="text-2xl font-semibold mb-5">Your Listings</h1>
 
       {listings.length > 0 ? (
