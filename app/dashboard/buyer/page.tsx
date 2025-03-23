@@ -1,28 +1,14 @@
 import { getExactMatchListings } from "@/app/utils/actions/actions";
 import { requireUser } from "@/app/utils/requireUser";
+import CuratedListings from "@/components/dashboard/CuratedListings";
 
 import ListingPreviewCardCarousel from "@/components/dashboard/ListingPreviewCardCarousel";
 
-import {
-  Card,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
 import { prisma } from "@/lib/prisma";
 import {
   BadgeDollarSign,
   CalendarPlus,
   ChartNoAxesCombined,
-  EyeOff,
-  Heart,
   MapPinHouse,
   Sunrise,
 } from "lucide-react";
@@ -42,8 +28,9 @@ export default async function BuyerDashboardPage() {
 
   return (
     <div className="grid grid-rows-3 gap-12">
-      <div className="grid grid-cols-5 gap-4 w-full items-start row-span-1">
-        <button className="flex text-start flex-col gap-6 hover:bg-primary/20 align-start border px-6 py-8 rounded-lg">
+      <CuratedListings listings={matchingListings} />
+      {/* <div className="grid wrapper grid-cols-5 gap-4 w-full items-start row-span-1">
+        <button className="flex text-start flex-col gap-6 bg-white hover:bg-primary/20 align-start border px-6 py-8 rounded-lg">
           <ChartNoAxesCombined size={40} />
           <h3 className="text-lg font-semibold text-nowrap">
             Popular Listings
@@ -71,8 +58,7 @@ export default async function BuyerDashboardPage() {
 
       <div className="max-w-[1200px] mx-auto listings flex flex-col gap-3 row-span-2  ">
         <h4>Listings based on your criteria:</h4>
-        <ListingPreviewCardCarousel listings={matchingListings} />
-      </div>
+      </div> */}
     </div>
   );
 

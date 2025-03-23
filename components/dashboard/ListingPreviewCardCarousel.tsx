@@ -9,7 +9,7 @@ import Link from "next/link";
 import { Card, CardDescription, CardFooter, CardHeader } from "../ui/card";
 import { EyeOff, Heart, Sunrise } from "lucide-react";
 
-export default async function ListingPreviewCardCarousel({
+export default function ListingPreviewCardCarousel({
   listings,
 }: {
   listings: any;
