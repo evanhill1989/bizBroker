@@ -14,11 +14,13 @@ export default function ListingPreviewCardCarousel({
 }: {
   listings: any;
 }) {
+  console.log(listings, "listings");
+
   return (
     <Carousel className="">
       <CarouselContent>
-        {listings.map((listing) => (
-          <CarouselItem key={listing.id} className="md:basis-1/2 lg:basis-1/3">
+        {listings.map((listing, index) => (
+          <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
             <Link href={`/dashboard/seller/listings/${listing.id}`}>
               <Card className="flex flex-col justify-between border gap-8 rounded-lg p-8 hover:border-slate-400 hover:shadow-lg  cursor-pointer">
                 <CardHeader className="flex flex-row p-0 justify-between">
