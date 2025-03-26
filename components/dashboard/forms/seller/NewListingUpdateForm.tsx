@@ -12,20 +12,13 @@ import { useForm } from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod";
 import { DescriptionSchema } from "@/app/utils/zodSchemas";
 
-interface ListingUpdateFormProps {
-  listingData: {
-    description: string;
-    shortDescription?: string | null | undefined;
-    longDescription?: string | null | undefined;
-  };
+import { Listing } from "@prisma/client";
 
-  listingId: string;
-}
+type ListingProps = {
+  listing: Listing;
+};
 
-export default function NewListingUpdateForm({
-  listingData,
-  listingId,
-}: ListingUpdateFormProps) {
+export default function NewListingUpdateForm({ listing }: ListingProps) {
   const [lastResult, formAction] = useActionState(
     SimpleUpdateDescriptions,
     undefined
@@ -34,9 +27,9 @@ export default function NewListingUpdateForm({
   const [form, fields] = useForm({
     lastResult,
     defaultValue: {
-      description: listingData.description,
-      shortDescription: listingData.shortDescription,
-      longDescription: listingData.longDescription,
+      description: listing.description,
+      shortDescription: listing.shortDescription,
+      longDescription: listing.longDescription,
     },
     onValidate({ formData }) {
       return parseWithZod(formData, { schema: DescriptionSchema });
@@ -53,7 +46,7 @@ export default function NewListingUpdateForm({
       action={formAction}
       className="flex flex-col gap-4"
     >
-      <input type="hidden" name="listingId" value={listingId} />
+      <input type="hidden" name="listingId" value={listing.id} />
 
       <CardContent className="flex flex-col gap-4">
         <div>

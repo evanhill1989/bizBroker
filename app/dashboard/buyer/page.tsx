@@ -32,7 +32,13 @@ export default async function BuyerDashboardPage() {
     take: 5,
   });
   console.log(newestListings, "newestListings");
-  const listings = [matchingListings, [], [], [], newestListings];
+  const listings = [
+    matchingListings,
+    matchingListings,
+    matchingListings,
+    matchingListings,
+    newestListings,
+  ];
   return (
     <div className="  ">
       <CuratedListings listings={listings} />

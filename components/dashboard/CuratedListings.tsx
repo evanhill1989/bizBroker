@@ -1,13 +1,21 @@
 "use client";
 
 import { useState } from "react";
+import { Listing } from "@prisma/client";
 
 import BigDashBtn from "./BigDashBtn";
 import ListingPreviewCardCarousel from "./ListingPreviewCardCarousel";
 import { BadgeDollarSignIcon, ChartNoAxesCombined } from "lucide-react";
 
-export default function CuratedListings({ listings }: { listings: any[] }) {
-  const [currentListings, setCurrentListings] = useState([]);
+type CuratedListingsProps = {
+  listings: Listing[][];
+};
+
+export default function CuratedListings({ listings }: CuratedListingsProps) {
+  const [currentListings, setCurrentListings] = useState<Listing[]>(
+    listings[0]
+  );
+
   console.log(currentListings, "currentListings");
   return (
     <>
@@ -22,8 +30,13 @@ export default function CuratedListings({ listings }: { listings: any[] }) {
           icon={<ChartNoAxesCombined size={40} />}
         ></BigDashBtn>
         <BigDashBtn
-          text="Price Drops"
-          icon={<BadgeDollarSignIcon size={40} />}
+          onClick={() => {
+            setCurrentListings(listings[1]);
+            console.log(listings, "matchingListings");
+            console.log(currentListings, "currentListings");
+          }}
+          text="Popular Listings"
+          icon={<ChartNoAxesCombined size={40} />}
         ></BigDashBtn>
         <BigDashBtn
           onClick={() => {
@@ -53,7 +66,7 @@ export default function CuratedListings({ listings }: { listings: any[] }) {
           icon={<ChartNoAxesCombined size={40} />}
         ></BigDashBtn>
       </div>
-      {currentListings.length > 0 && (
+      {currentListings?.length > 0 && (
         <div className="wrapper">
           <h3 className="text-lg font-semibold text-nowrap">
             Matching Listings

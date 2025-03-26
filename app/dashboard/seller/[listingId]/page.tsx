@@ -25,12 +25,6 @@ export default async function ListingUpdatePage(props: {
     where: {
       id: params.listingId,
     },
-    select: {
-      description: true,
-      shortDescription: true,
-      longDescription: true,
-      // id: true,
-    },
   });
 
   return (

@@ -19,7 +19,7 @@ import { useActionState } from "react";
 import { useForm } from "@conform-to/react";
 import { SubmitButton } from "@/components/dashboard/SubmitButtons";
 
-export default function NewListingRoute() {
+export default function NewListing() {
   const [lastResult, action] = useActionState(CreateListing, undefined);
 
   const [form, fields] = useForm({
