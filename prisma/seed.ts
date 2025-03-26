@@ -3,7 +3,6 @@ import { faker } from "@faker-js/faker";
 
 const prisma = new PrismaClient();
 
-
 // List of business models for variation
 const businessModels = ["retail", "online", "b2b"];
 
@@ -104,31 +103,35 @@ function generateListings(userId: string) {
     price: faker.number.float({
       min: 10000,
       max: 500000,
+      fractionDigits: 0,
     }),
-    profitMultiple: faker.number.float({ min: 1.5, max: 6 }),
-    revenueMultiple: faker.number.float({ min: 2, max: 8 }),
+    profitMultiple: faker.number.float({ min: 1.5, max: 6, fractionDigits: 1 }),
+    revenueMultiple: faker.number.float({ min: 2, max: 8, fractionDigits: 1 }),
     scale: faker.helpers.arrayElement(["local", "national", "global"]),
     trailing12MonthProfit: faker.number.float({
       min: 20000,
       max: 200000,
+      fractionDigits: 0,
     }),
     trailing12MonthRevenue: faker.number.float({
       min: 50000,
       max: 500000,
+      fractionDigits: 0,
     }),
     lastMonthProfit: faker.number.float({
       min: -20000,
       max: 50000,
+      fractionDigits: 0,
     }),
     lastMonthRevenue: faker.number.float({
       min: 0,
       max: 100000,
+      fractionDigits: 0,
     }),
   }));
 }
 
 async function seed() {
-
   const users = Array.from({ length: 15 }).map((_, index) => ({
     id: (index + 1).toString(), // This will create IDs from 1 to 15
     email: faker.internet.email(),

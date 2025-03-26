@@ -1,5 +1,5 @@
 import { requireUser } from "@/app/utils/requireUser";
-import NewListingUpdateForm from "@/components/dashboard/forms/seller/NewListingUpdateForm";
+import NewestListingUpdateForm from "@/components/dashboard/forms/seller/NewestListingUpdateForm";
 import {
   Card,
   CardDescription,
@@ -21,7 +21,7 @@ export default async function ListingUpdatePage(props: {
     return redirect("/api/auth/login");
   }
 
-  const listingData = await prisma.listing.findUnique({
+  const listing = await prisma.listing.findUnique({
     where: {
       id: params.listingId,
     },
@@ -34,11 +34,8 @@ export default async function ListingUpdatePage(props: {
           <CardTitle>Update your listing</CardTitle>
           <CardDescription>Update your entire listing here.</CardDescription>
         </CardHeader>
-        {listingData && (
-          <NewListingUpdateForm
-            listingData={listingData}
-            listingId={params.listingId}
-          />
+        {listing && (
+          <NewestListingUpdateForm listing={listing} listingId={listing.id} />
         )}
       </Card>
     </>
