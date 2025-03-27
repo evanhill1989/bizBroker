@@ -4,6 +4,29 @@ import ListingPreviewCardCarousel from "@/components/dashboard/ListingPreviewCar
 import NewListingDialog from "@/components/onboarding/seller/NewListingDialog";
 import { prisma } from "@/lib/prisma";
 
+const uniqueViews = Array.from({ length: 30 }, (_, i) => ({
+  date: new Date(Date.now() - i * 24 * 60 * 60 * 1000)
+    .toISOString()
+    .split("T")[0],
+  value: Math.floor(Math.random() * 200),
+})).reverse();
+
+const clicks = Array.from({ length: 30 }, (_, i) => ({
+  date: new Date(Date.now() - i * 24 * 60 * 60 * 1000)
+    .toISOString()
+    .split("T")[0],
+  value: Math.floor(Math.random() * 50),
+})).reverse();
+
+const totalViews = Array.from({ length: 30 }, (_, i) => ({
+  date: new Date(Date.now() - i * 24 * 60 * 60 * 1000)
+    .toISOString()
+    .split("T")[0],
+  value: Math.floor(Math.random() * 500),
+})).reverse();
+
+const metrics = { uniqueViews, clicks, totalViews };
+
 export default async function SellerDashboardPage() {
   const kindeUser = await requireUser();
   const listings = await prisma.listing.findMany({
@@ -22,7 +45,7 @@ export default async function SellerDashboardPage() {
           <ListingPreviewCardCarousel listings={listings} />
         </div>
         <div className="wrapper">
-          <ListingMetrics listings={listings} />
+          <ListingMetrics metrics={metrics} />
         </div>
       </div>
     </div>
