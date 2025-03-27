@@ -74,7 +74,7 @@ export async function handleSellerBackNav(currentStep: string) {
 
   const previousStep = stepMapping[currentStep];
 
-  redirect(`/onboarding/buyers/${previousStep}`);
+  redirect(`/onboarding/sellers/${previousStep}`);
 
   // DOES THIS CONTINUE RUNNING IN BG AFTER REDIRECT?
   const user = await requireUser();

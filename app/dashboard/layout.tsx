@@ -2,7 +2,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { ReactNode } from "react";
 import Logo from "@/public/logo.svg";
-import { DashboardItems } from "@/components/dashboard/DashboardItems";
 
 import { ModeToggle } from "@/components/dashboard/ModeToggle";
 import {

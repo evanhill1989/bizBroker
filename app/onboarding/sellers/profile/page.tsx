@@ -15,14 +15,14 @@ export default async function ProfilePage() {
   const listing = await prisma.listing.findFirst({
     where: {
       userId: user.id,
-      listingOnboardingStep: { not: "completed" },
+      // listingOnboardingStep: { not: "completed" },
     },
     orderBy: { createdAt: "desc" },
   });
   if (!listing) return redirect("/");
-  if (listing.listingOnboardingStep !== "profile") {
-    return redirect(`/onboarding/sellers/${listing.listingOnboardingStep}`);
-  }
+  // if (listing.listingOnboardingStep !== "profile") {
+  //   return redirect(`/onboarding/sellers/${listing.listingOnboardingStep}`);
+  // }
 
   return (
     <>

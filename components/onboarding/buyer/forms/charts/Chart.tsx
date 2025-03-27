@@ -28,7 +28,7 @@ export default function Chart({
           </div>
         ))}
       </div>
-      <div className="w-full flex justify-between">
+      <div className="flex justify-between">
         <p>{chartMin}</p>
         <p>{chartMax}</p>
       </div>

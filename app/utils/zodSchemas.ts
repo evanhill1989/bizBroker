@@ -127,6 +127,10 @@ export const PriceSchema = z.object({
 });
 
 export const ProfileSchema = z.object({
+  scale: z.string().min(1).max(35).optional(),
+  businessModel: z.string().min(1).max(35).optional(),
+  maturity: z.string().min(1).max(35).optional(),
+  location: z.string().min(1).max(35).optional(),
   foundedDate: z.date().optional(),
   numEmployees: z.number().min(1).max(5000).optional(),
   competitors: z.string().optional(),
@@ -134,10 +138,6 @@ export const ProfileSchema = z.object({
   assets: z.string().optional(),
   sellingReason: z.string().min(1).max(100).optional(),
   financing: z.string().min(1).max(35).optional(),
-  scale: z.string().min(1).max(35).optional(),
-  businessModel: z.string().min(1).max(35).optional(),
-  maturity: z.string().min(1).max(35).optional(),
-  location: z.string().min(1).max(35).optional(),
 });
 
 export const WholeListingSchema = z.object({
